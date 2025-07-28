@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Project Archive</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .star {
+      font-size: 1.2rem;
+    }
+  </style>
 </head>
 <body class="bg-gray-900 text-gray-100 font-sans">
   <header class="p-6 bg-gray-800 shadow-md">
@@ -28,19 +33,17 @@
 
   <script>
     function renderStars(rating) {
-      const fullStar = '<span class="text-yellow-400">&#9733;</span>'; // ★
-      const halfStar = '<span class="text-yellow-400">&#189;</span>';  // ½
-      const emptyStar = '<span class="text-gray-600">&#9734;</span>';  // ☆
-
-      let starsHTML = '';
-      let fullCount = Math.floor(rating);
-      let hasHalf = rating % 1 >= 0.5;
-
-      for (let i = 0; i < fullCount; i++) starsHTML += fullStar;
-      if (hasHalf) starsHTML += halfStar;
-      while ((starsHTML.match(/span/g) || []).length < 5) starsHTML += emptyStar;
-
-      return starsHTML;
+      const stars = [];
+      for (let i = 1; i <= 5; i++) {
+        if (rating >= i) {
+          stars.push('<span class="text-yellow-400 star">&#9733;</span>'); // full star ★
+        } else if (rating >= i - 0.5) {
+          stars.push('<span class="text-yellow-400 star">&#x2BEA;</span>'); // using Unicode left half black star ⯪
+        } else {
+          stars.push('<span class="text-gray-600 star">&#9733;</span>'); // empty star in gray ★
+        }
+      }
+      return stars.join('');
     }
 
     async function loadItems() {
@@ -52,10 +55,13 @@
 
         items.forEach(item => {
           const itemCard = document.createElement('div');
-          itemCard.className = 'bg-gray-800 p-4 rounded shadow';
+          itemCard.className = 'bg-gray-800 p-4 rounded shadow relative';
+
           itemCard.innerHTML = `
-            <h2 class="text-xl font-bold mb-1">${item.name}</h2>
-            <div class="mb-2">${renderStars(item.rating || 0)}</div>
+            <div class="flex justify-between items-center mb-1">
+              <h2 class="text-xl font-bold">${item.name}</h2>
+              <div>${renderStars(item.rating || 0)}</div>
+            </div>
             <p class="mb-2">${item.description}</p>
 
             ${item.video ? `
