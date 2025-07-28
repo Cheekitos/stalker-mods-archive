@@ -1,27 +1,30 @@
 [
-  {
-    "name": "Resource A",
-    "description": "A useful resource for reference and use.",
-    "video": "https://www.youtube.com/embed/xixdI00LpNw?si=T-_-DK4IfHT2u3bw&amp",
-    "links": [
-      { "label": "Link 1", "url": "https://example.com/resource-a" },
-      { "label": "Guide", "url": "https://example.com/guide-a" }
-    ]
-  },
-  {
-    "name": "Resource B",
-    "description": "Another entry in the collection.",
-    "video": "https://www.youtube.com/embed/xixdI00LpNw?si=5tX4AB3DV6QKRKgr",
-    "links": [
-      { "label": "Link", "url": "https://example.com/resource-b" }
-    ]
-  },
-  {
-    "name": "Resource C",
-    "description": "Another entry in the collection.",
-    "video": "",
-    "links": [
-      { "label": "Link", "url": "https://example.com/resource-b" }
-    ]
-  }
+ {
+  "name": "Mod A",
+  "description": "Example description.",
+  "video": "https://www.youtube.com/embed/xixdI00LpNw?si=5tX4AB3DV6QKRKgr",
+  "rating": 4.5,
+  "links": [
+    { "label": "Download", "url": "https://example.com" }
+  ]
+}
+,
+   {
+  "name": "Mod A",
+  "description": "Example description.",
+  "video": "https://www.youtube.com/embed/xixdI00LpNw?si=5tX4AB3DV6QKRKgr",
+  "rating": 2,
+  "links": [
+    { "label": "Download", "url": "https://example.com" }
+  ]
+},
+   {
+  "name": "Mod A",
+  "description": "Example description.",
+  "video": "https://www.youtube.com/embed/xixdI00LpNw?si=5tX4AB3DV6QKRKgr",
+  "rating": 0.5,
+  "links": [
+    { "label": "Download", "url": "https://example.com" }
+  ]
+}
 ]
