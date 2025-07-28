@@ -28,7 +28,7 @@
         
         mods.forEach(mod => {
           const card = document.createElement('div');
-          card.className = 'bg-gray-800 p-3 rounded-md shadow-sm';
+          card.className = 'bg-gray-800 p-3 rounded-md shadow-sm flex flex-col h-full';
 
           const titleRow = document.createElement('div');
           titleRow.className = 'flex justify-between items-center mb-1';
@@ -62,7 +62,7 @@
 
           const video = document.createElement('iframe');
           video.src = mod.video;
-          video.className = 'w-full h-40 mt-2 rounded';
+          video.className = 'w-full h-40 mt-auto rounded';
           video.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
           video.allowFullscreen = true;
 
