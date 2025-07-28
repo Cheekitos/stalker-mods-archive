@@ -27,6 +27,22 @@
   </footer>
 
   <script>
+    function renderStars(rating) {
+      const fullStar = '<span class="text-yellow-400">&#9733;</span>'; // ★
+      const halfStar = '<span class="text-yellow-400">&#189;</span>';  // ½
+      const emptyStar = '<span class="text-gray-600">&#9734;</span>';  // ☆
+
+      let starsHTML = '';
+      let fullCount = Math.floor(rating);
+      let hasHalf = rating % 1 >= 0.5;
+
+      for (let i = 0; i < fullCount; i++) starsHTML += fullStar;
+      if (hasHalf) starsHTML += halfStar;
+      while ((starsHTML.match(/span/g) || []).length < 5) starsHTML += emptyStar;
+
+      return starsHTML;
+    }
+
     async function loadItems() {
       try {
         const res = await fetch('items.json');
@@ -38,7 +54,8 @@
           const itemCard = document.createElement('div');
           itemCard.className = 'bg-gray-800 p-4 rounded shadow';
           itemCard.innerHTML = `
-            <h2 class="text-xl font-bold mb-2">${item.name}</h2>
+            <h2 class="text-xl font-bold mb-1">${item.name}</h2>
+            <div class="mb-2">${renderStars(item.rating || 0)}</div>
             <p class="mb-2">${item.description}</p>
 
             ${item.video ? `
