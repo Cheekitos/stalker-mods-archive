@@ -34,6 +34,14 @@
     </footer>
   </div>
 
+  <!-- Popup Overlay -->
+  <div id="popup-overlay" class="fixed inset-0 bg-black bg-opacity-70 hidden justify-center items-center z-50">
+    <div class="bg-gray-900 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-auto relative p-4">
+      <button id="popup-close" class="absolute top-2 right-2 text-gray-400 hover:text-white text-xl">&times;</button>
+      <div id="popup-content" class="text-sm text-gray-200">Loading...</div>
+    </div>
+  </div>
+
   <script>
     let mods = [];
     let sorted = false;
@@ -83,8 +91,15 @@
           const a = document.createElement('a');
           a.href = link.url;
           a.textContent = link.label;
-          a.className = 'block text-blue-400 hover:underline text-sm';
-          a.target = '_blank';
+          a.className = 'block text-blue-400 hover:underline text-sm cursor-pointer';
+          if (link.label.toLowerCase().includes('install guide')) {
+            a.addEventListener('click', e => {
+              e.preventDefault();
+              openPopup(link.url);
+            });
+          } else {
+            a.target = '_blank';
+          }
           links.appendChild(a);
         });
 
@@ -146,6 +161,29 @@
       const filtered = (sorted ? [...mods].sort((a, b) => (b.rating || 0) - (a.rating || 0)) : originalMods)
         .filter(mod => mod.title.toLowerCase().includes(term) || mod.description.toLowerCase().includes(term));
       renderMods(filtered);
+    });
+
+    // Popup functions
+    const overlay = document.getElementById('popup-overlay');
+    const popupContent = document.getElementById('popup-content');
+    const popupClose = document.getElementById('popup-close');
+
+    function openPopup(url) {
+      popupContent.innerHTML = 'Loading...';
+      overlay.classList.remove('hidden');
+      fetch(url + '?v=' + Date.now())
+        .then(res => res.text())
+        .then(html => {
+          popupContent.innerHTML = html;
+        })
+        .catch(() => {
+          popupContent.innerHTML = '<p class="text-red-400">Failed to load guide.</p>';
+        });
+    }
+
+    popupClose.addEventListener('click', () => overlay.classList.add('hidden'));
+    overlay.addEventListener('click', e => {
+      if (e.target === overlay) overlay.classList.add('hidden');
     });
 
     loadMods();
