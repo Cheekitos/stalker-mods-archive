@@ -7,13 +7,13 @@
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-900 text-white font-sans p-4">
-  <div class="max-w-6xl mx-auto">
+<body class="bg-gray-900 text-white font-sans p-4 min-h-screen flex flex-col">
+  <div class="max-w-6xl mx-auto flex-1">
     <h1 class="text-3xl font-bold mb-1">Cheeki's Mods Archive</h1>
     <h2 class="text-lg text-gray-400 mb-3">A collection of S.T.A.L.K.E.R. Story Mods</h2>
     <p class="text-gray-300 text-sm mb-6">
       A non-exhaustive archive of game modifications for the S.T.A.L.K.E.R. game franchise, mainly story-focused mods I reviewed on the YouTube Channel.
-      Everything listed here is for ease-of-access and posterity only. Consolidating files that tend to be scattered accross multiple websites, hosting services, with some unfortunately lost already. 
+      Everything listed here is for ease-of-access and posterity only. Consolidating files that tend to be scattered across multiple websites, hosting services, with some unfortunately lost already. 
       All credits go to the Authors of these mods.
     </p>
     
@@ -21,10 +21,15 @@
     <div id="mod-list" class="grid gap-4 grid-cols-[repeat(auto-fit,minmax(250px,1fr))]"></div>
   </div>
 
+  <!-- Footer -->
+  <footer class="mt-8 text-center text-sm text-gray-500">
+    © 2025 Cheeki's Mods Archive. <a href="https://your-link-here.com" target="_blank" class="text-blue-400 hover:underline">Your Link Here</a>
+  </footer>
+
   <script>
     async function loadMods() {
       try {
-        const response = await fetch('mods.json');
+        const response = await fetch('mods.json?nocache=' + new Date().getTime());
         const mods = await response.json();
         const container = document.getElementById('mod-list');
         
@@ -62,22 +67,24 @@
             links.appendChild(a);
           });
 
-          const video = document.createElement('iframe');
-          video.src = mod.video;
-          video.className = 'w-full h-40 mt-auto rounded';
-          video.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-          video.allowFullscreen = true;
+          if (mod.video) {
+            const video = document.createElement('iframe');
+            video.src = mod.video;
+            video.className = 'w-full aspect-video mt-auto rounded';
+            video.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+            video.allowFullscreen = true;
+            card.appendChild(video);
+          }
 
           card.appendChild(titleRow);
           card.appendChild(desc);
           card.appendChild(links);
-          if (mod.video) {
-            card.appendChild(video);
-          }
           container.appendChild(card);
         });
       } catch (err) {
         console.error('Error loading mods.json:', err);
+        const container = document.getElementById('mod-list');
+        container.innerHTML = '<p class="text-red-400">Failed to load mod list.</p>';
       }
     }
 
