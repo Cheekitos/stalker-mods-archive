@@ -1,30 +1,42 @@
 [
- {
-  "name": "Mod A",
-  "description": "Example description.",
-  "video": "https://www.youtube.com/embed/xixdI00LpNw?si=5tX4AB3DV6QKRKgr",
-  "rating": 3,
-  "links": [
-    { "label": "Download", "url": "https://example.com" }
-  ]
-}
-,
-   {
-  "name": "Mod B",
-  "description": "Example description.",
-  "video": "https://www.youtube.com/embed/xixdI00LpNw?si=5tX4AB3DV6QKRKgr",
-  "rating": 3.5,
-  "links": [
-    { "label": "Download", "url": "https://example.com" }
-  ]
-},
-   {
-  "name": "Mod C",
-  "description": "Example description.",
-  "video": "https://www.youtube.com/embed/xixdI00LpNw?si=5tX4AB3DV6QKRKgr",
-  "rating": 4.5,
-  "links": [
-    { "label": "Download", "url": "https://example.com" }
-  ]
-}
+  {
+    "title": "Mod Alpha",
+    "description": "A lightweight mod focused on improving game performance and stability.",
+    "links": [
+      { "label": "Link 1", "url": "https://example.com/mod-alpha" },
+      { "label": "Guide", "url": "https://example.com/guide-alpha" }
+    ],
+    "video": "https://www.youtube.com/embed/xixdI00LpNw?si=5tX4AB3DV6QKRKgr",
+    "rating": 0
+  },
+  {
+    "title": "Mod Beta",
+    "description": "This overhaul mod adds new mechanics, weapons, and dynamic events.",
+    "links": [
+      { "label": "Link 1", "url": "https://example.com/mod-beta" },
+      { "label": "Guide", "url": "https://example.com/guide-beta" }
+    ],
+    "video": "https://www.youtube.com/embed/xixdI00LpNw?si=5tX4AB3DV6QKRKgr",
+    "rating": 1.5
+  },
+  {
+    "title": "Mod Gamma",
+    "description": "A visual enhancement pack with reworked textures and weather systems.",
+    "links": [
+      { "label": "Link 1", "url": "https://example.com/mod-gamma" },
+      { "label": "Guide", "url": "https://example.com/guide-gamma" }
+    ],
+    "video": "https://www.youtube.com/embed/xixdI00LpNw?si=5tX4AB3DV6QKRKgr",
+    "rating": 3.5
+  },
+  {
+    "title": "Mod Delta",
+    "description": "Adds survival elements and tweaks AI behavior for a tougher experience.",
+    "links": [
+      { "label": "Link 1", "url": "https://example.com/mod-delta" },
+      { "label": "Guide", "url": "https://example.com/guide-delta" }
+    ],
+    "video": "https://www.youtube.com/embed/xixdI00LpNw?si=5tX4AB3DV6QKRKgr",
+    "rating": 5
+  }
 ]
