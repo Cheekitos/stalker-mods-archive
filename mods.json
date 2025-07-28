@@ -4,7 +4,7 @@
     "description": "Description.",
     "links": [
       { "label": "Download Files", "url": "https://example.com/mod-alpha" },
-      { "label": "Install Guide & Credits", "url": "https://example.com/guide-alpha" }
+      { "label": "Install Guide", "url": "guides/mod-alpha.html" }
     ],
     "video": "https://www.youtube.com/embed/xixdI00LpNw?si=5tX4AB3DV6QKRKgr",
     "rating": 0
@@ -14,7 +14,7 @@
     "description": "Description.",
     "links": [
       { "label": "Download Files", "url": "https://example.com/mod-beta" },
-      { "label": "Install Guide", "url": "https://example.com/guide-beta" }
+      { "label": "Install Guide", "url": "guides/mod-beta.html" }
     ],
     "video": "https://www.youtube.com/embed/xixdI00LpNw?si=5tX4AB3DV6QKRKgr",
     "rating": 1.5
@@ -24,7 +24,7 @@
     "description": "Description.",
     "links": [
       { "label": "Download Files", "url": "https://example.com/mod-gamma" },
-      { "label": "Install Guide", "url": "https://example.com/guide-gamma" }
+      { "label": "Install Guide", "url": "guides/mod-gamma.html" }
     ],
     "video": "https://www.youtube.com/embed/xixdI00LpNw?si=5tX4AB3DV6QKRKgr",
     "rating": 3.5
@@ -34,7 +34,7 @@
     "description": "Description.",
     "links": [
       { "label": "Download Files", "url": "https://example.com/mod-delta" },
-      { "label": "Install Guide", "url": "https://example.com/guide-delta" }
+      { "label": "Install Guide", "url": "guides/mod-delta.html" }
     ],
     "video": "https://www.youtube.com/embed/xixdI00LpNw?si=5tX4AB3DV6QKRKgr",
     "rating": 5
