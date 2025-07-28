@@ -17,22 +17,33 @@
       All credits go to the Authors of these mods.
     </p>
 
-    <!-- Sort Button -->
-    <button id="sort-button" class="mb-4 bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-1 px-3 rounded">
-      Sort by Rating
-    </button>
+    <!-- Controls -->
+    <div class="flex flex-wrap items-center gap-2 mb-4">
+      <button id="sort-button" class="bg-yellow-500 hover:bg-yellow-600 text-black text-sm font-medium py-1 px-3 rounded">
+        Sort by Rating
+      </button>
+      <input id="search-input" type="text" placeholder="Search mods..." class="flex-1 min-w-[150px] px-2 py-1 text-sm rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500" />
+    </div>
 
     <!-- Mod List -->
     <div id="mod-list" class="grid gap-4 grid-cols-[repeat(auto-fit,minmax(250px,1fr))]"></div>
+
+    <!-- Footer -->
+    <footer class="mt-8 text-center text-sm text-gray-500">
+      &copy; 2025 Cheeki. All rights reserved. <a href="https://example.com" target="_blank" class="text-blue-400 hover:underline">Edit this link</a>
+    </footer>
   </div>
 
   <script>
     let mods = [];
+    let sorted = false;
+    let originalMods = [];
 
     async function loadMods() {
       try {
-        const response = await fetch('mods.json?v=' + Date.now()); // cache-busting
+        const response = await fetch('mods.json?v=' + Date.now()); // Cache-busting
         mods = await response.json();
+        originalMods = [...mods];
         renderMods(mods);
       } catch (err) {
         console.error('Error loading mods.json:', err);
@@ -120,9 +131,21 @@
       return stars;
     }
 
+    // Toggle sort
     document.getElementById('sort-button').addEventListener('click', () => {
-      const sortedMods = [...mods].sort((a, b) => (b.rating || 0) - (a.rating || 0));
-      renderMods(sortedMods);
+      sorted = !sorted;
+      const modsToRender = sorted 
+        ? [...mods].sort((a, b) => (b.rating || 0) - (a.rating || 0)) 
+        : originalMods;
+      renderMods(modsToRender);
+    });
+
+    // Search filter
+    document.getElementById('search-input').addEventListener('input', e => {
+      const term = e.target.value.toLowerCase();
+      const filtered = (sorted ? [...mods].sort((a, b) => (b.rating || 0) - (a.rating || 0)) : originalMods)
+        .filter(mod => mod.title.toLowerCase().includes(term) || mod.description.toLowerCase().includes(term));
+      renderMods(filtered);
     });
 
     loadMods();
