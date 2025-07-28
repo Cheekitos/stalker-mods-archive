@@ -4,35 +4,43 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cheeki's Mods Archive</title>
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-900 text-white font-sans p-4 min-h-screen flex flex-col">
-  <div class="max-w-6xl mx-auto flex-1">
+<body class="bg-gray-900 text-white font-sans p-4">
+  <div class="max-w-6xl mx-auto">
     <h1 class="text-3xl font-bold mb-1">Cheeki's Mods Archive</h1>
     <h2 class="text-lg text-gray-400 mb-3">A collection of S.T.A.L.K.E.R. Story Mods</h2>
     <p class="text-gray-300 text-sm mb-6">
       A non-exhaustive archive of game modifications for the S.T.A.L.K.E.R. game franchise, mainly story-focused mods I reviewed on the YouTube Channel.
-      Everything listed here is for ease-of-access and posterity only. Consolidating files that tend to be scattered across multiple websites, hosting services, 
-      obscure discord servers, and with some unfortunately lost already. All credits go to the Authors and creators of these mods.
+      Everything listed here is for ease-of-access and posterity only. Consolidating files that tend to be scattered across multiple websites, hosting services, with some unfortunately lost already. 
+      All credits go to the Authors of these mods.
     </p>
-    
+
     <!-- Responsive Grid -->
-    <div id="mod-list" class="grid gap-4 grid-cols-[repeat(auto-fit,minmax(250px,1fr))]"></div>
+    <div id="mod-list" class="grid gap-4 grid-cols-[repeat(auto-fit,minmax(250px,1fr))] mb-8"></div>
+
+    <!-- Footer -->
+    <footer class="text-center text-gray-500 text-xs mt-8 border-t border-gray-700 pt-4">
+      &copy; 2025 Cheeki. All rights reserved. 
+      <a href="https://yourwebsite.com" target="_blank" class="text-blue-400 hover:underline ml-1">Visit Website</a>
+    </footer>
   </div>
 
-  <!-- Footer -->
-  <footer class="mt-8 text-center text-sm text-gray-500">
-    Cheeki's Mods Archive 2025 - <a href="https://linktr.ee/cheekibreekii" target="_blank" class="text-blue-400 hover:underline">Check me Out!</a>
-  </footer>
+  <!-- Modal Popup -->
+  <div id="modal-overlay" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center hidden z-50">
+    <div id="modal-content" class="bg-gray-800 text-white p-6 rounded-lg max-w-2xl w-full relative overflow-y-auto max-h-[80vh]">
+      <button id="modal-close" class="absolute top-2 right-2 text-gray-400 hover:text-white text-xl">&times;</button>
+      <div id="modal-body" class="text-sm text-gray-200">Loading...</div>
+    </div>
+  </div>
 
   <script>
     async function loadMods() {
       try {
-        const response = await fetch('mods.json?nocache=' + new Date().getTime());
+        const response = await fetch('mods.json');
         const mods = await response.json();
         const container = document.getElementById('mod-list');
-        
+
         mods.forEach(mod => {
           const card = document.createElement('div');
           card.className = 'bg-gray-800 p-3 rounded-md shadow-sm flex flex-col h-full';
@@ -62,30 +70,33 @@
             const a = document.createElement('a');
             a.href = link.url;
             a.textContent = link.label;
-            a.className = 'block text-blue-400 hover:underline text-sm';
+            a.className = 'block text-blue-400 hover:underline text-sm cursor-pointer';
             a.target = '_blank';
+
+            if (link.label.toLowerCase().includes('install guide')) {
+              a.removeAttribute('href');
+              a.addEventListener('click', () => openModal(link.url));
+            }
+
             links.appendChild(a);
           });
+
+          const video = document.createElement('iframe');
+          video.src = mod.video;
+          video.className = 'w-full h-40 mt-auto rounded';
+          video.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+          video.allowFullscreen = true;
 
           card.appendChild(titleRow);
           card.appendChild(desc);
           card.appendChild(links);
-
           if (mod.video) {
-            const video = document.createElement('iframe');
-            video.src = mod.video;
-            video.className = 'w-full aspect-video mt-auto rounded';
-            video.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-            video.allowFullscreen = true;
             card.appendChild(video);
           }
-
           container.appendChild(card);
         });
       } catch (err) {
         console.error('Error loading mods.json:', err);
-        const container = document.getElementById('mod-list');
-        container.innerHTML = '<p class="text-red-400">Failed to load mod list.</p>';
       }
     }
 
@@ -114,6 +125,41 @@
         }
       }
       return stars;
+    }
+
+    function openModal(url) {
+      const overlay = document.getElementById('modal-overlay');
+      const body = document.getElementById('modal-body');
+      const closeBtn = document.getElementById('modal-close');
+
+      body.innerHTML = 'Loading...';
+      overlay.classList.remove('hidden');
+
+      fetch(url)
+        .then(res => {
+          if (!res.ok) throw new Error('Failed to load content');
+          return res.text();
+        })
+        .then(data => {
+          body.innerHTML = data;
+        })
+        .catch(err => {
+          body.innerHTML = '<p class="text-red-400">Failed to load content.</p>';
+          console.error(err);
+        });
+
+      function closeModal() {
+        overlay.classList.add('hidden');
+        overlay.removeEventListener('click', onClickOutside);
+        closeBtn.removeEventListener('click', closeModal);
+      }
+
+      function onClickOutside(e) {
+        if (e.target === overlay) closeModal();
+      }
+
+      overlay.addEventListener('click', onClickOutside);
+      closeBtn.addEventListener('click', closeModal);
     }
 
     loadMods();
