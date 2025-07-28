@@ -4,105 +4,132 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Project Archive</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    .star svg {
-      width: 1.2rem;
-      height: 1.2rem;
+    .star-wrapper {
       display: inline-block;
+      position: relative;
+      width: 20px;
+      height: 20px;
+      vertical-align: middle;
+    }
+    .star-base, .star-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .star-fill {
+      clip-path: inset(0 0 0 0); /* full by default */
+    }
+    .half .star-fill {
+      clip-path: inset(0 50% 0 0); /* left half yellow */
     }
   </style>
 </head>
-<body class="bg-gray-900 text-gray-100 font-sans">
-  <header class="p-6 bg-gray-800 shadow-md">
-    <h1 class="text-3xl font-bold">Project Archive</h1>
-    <p class="text-gray-400">A simple collection of useful resources.</p>
-    <p class="text-gray-400 mt-2">
-      This website provides an organized archive of various projects, including videos and links for easy access.
-      Everything listed here is preserved for reference and posterity.
+<body class="bg-gray-900 text-white min-h-screen p-4">
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-4xl font-bold mb-2">Project Archive</h1>
+    <h2 class="text-xl text-gray-400 mb-4">A simple collection of useful resources.</h2>
+    <p class="text-gray-300 mb-8">
+      This website serves as a long-term archive of various resources and files. Each entry includes download links, guides, and videos when available.
     </p>
-  </header>
-
-  <main class="p-6">
-    <div id="item-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      <!-- Items will be loaded here -->
-    </div>
-  </main>
-
-  <footer class="p-6 text-center text-gray-500 text-sm">
-    © 2025 Archive. All rights reserved.
-  </footer>
+    <div id="mod-list" class="grid gap-6"></div>
+  </div>
 
   <script>
-    function renderStars(rating) {
-      const fullStar = `
-        <span class="star text-yellow-400">
-          <svg fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.921-.755 1.688-1.538 1.118l-3.385-2.46a1 1 0 00-1.175 0l-3.385 2.46c-.783.57-1.838-.197-1.538-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.045 9.394c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.967z"/></svg>
-        </span>`;
-const halfStar = `
-  <span class="star relative inline-block align-middle w-5 h-5">
-    <!-- Gray star background -->
-    <svg class="absolute top-0 left-0 text-gray-600 w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.921-.755 1.688-1.538 1.118l-3.385-2.46a1 1 0 00-1.175 0l-3.385 2.46c-.783.57-1.838-.197-1.538-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.045 9.394c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.967z"/>
-    </svg>
-    <!-- Yellow half-star overlay -->
-    <svg class="absolute top-0 left-0 text-yellow-400 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" style="clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);">
-      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.921-.755 1.688-1.538 1.118l-3.385-2.46a1 1 0 00-1.175 0l-3.385 2.46c-.783.57-1.838-.197-1.538-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.045 9.394c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.967z"/>
-    </svg>
-  </span>`;
-      const emptyStar = `
-        <span class="star text-gray-600">
-          <svg fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.921-.755 1.688-1.538 1.118l-3.385-2.46a1 1 0 00-1.175 0l-3.385 2.46c-.783.57-1.838-.197-1.538-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.045 9.394c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.967z"/></svg>
-        </span>`;
+    async function loadMods() {
+      const response = await fetch('mods.json');
+      const mods = await response.json();
+      const container = document.getElementById('mod-list');
+      mods.forEach(mod => {
+        const card = document.createElement('div');
+        card.className = 'bg-gray-800 p-4 rounded-lg shadow-md';
+        
+        const titleRow = document.createElement('div');
+        titleRow.className = 'flex justify-between items-center mb-2';
+        
+        const title = document.createElement('h3');
+        title.className = 'text-xl font-semibold';
+        title.textContent = mod.title;
 
-      const stars = [];
-      for (let i = 1; i <= 5; i++) {
-        if (rating >= i) {
-          stars.push(fullStar);
-        } else if (rating >= i - 0.5) {
-          stars.push(halfStar);
-        } else {
-          stars.push(emptyStar);
+        const stars = document.createElement('div');
+        stars.innerHTML = renderStars(mod.rating || 0);
+
+        titleRow.appendChild(title);
+        titleRow.appendChild(stars);
+        card.appendChild(titleRow);
+
+        if (mod.description) {
+          const desc = document.createElement('p');
+          desc.className = 'text-gray-400 mb-2';
+          desc.textContent = mod.description;
+          card.appendChild(desc);
         }
-      }
-      return stars.join('');
-    }
 
-    async function loadItems() {
-      try {
-        const res = await fetch('items.json');
-        const items = await res.json();
-
-        const itemList = document.getElementById('item-list');
-
-        items.forEach(item => {
-          const itemCard = document.createElement('div');
-          itemCard.className = 'bg-gray-800 p-4 rounded shadow relative';
-
-          itemCard.innerHTML = `
-            <div class="flex justify-between items-center mb-1">
-              <h2 class="text-xl font-bold">${item.name}</h2>
-              <div class="flex">${renderStars(item.rating || 0)}</div>
-            </div>
-            <p class="mb-2">${item.description}</p>
-
-            ${item.video ? `
-              <div class="mb-2">
-                <iframe class="w-full h-48 rounded" src="${item.video}" frameborder="0" allowfullscreen></iframe>
-              </div>` : ''}
-
-            <div>
-              ${item.links.map(link => `<div><a href="${link.url}" target="_blank" class="text-blue-400 hover:underline">${link.label}</a></div>`).join('')}
-            </div>
-          `;
-          itemList.appendChild(itemCard);
+        mod.links.forEach(link => {
+          const a = document.createElement('a');
+          a.href = link.url;
+          a.className = 'block text-blue-400 hover:underline';
+          a.textContent = link.label;
+          card.appendChild(a);
         });
-      } catch (err) {
-        console.error('Failed to load items:', err);
+
+        if (mod.video) {
+          const video = document.createElement('iframe');
+          video.src = mod.video;
+          video.width = "100%";
+          video.height = "315";
+          video.className = 'mt-4 rounded';
+          video.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+          video.allowFullscreen = true;
+          card.appendChild(video);
+        }
+
+        container.appendChild(card);
+      });
+    }
+
+    function renderStars(rating) {
+      const fullStars = Math.floor(rating);
+      const hasHalfStar = rating % 1 >= 0.5;
+      const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+      let starsHtml = '';
+
+      for (let i = 0; i < fullStars; i++) {
+        starsHtml += starHtml('full');
+      }
+      if (hasHalfStar) {
+        starsHtml += starHtml('half');
+      }
+      for (let i = 0; i < emptyStars; i++) {
+        starsHtml += starHtml('empty');
+      }
+
+      return `<div class="flex gap-0.5">${starsHtml}</div>`;
+    }
+
+    function starHtml(type) {
+      const grayStar = `
+        <svg class="star-base text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.921-.755 1.688-1.538 1.118l-3.385-2.46a1 1 0 00-1.175 0l-3.385 2.46c-.783.57-1.838-.197-1.538-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.045 9.394c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.967z"/>
+        </svg>`;
+      const yellowStar = `
+        <svg class="star-fill text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.921-.755 1.688-1.538 1.118l-3.385-2.46a1 1 0 00-1.175 0l-3.385 2.46c-.783.57-1.838-.197-1.538-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.045 9.394c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.967z"/>
+        </svg>`;
+
+      if (type === 'full') {
+        return `<span class="star-wrapper">${grayStar}${yellowStar}</span>`;
+      } else if (type === 'half') {
+        return `<span class="star-wrapper half">${grayStar}${yellowStar}</span>`;
+      } else {
+        return `<span class="star-wrapper">${grayStar}</span>`;
       }
     }
 
-    loadItems();
+    loadMods();
   </script>
 </body>
 </html>
