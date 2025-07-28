@@ -1,44 +1,26 @@
 [
   {
     "title": "Mod A",
-    "description": "Description.",
+    "description": "A short description for Mod A.",
     "links": [
-      { "label": "Download Files", "url": "https://example.com/mod-alpha" },
-      { "label": "Install Guide", "url": "guides/mod-alpha.html" }
+      { "label": "Download Files", "url": "https://example.com/mod-a" },
+      { "label": "Install Guide", "url": "guides/mod-a.html" }
     ],
-    "video": "https://www.youtube.com/embed/xixdI00LpNw?si=5tX4AB3DV6QKRKgr",
-    "rating": 0
+    "video": "https://www.youtube.com/embed/xixdI00LpNw",
+    "rating": 4.5,
     "pros": ["Great atmosphere", "Stable performance"],
     "cons": ["Limited content", "No voice acting"]
   },
   {
     "title": "Mod B",
-    "description": "Description.",
+    "description": "Another mod description.",
     "links": [
-      { "label": "Download Files", "url": "https://example.com/mod-beta" },
-      { "label": "Install Guide", "url": "guides/mod-beta.html" }
+      { "label": "Download Files", "url": "https://example.com/mod-b" },
+      { "label": "Install Guide", "url": "guides/mod-b.html" }
     ],
-    "video": "https://www.youtube.com/embed/xixdI00LpNw?si=5tX4AB3DV6QKRKgr",
-    "rating": 1.5
-  },
-  {
-    "title": "Mod C",
-    "description": "Description.",
-    "links": [
-      { "label": "Download Files", "url": "https://example.com/mod-gamma" },
-      { "label": "Install Guide", "url": "guides/mod-gamma.html" }
-    ],
-    "video": "https://www.youtube.com/embed/xixdI00LpNw?si=5tX4AB3DV6QKRKgr",
-    "rating": 3.5
-  },
-  {
-    "title": "Mod D",
-    "description": "Description.",
-    "links": [
-      { "label": "Download Files", "url": "https://example.com/mod-delta" },
-      { "label": "Install Guide", "url": "guides/mod-delta.html" }
-    ],
-    "video": "https://www.youtube.com/embed/xixdI00LpNw?si=5tX4AB3DV6QKRKgr",
-    "rating": 5
+    "video": "https://www.youtube.com/embed/xixdI00LpNw",
+    "rating": 3,
+    "pros": ["Deep storyline"],
+    "cons": ["Buggy AI"]
   }
 ]
