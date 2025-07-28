@@ -36,7 +36,7 @@
   <script>
     async function loadMods() {
       try {
-        const response = await fetch('mods.json');
+        const response = await fetch('mods.json?v=' + Date.now());
         const mods = await response.json();
         const container = document.getElementById('mod-list');
 
