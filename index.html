@@ -49,6 +49,7 @@
     let originalMods = [];
 
     async function loadMods() {
+  console.log("Loading mods.json...");
       try {
         const response = await fetch('mods.json?v=' + Date.now()); // Cache-busting
         mods = await response.json();
