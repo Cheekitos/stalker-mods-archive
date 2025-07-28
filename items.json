@@ -3,26 +3,26 @@
   "name": "Mod A",
   "description": "Example description.",
   "video": "https://www.youtube.com/embed/xixdI00LpNw?si=5tX4AB3DV6QKRKgr",
-  "rating": 4.5,
+  "rating": 3,
   "links": [
     { "label": "Download", "url": "https://example.com" }
   ]
 }
 ,
    {
-  "name": "Mod A",
+  "name": "Mod B",
   "description": "Example description.",
   "video": "https://www.youtube.com/embed/xixdI00LpNw?si=5tX4AB3DV6QKRKgr",
-  "rating": 2,
+  "rating": 3.5,
   "links": [
     { "label": "Download", "url": "https://example.com" }
   ]
 },
    {
-  "name": "Mod A",
+  "name": "Mod C",
   "description": "Example description.",
   "video": "https://www.youtube.com/embed/xixdI00LpNw?si=5tX4AB3DV6QKRKgr",
-  "rating": 0.5,
+  "rating": 4.5,
   "links": [
     { "label": "Download", "url": "https://example.com" }
   ]
