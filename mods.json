@@ -4,7 +4,7 @@
     "description": "Description.",
     "links": [
       { "label": "Download Files", "url": "https://example.com/mod-alpha" },
-      { "label": "Install Guide", "url": "https://example.com/guide-alpha" }
+      { "label": "Install Guide & Credits", "url": "https://example.com/guide-alpha" }
     ],
     "video": "https://www.youtube.com/embed/xixdI00LpNw?si=5tX4AB3DV6QKRKgr",
     "rating": 0
