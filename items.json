@@ -15,5 +15,13 @@
     "links": [
       { "label": "Link", "url": "https://example.com/resource-b" }
     ]
+  },
+  {
+    "name": "Resource C",
+    "description": "Another entry in the collection.",
+    "video": "",
+    "links": [
+      { "label": "Link", "url": "https://example.com/resource-b" }
+    ]
   }
 ]
