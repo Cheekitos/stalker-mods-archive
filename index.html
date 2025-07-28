@@ -23,7 +23,7 @@
 
   <!-- Footer -->
   <footer class="mt-8 text-center text-sm text-gray-500">
-    Cheeki's Mods Archive 2025 <a href="https://linktr.ee/cheekibreekii" target="_blank" class="text-blue-400 hover:underline">Check me Out!</a>
+    © 2025 Cheeki's Mods Archive. <a href="https://your-link-here.com" target="_blank" class="text-blue-400 hover:underline">Your Link Here</a>
   </footer>
 
   <script>
@@ -67,6 +67,10 @@
             links.appendChild(a);
           });
 
+          card.appendChild(titleRow);
+          card.appendChild(desc);
+          card.appendChild(links);
+
           if (mod.video) {
             const video = document.createElement('iframe');
             video.src = mod.video;
@@ -76,9 +80,6 @@
             card.appendChild(video);
           }
 
-          card.appendChild(titleRow);
-          card.appendChild(desc);
-          card.appendChild(links);
           container.appendChild(card);
         });
       } catch (err) {
