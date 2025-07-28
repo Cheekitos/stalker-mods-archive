@@ -4,27 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Project Archive</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-900 text-gray-100 font-sans">
-  <header class="p-6 bg-gray-800 shadow-md">
-    <h1 class="text-3xl font-bold">Project Archive</h1>
-    <p class="text-gray-400">A simple collection of useful resources.</p>
-    <p class="text-gray-400 mt-2">
-      This website provides an organized archive of various projects, including videos and links for easy access.
-      Everything listed here is preserved for reference and posterity.
+<body class="bg-gray-900 text-white font-sans p-4">
+  <div class="max-w-6xl mx-auto">
+    <h1 class="text-3xl font-bold mb-1">Project Archive</h1>
+    <h2 class="text-lg text-gray-400 mb-3">A simple collection of useful resources.</h2>
+    <p class="text-gray-300 text-sm mb-6">
+      This website serves as a long-term archive of various resources and files. Each entry includes download links, guides, and videos when available.
     </p>
-  </header>
-
-  <main class="p-6">
-    <div id="item-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      <!-- Items will be loaded here -->
-    </div>
-  </main>
-
-  <footer class="p-6 text-center text-gray-500 text-sm">
-    © 2025 Archive. All rights reserved.
-  </footer>
+    
+    <!-- Responsive Grid -->
+    <div id="mod-list" class="grid gap-4 grid-cols-[repeat(auto-fit,minmax(250px,1fr))]"></div>
+  </div>
 
   <script>
     async function loadMods() {
@@ -41,7 +34,7 @@
           titleRow.className = 'flex justify-between items-center mb-1';
 
           const title = document.createElement('h3');
-          title.className = 'text-xl font-semibold';
+          title.className = 'text-lg font-semibold';
           title.textContent = mod.title;
 
           const rating = document.createElement('div');
@@ -69,7 +62,7 @@
 
           const video = document.createElement('iframe');
           video.src = mod.video;
-          video.className = 'w-full h-48 mt-2 rounded';
+          video.className = 'w-full h-32 mt-2 rounded';
           video.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
           video.allowFullscreen = true;
 
@@ -89,7 +82,7 @@
     function renderStars(rating) {
       const fullStar = '<svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>';
       const halfStar = `
-        <svg class="w-4 h-4" viewBox="0 0 20 20">
+        <svg class="w-4 h-4" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <linearGradient id="halfGrad" x1="0" x2="100%" y1="0" y2="0">
               <stop offset="50%" stop-color="#facc15"/>
