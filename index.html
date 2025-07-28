@@ -13,58 +13,52 @@
     <h2 class="text-lg text-gray-400 mb-3">A collection of S.T.A.L.K.E.R. Story Mods</h2>
     <p class="text-gray-300 text-sm mb-6">
       A non-exhaustive archive of game modifications for the S.T.A.L.K.E.R. game franchise, mainly story-focused mods I reviewed on the YouTube Channel.
-      Everything listed here is for ease-of-access and posterity only. Consolidating files that tend to be scattered accross multiple websites, hosting services, with some unfortunately lost already. 
+      Everything listed here is for ease-of-access and posterity only. Consolidating files that tend to be scattered across multiple websites, hosting services, with some unfortunately lost already. 
       All credits go to the Authors of these mods.
     </p>
 
     <!-- Controls -->
     <div class="flex flex-wrap items-center gap-2 mb-4">
-      <button id="sort-button" class="bg-yellow-500 hover:bg-yellow-600 text-black text-sm font-medium py-1 px-3 rounded">
-        Sort by Rating
-      </button>
-      <input id="search-input" type="text" placeholder="Search mods..." class="flex-1 min-w-[150px] px-2 py-1 text-sm rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500" />
+      <button id="sort-btn" class="bg-gray-700 hover:bg-gray-600 text-white text-sm px-3 py-1 rounded">Sort by Stars</button>
+      <input type="text" id="search-input" placeholder="Search mods..." class="text-sm px-3 py-1 rounded bg-gray-800 text-white border border-gray-600 flex-grow md:flex-grow-0 md:w-64" />
     </div>
 
     <!-- Mod List -->
     <div id="mod-list" class="grid gap-4 grid-cols-[repeat(auto-fit,minmax(250px,1fr))]"></div>
-
-    <!-- Footer -->
-    <footer class="mt-8 text-center text-sm text-gray-500">
-      &copy; 2025 Cheeki. All rights reserved. <a href="https://example.com" target="_blank" class="text-blue-400 hover:underline">Edit this link</a>
-    </footer>
   </div>
 
+  <!-- Footer -->
+  <footer class="text-gray-500 text-xs text-center mt-10">
+    &copy; 2025 Cheeki. <a href="https://your-link-here.com" class="text-blue-400 hover:underline" target="_blank">Your Custom Link</a>
+  </footer>
+
   <!-- Popup Overlay -->
-  <!-- Popup Overlay -->
-<div id="popup-overlay" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center hidden z-50">
-    <div class="bg-gray-900 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-auto relative p-4">
-      <button id="popup-close" class="absolute top-2 right-2 text-gray-400 hover:text-white text-xl">&times;</button>
-      <div id="popup-content" class="text-sm text-gray-200">Loading...</div>
+  <div id="popup-overlay" class="fixed inset-0 bg-black bg-opacity-70 hidden justify-center items-center z-50">
+    <div id="popup-content" class="bg-gray-800 text-white p-4 rounded-lg max-w-2xl w-full relative">
+      <button id="popup-close" class="absolute top-2 right-2 text-gray-400 hover:text-white">&times;</button>
+      <div id="popup-body" class="text-sm"></div>
     </div>
   </div>
 
   <script>
-    let mods = [];
+    let modsData = [];
     let sorted = false;
-    let originalMods = [];
 
     async function loadMods() {
-  console.log("Loading mods.json...");
       try {
-        const response = await fetch('mods.json?v=' + Date.now()); // Cache-busting
-        mods = await response.json();
-        originalMods = [...mods];
-        renderMods(mods);
+        const response = await fetch('mods.json?v=' + Date.now());
+        const mods = await response.json();
+        modsData = mods;
+        renderMods(modsData);
       } catch (err) {
         console.error('Error loading mods.json:', err);
       }
     }
 
-    function renderMods(modArray) {
+    function renderMods(mods) {
       const container = document.getElementById('mod-list');
       container.innerHTML = '';
-
-      modArray.forEach(mod => {
+      mods.forEach(mod => {
         const card = document.createElement('div');
         card.className = 'bg-gray-800 p-3 rounded-md shadow-sm flex flex-col h-full';
 
@@ -77,8 +71,7 @@
 
         const rating = document.createElement('div');
         rating.className = 'flex items-center space-x-0.5 text-yellow-400';
-        const stars = renderStars(mod.rating || 0);
-        rating.innerHTML = stars;
+        rating.innerHTML = renderStars(mod.rating || 0);
 
         titleRow.appendChild(title);
         titleRow.appendChild(rating);
@@ -94,14 +87,15 @@
           a.href = link.url;
           a.textContent = link.label;
           a.className = 'block text-blue-400 hover:underline text-sm cursor-pointer';
+          a.target = '_blank';
+
           if (link.label.toLowerCase().includes('install guide')) {
-            a.addEventListener('click', e => {
+            a.addEventListener('click', (e) => {
               e.preventDefault();
               openPopup(link.url);
             });
-          } else {
-            a.target = '_blank';
           }
+
           links.appendChild(a);
         });
 
@@ -114,40 +108,35 @@
         card.appendChild(titleRow);
         card.appendChild(desc);
         card.appendChild(links);
-        
         if (mod.video) {
-  card.appendChild(video);
-}
-
-// Pros/Cons Section
-if ((mod.pros && mod.pros.length) || (mod.cons && mod.cons.length)) {
-  const feedback = document.createElement('div');
-  feedback.className = 'mt-2 text-sm';
-
-  if (mod.pros && mod.pros.length) {
-    mod.pros.forEach(pro => {
-      const item = document.createElement('div');
-      item.className = 'text-green-400 flex items-start space-x-1';
-      item.innerHTML = `<span class="text-green-500 font-bold">+</span><span>${pro}</span>`;
-      feedback.appendChild(item);
-    });
-  }
-
-  if (mod.cons && mod.cons.length) {
-    mod.cons.forEach(con => {
-      const item = document.createElement('div');
-      item.className = 'text-red-400 flex items-start space-x-1';
-      item.innerHTML = `<span class="text-red-500 font-bold">-</span><span>${con}</span>`;
-      feedback.appendChild(item);
-    });
-  }
-
-  card.appendChild(feedback);
-}
-
-container.appendChild(card);
-
+          card.appendChild(video);
         }
+
+        if ((mod.pros && mod.pros.length) || (mod.cons && mod.cons.length)) {
+          const feedback = document.createElement('div');
+          feedback.className = 'mt-2 text-sm';
+
+          if (mod.pros && mod.pros.length) {
+            mod.pros.forEach(pro => {
+              const item = document.createElement('div');
+              item.className = 'text-green-400 flex items-start space-x-1';
+              item.innerHTML = `<span class="text-green-500 font-bold">+</span><span>${pro}</span>`;
+              feedback.appendChild(item);
+            });
+          }
+
+          if (mod.cons && mod.cons.length) {
+            mod.cons.forEach(con => {
+              const item = document.createElement('div');
+              item.className = 'text-red-400 flex items-start space-x-1';
+              item.innerHTML = `<span class="text-red-500 font-bold">-</span><span>${con}</span>`;
+              feedback.appendChild(item);
+            });
+          }
+
+          card.appendChild(feedback);
+        }
+
         container.appendChild(card);
       });
     }
@@ -179,44 +168,45 @@ container.appendChild(card);
       return stars;
     }
 
-    // Toggle sort
-    document.getElementById('sort-button').addEventListener('click', () => {
+    // Popup logic
+    async function openPopup(url) {
+      try {
+        const response = await fetch(url + '?v=' + Date.now());
+        const html = await response.text();
+        document.getElementById('popup-body').innerHTML = html;
+        const overlay = document.getElementById('popup-overlay');
+        overlay.classList.remove('hidden');
+        overlay.classList.add('flex');
+      } catch (err) {
+        console.error('Error loading popup:', err);
+      }
+    }
+
+    function closePopup() {
+      const overlay = document.getElementById('popup-overlay');
+      overlay.classList.add('hidden');
+      overlay.classList.remove('flex');
+    }
+
+    document.getElementById('popup-close').addEventListener('click', closePopup);
+    document.getElementById('popup-overlay').addEventListener('click', (e) => {
+      if (e.target.id === 'popup-overlay') {
+        closePopup();
+      }
+    });
+
+    document.getElementById('sort-btn').addEventListener('click', () => {
       sorted = !sorted;
-      const modsToRender = sorted 
-        ? [...mods].sort((a, b) => (b.rating || 0) - (a.rating || 0)) 
-        : originalMods;
+      const btn = document.getElementById('sort-btn');
+      btn.textContent = sorted ? 'Unsort Mods' : 'Sort by Stars';
+      const modsToRender = sorted ? [...modsData].sort((a, b) => (b.rating || 0) - (a.rating || 0)) : modsData;
       renderMods(modsToRender);
     });
 
-    // Search filter
-    document.getElementById('search-input').addEventListener('input', e => {
+    document.getElementById('search-input').addEventListener('input', (e) => {
       const term = e.target.value.toLowerCase();
-      const filtered = (sorted ? [...mods].sort((a, b) => (b.rating || 0) - (a.rating || 0)) : originalMods)
-        .filter(mod => mod.title.toLowerCase().includes(term) || mod.description.toLowerCase().includes(term));
+      const filtered = modsData.filter(mod => mod.title.toLowerCase().includes(term));
       renderMods(filtered);
-    });
-
-    // Popup functions
-    const overlay = document.getElementById('popup-overlay');
-    const popupContent = document.getElementById('popup-content');
-    const popupClose = document.getElementById('popup-close');
-
-    function openPopup(url) {
-      popupContent.innerHTML = 'Loading...';
-      overlay.classList.remove('hidden');
-      fetch(url + '?v=' + Date.now())
-        .then(res => res.text())
-        .then(html => {
-          popupContent.innerHTML = html;
-        })
-        .catch(() => {
-          popupContent.innerHTML = '<p class="text-red-400">Failed to load guide.</p>';
-        });
-    }
-
-    popupClose.addEventListener('click', () => overlay.classList.add('hidden'));
-    overlay.addEventListener('click', e => {
-      if (e.target === overlay) overlay.classList.add('hidden');
     });
 
     loadMods();
