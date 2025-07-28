@@ -113,8 +113,39 @@
         card.appendChild(titleRow);
         card.appendChild(desc);
         card.appendChild(links);
+        
         if (mod.video) {
-          card.appendChild(video);
+  card.appendChild(video);
+}
+
+// Pros/Cons Section
+if ((mod.pros && mod.pros.length) || (mod.cons && mod.cons.length)) {
+  const feedback = document.createElement('div');
+  feedback.className = 'mt-2 text-sm';
+
+  if (mod.pros && mod.pros.length) {
+    mod.pros.forEach(pro => {
+      const item = document.createElement('div');
+      item.className = 'text-green-400 flex items-start space-x-1';
+      item.innerHTML = `<span class="text-green-500 font-bold">+</span><span>${pro}</span>`;
+      feedback.appendChild(item);
+    });
+  }
+
+  if (mod.cons && mod.cons.length) {
+    mod.cons.forEach(con => {
+      const item = document.createElement('div');
+      item.className = 'text-red-400 flex items-start space-x-1';
+      item.innerHTML = `<span class="text-red-500 font-bold">-</span><span>${con}</span>`;
+      feedback.appendChild(item);
+    });
+  }
+
+  card.appendChild(feedback);
+}
+
+container.appendChild(card);
+
         }
         container.appendChild(card);
       });
