@@ -82,26 +82,35 @@
         titleRow.appendChild(title);
         titleRow.appendChild(rating);
 
-        // Standalone
+// Standalone
 const standaloneDiv = document.createElement('div');
 standaloneDiv.className = 'text-xs text-white mb-1';
 standaloneDiv.innerHTML = 'Standalone: ';
+
+const spanWrapper = document.createElement('div');
+spanWrapper.className = 'inline-flex items-center gap-1';
 
 const yesSpan = document.createElement('span');
 yesSpan.textContent = 'Yes';
 yesSpan.className = mod.standalone
   ? 'border border-white bg-yellow-400 bg-opacity-45 px-1 py-[0.5px] rounded-sm text-[9px] inline-block text-white'
   : 'text-white text-[9px]';
+spanWrapper.appendChild(yesSpan);
+
+const sep = document.createElement('span');
+sep.textContent = '|';
+sep.className = 'text-white text-[9px]';
+spanWrapper.appendChild(sep);
 
 const noSpan = document.createElement('span');
 noSpan.textContent = 'No';
 noSpan.className = !mod.standalone
-  ? 'border border-white bg-yellow-400 bg-opacity-45 px-1 py-[0.5px] rounded-sm text-[9px] inline-block text-white ml-1'
-  : 'text-white text-[9px] ml-1';
+  ? 'border border-white bg-yellow-400 bg-opacity-45 px-1 py-[0.5px] rounded-sm text-[9px] inline-block text-white'
+  : 'text-white text-[9px]';
+spanWrapper.appendChild(noSpan);
 
-standaloneDiv.appendChild(yesSpan);
-standaloneDiv.appendChild(document.createTextNode(' | '));
-standaloneDiv.appendChild(noSpan);
+standaloneDiv.appendChild(spanWrapper);
+
 
 
 
@@ -110,23 +119,27 @@ const platformDiv = document.createElement('div');
 platformDiv.className = 'text-xs text-white mb-1';
 platformDiv.innerHTML = 'Platform: ';
 
+const spanWrapper = document.createElement('div');
+spanWrapper.className = 'inline-flex items-center gap-1';
+
 ['Shadow of Chernobyl', 'Clear Sky', 'Call of Pripyat'].forEach((plat, idx, arr) => {
   const span = document.createElement('span');
   span.textContent = plat;
   span.className = (mod.platform === plat)
     ? 'border border-white bg-yellow-400 bg-opacity-50 px-1 py-[0.5px] rounded-sm text-[9px] inline-block text-white'
     : 'text-white text-[9px]';
+  spanWrapper.appendChild(span);
 
-  // Add margin-left only if not the first span
-  if (idx > 0) {
-    span.className += ' ml-1';
-  }
-
-  platformDiv.appendChild(span);
   if (idx < arr.length - 1) {
-    platformDiv.appendChild(document.createTextNode(' | '));
+    const sep = document.createElement('span');
+    sep.textContent = '|';
+    sep.className = 'text-white text-[9px]';
+    spanWrapper.appendChild(sep);
   }
 });
+
+platformDiv.appendChild(spanWrapper);
+
 
 
         
