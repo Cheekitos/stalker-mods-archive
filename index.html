@@ -87,40 +87,37 @@ const standaloneDiv = document.createElement('div');
 standaloneDiv.className = 'text-xs text-white mb-1';
 standaloneDiv.innerHTML = 'Standalone: ';
 
-const spanWrapper = document.createElement('div');
-spanWrapper.className = 'inline-flex items-center gap-1';
+const standaloneWrapper = document.createElement('div'); // renamed to standaloneWrapper
+standaloneWrapper.className = 'inline-flex items-center gap-1';
 
 const yesSpan = document.createElement('span');
 yesSpan.textContent = 'Yes';
 yesSpan.className = mod.standalone
   ? 'border border-white bg-yellow-400 bg-opacity-45 px-1 py-[0.5px] rounded-sm text-[9px] inline-block text-white'
   : 'text-white text-[9px]';
-spanWrapper.appendChild(yesSpan);
+standaloneWrapper.appendChild(yesSpan);
 
 const sep = document.createElement('span');
 sep.textContent = '|';
 sep.className = 'text-white text-[9px]';
-spanWrapper.appendChild(sep);
+standaloneWrapper.appendChild(sep);
 
 const noSpan = document.createElement('span');
 noSpan.textContent = 'No';
 noSpan.className = !mod.standalone
   ? 'border border-white bg-yellow-400 bg-opacity-45 px-1 py-[0.5px] rounded-sm text-[9px] inline-block text-white'
   : 'text-white text-[9px]';
-spanWrapper.appendChild(noSpan);
+standaloneWrapper.appendChild(noSpan);
 
-standaloneDiv.appendChild(spanWrapper);
+standaloneDiv.appendChild(standaloneWrapper);
 
-
-
-
-        // Platform
+// Platform
 const platformDiv = document.createElement('div');
 platformDiv.className = 'text-xs text-white mb-1';
 platformDiv.innerHTML = 'Platform: ';
 
-const spanWrapper = document.createElement('div');
-spanWrapper.className = 'inline-flex items-center gap-1';
+const platformWrapper = document.createElement('div'); // renamed to platformWrapper
+platformWrapper.className = 'inline-flex items-center gap-1';
 
 ['Shadow of Chernobyl', 'Clear Sky', 'Call of Pripyat'].forEach((plat, idx, arr) => {
   const span = document.createElement('span');
@@ -128,18 +125,21 @@ spanWrapper.className = 'inline-flex items-center gap-1';
   span.className = (mod.platform === plat)
     ? 'border border-white bg-yellow-400 bg-opacity-50 px-1 py-[0.5px] rounded-sm text-[9px] inline-block text-white'
     : 'text-white text-[9px]';
-  spanWrapper.appendChild(span);
+  platformWrapper.appendChild(span);
 
   if (idx < arr.length - 1) {
     const sep = document.createElement('span');
     sep.textContent = '|';
     sep.className = 'text-white text-[9px]';
-    spanWrapper.appendChild(sep);
+    platformWrapper.appendChild(sep);
   }
 });
 
-platformDiv.appendChild(spanWrapper);
+platformDiv.appendChild(platformWrapper);
 
+
+
+        
 
 
         
