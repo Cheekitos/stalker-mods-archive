@@ -82,13 +82,15 @@
         titleRow.appendChild(title);
         titleRow.appendChild(rating);
 
+        
+
 // Standalone
 const standaloneDiv = document.createElement('div');
-standaloneDiv.className = 'text-xs text-white mb-1';
+standaloneDiv.className = 'text-xs text-white mb-1 flex items-center';
 
 const labelStandalone = document.createElement('span');
 labelStandalone.textContent = 'Standalone: ';
-labelStandalone.className = 'font-bold';
+labelStandalone.className = 'font-bold mr-1'; // Add margin-right for spacing
 standaloneDiv.appendChild(labelStandalone);
 
 const standaloneWrapper = document.createElement('div');
@@ -98,32 +100,30 @@ const yesSpan = document.createElement('span');
 yesSpan.textContent = 'Yes';
 yesSpan.className = mod.standalone
   ? 'border border-white bg-yellow-400 bg-opacity-45 px-1 py-[0.5px] rounded-sm text-[9px] inline-block text-white'
-  : 'text-white text-[9px]';
+  : 'text-gray-400 text-[9px]';  // Changed to gray
 standaloneWrapper.appendChild(yesSpan);
 
 const sep = document.createElement('span');
 sep.textContent = '|';
-sep.className = 'text-white text-[9px]';
+sep.className = 'text-gray-400 text-[9px]'; // gray separator
 standaloneWrapper.appendChild(sep);
 
 const noSpan = document.createElement('span');
 noSpan.textContent = 'No';
 noSpan.className = !mod.standalone
   ? 'border border-white bg-yellow-400 bg-opacity-45 px-1 py-[0.5px] rounded-sm text-[9px] inline-block text-white'
-  : 'text-white text-[9px]';
+  : 'text-gray-400 text-[9px]'; // gray text
 standaloneWrapper.appendChild(noSpan);
 
 standaloneDiv.appendChild(standaloneWrapper);
 
-        
-
 // Platform
 const platformDiv = document.createElement('div');
-platformDiv.className = 'text-xs text-white mb-1';
+platformDiv.className = 'text-xs text-white mb-1 flex items-center';
 
 const labelPlatform = document.createElement('span');
 labelPlatform.textContent = 'Platform: ';
-labelPlatform.className = 'font-bold';
+labelPlatform.className = 'font-bold mr-1'; // margin-right for spacing
 platformDiv.appendChild(labelPlatform);
 
 const platformWrapper = document.createElement('div');
@@ -134,18 +134,19 @@ platformWrapper.className = 'inline-flex items-center gap-1';
   span.textContent = plat;
   span.className = (mod.platform === plat)
     ? 'border border-white bg-yellow-400 bg-opacity-50 px-1 py-[0.5px] rounded-sm text-[9px] inline-block text-white'
-    : 'text-white text-[9px]';
+    : 'text-gray-400 text-[9px]';  // gray text for unselected options
   platformWrapper.appendChild(span);
 
   if (idx < arr.length - 1) {
     const sep = document.createElement('span');
     sep.textContent = '|';
-    sep.className = 'text-white text-[9px]';
+    sep.className = 'text-gray-400 text-[9px]'; // gray separator
     platformWrapper.appendChild(sep);
   }
 });
 
 platformDiv.appendChild(platformWrapper);
+
 
 
 
