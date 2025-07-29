@@ -1,28 +1,50 @@
 [
-    {
-        "title": "Vector of Alienation",
-        "description": "A sci-fi thriller that reimagines SoC lost 2004 storyline. Overhauled environments, deep plotlines and alternate endings, with a tense, atmospheric journey through a lonelier, more mysterious Zone.",
-        "links": [
-            {
-        "label": "Download Files",
-        "url": "https://example.com/mod-alpha"
-            },
-            {
-        "label": "Install Guide",
-        "url": "guides/mod01-voa.html"
-            }
-        ],
-        "video": "https://www.youtube.com/embed/icdKtvzjtJk?si=9fxIOs4jIy86vqI4",
-        "rating": 4,
-        
-        "pros": [
-            "lore-rich storyline",
-            ""
-        ],
-        
-        "cons": [
-            "heavy on dialogue and fetch quests",
-            ""
-        ]
-    }
+	{
+		"title": "Wind of Time",
+		"description": "A sci-fi thriller that reimagines SoC lost 2004 storyline. Overhauled environments, deep plotlines and alternate endings, with a tense, atmospheric journey through a lonelier, more mysterious Zone.",
+		"links": [
+			{
+				"label": "Download Files",
+				"url": "https://example.com/mod-alpha"
+			},
+			{
+				"label": "Install Guide",
+				"url": "guides/mod02-wot.html"
+			}
+		],
+		"video": "https://www.youtube.com/embed/UN8ZlXrJZOs?si=s6rnju96FXxSwxm6",
+		"rating": 4,
+		"pros": [
+			"lore-rich storyline",
+			""
+		],
+		"cons": [
+			"heavy on dialogue and fetch quests",
+			""
+		]
+	},
+	{
+		"title": "Vector of Alienation",
+		"description": "A sci-fi thriller that reimagines SoC lost 2004 storyline. Overhauled environments, deep plotlines and alternate endings, with a tense, atmospheric journey through a lonelier, more mysterious Zone.",
+		"links": [
+			{
+				"label": "Download Files",
+				"url": "https://example.com/mod-alpha"
+			},
+			{
+				"label": "Install Guide",
+				"url": "guides/mod01-voa.html"
+			}
+		],
+		"video": "https://www.youtube.com/embed/icdKtvzjtJk?si=9fxIOs4jIy86vqI4",
+		"rating": 4,
+		"pros": [
+			"lore-rich storyline",
+			""
+		],
+		"cons": [
+			"heavy on dialogue and fetch quests",
+			""
+		]
+	}
 ]
