@@ -64,8 +64,9 @@ function renderMods(modArray) {
 
   modArray.forEach(mod => {
     const card = document.createElement('div');
-    card.className = 'bg-gray-800 p-3 rounded-md shadow-sm flex flex-col justify-between h-full min-h-[500px]'; // Uniform height
+    card.className = 'bg-gray-800 p-3 rounded-md shadow-sm flex flex-col h-full'; // No min-height
 
+    // Title + Rating
     const titleRow = document.createElement('div');
     titleRow.className = 'flex justify-between items-center mb-1';
 
@@ -103,45 +104,42 @@ function renderMods(modArray) {
       links.appendChild(a);
     });
 
+    // Embed video always in same relative position
+    const videoWrapper = document.createElement('div');
+    videoWrapper.className = 'mt-2';
+
     const video = document.createElement('iframe');
     video.src = mod.video;
-    video.className = 'w-full aspect-video mt-2 rounded'; // Uniform video size (16:9)
+    video.className = 'w-full aspect-video rounded';
     video.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
     video.allowFullscreen = true;
+    videoWrapper.appendChild(video);
 
     card.appendChild(titleRow);
     card.appendChild(desc);
     card.appendChild(links);
-    if (mod.video) {
-      card.appendChild(video);
-    }
+    card.appendChild(videoWrapper);
 
-    // Pros & Cons Section - Uniform height
-    if (mod.pros || mod.cons) {
+    // Pros & Cons, only if present
+    if ((mod.pros && mod.pros.length > 0) || (mod.cons && mod.cons.length > 0)) {
       const prosConsContainer = document.createElement('div');
-      prosConsContainer.className = 'mt-2 grid grid-cols-2 gap-2 text-xs min-h-[60px]'; // Uniform height
+      prosConsContainer.className = 'mt-2 grid grid-cols-2 gap-2 text-xs';
 
-      // Pros
       const prosDiv = document.createElement('div');
-      if (mod.pros && mod.pros.length > 0) {
-        mod.pros.forEach(pro => {
-          const p = document.createElement('p');
-          p.className = 'text-green-400';
-          p.textContent = `+ ${pro}`;
-          prosDiv.appendChild(p);
-        });
-      }
+      (mod.pros || []).forEach(pro => {
+        const p = document.createElement('p');
+        p.className = 'text-green-400';
+        p.textContent = `+ ${pro}`;
+        prosDiv.appendChild(p);
+      });
 
-      // Cons
       const consDiv = document.createElement('div');
-      if (mod.cons && mod.cons.length > 0) {
-        mod.cons.forEach(con => {
-          const p = document.createElement('p');
-          p.className = 'text-red-400';
-          p.textContent = `- ${con}`;
-          consDiv.appendChild(p);
-        });
-      }
+      (mod.cons || []).forEach(con => {
+        const p = document.createElement('p');
+        p.className = 'text-red-400';
+        p.textContent = `- ${con}`;
+        consDiv.appendChild(p);
+      });
 
       prosConsContainer.appendChild(prosDiv);
       prosConsContainer.appendChild(consDiv);
@@ -151,7 +149,6 @@ function renderMods(modArray) {
     container.appendChild(card);
   });
 }
-
 
     function renderStars(rating) {
       const fullStar = '<svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>';
