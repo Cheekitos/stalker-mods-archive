@@ -114,7 +114,41 @@
         card.appendChild(desc);
         card.appendChild(links);
         if (mod.video) {
-          card.appendChild(video);
+  card.appendChild(video);
+}
+
+// Pros & Cons Section
+if (mod.pros || mod.cons) {
+  const prosConsContainer = document.createElement('div');
+  prosConsContainer.className = 'mt-2 grid grid-cols-2 gap-2 text-xs';
+
+  // Pros
+  const prosDiv = document.createElement('div');
+  if (mod.pros && mod.pros.length > 0) {
+    mod.pros.forEach(pro => {
+      const p = document.createElement('p');
+      p.className = 'text-green-400';
+      p.textContent = `+ ${pro}`;
+      prosDiv.appendChild(p);
+    });
+  }
+
+  // Cons
+  const consDiv = document.createElement('div');
+  if (mod.cons && mod.cons.length > 0) {
+    mod.cons.forEach(con => {
+      const p = document.createElement('p');
+      p.className = 'text-red-400';
+      p.textContent = `- ${con}`;
+      consDiv.appendChild(p);
+    });
+  }
+
+  prosConsContainer.appendChild(prosDiv);
+  prosConsContainer.appendChild(consDiv);
+  card.appendChild(prosConsContainer);
+}
+
         }
         container.appendChild(card);
       });
