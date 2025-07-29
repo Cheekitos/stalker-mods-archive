@@ -85,10 +85,14 @@
 // Standalone
 const standaloneDiv = document.createElement('div');
 standaloneDiv.className = 'text-xs text-white mb-1';
-standaloneDiv.innerHTML = 'Standalone: ';
 
-const standaloneWrapper = document.createElement('div'); // renamed to standaloneWrapper
-standaloneWrapper.className = 'inline-flex items-center gap-1 ml-1';
+const labelStandalone = document.createElement('span');
+labelStandalone.textContent = 'Standalone: ';
+labelStandalone.className = 'font-bold';
+standaloneDiv.appendChild(labelStandalone);
+
+const standaloneWrapper = document.createElement('div');
+standaloneWrapper.className = 'inline-flex items-center gap-1';
 
 const yesSpan = document.createElement('span');
 yesSpan.textContent = 'Yes';
@@ -111,13 +115,19 @@ standaloneWrapper.appendChild(noSpan);
 
 standaloneDiv.appendChild(standaloneWrapper);
 
+        
+
 // Platform
 const platformDiv = document.createElement('div');
 platformDiv.className = 'text-xs text-white mb-1';
-platformDiv.innerHTML = 'Platform: ';
 
-const platformWrapper = document.createElement('div'); // renamed to platformWrapper
-platformWrapper.className = 'inline-flex items-center gap-1 ml-1';
+const labelPlatform = document.createElement('span');
+labelPlatform.textContent = 'Platform: ';
+labelPlatform.className = 'font-bold';
+platformDiv.appendChild(labelPlatform);
+
+const platformWrapper = document.createElement('div');
+platformWrapper.className = 'inline-flex items-center gap-1';
 
 ['Shadow of Chernobyl', 'Clear Sky', 'Call of Pripyat'].forEach((plat, idx, arr) => {
   const span = document.createElement('span');
@@ -137,9 +147,6 @@ platformWrapper.className = 'inline-flex items-center gap-1 ml-1';
 
 platformDiv.appendChild(platformWrapper);
 
-
-
-        
 
 
         
