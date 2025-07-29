@@ -35,7 +35,7 @@
   </div>
 
   <!-- Popup Overlay -->
-<div id="popup-overlay" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center hidden z-50">
+  <div id="popup-overlay" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center hidden z-50">
     <div class="bg-gray-900 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-auto relative p-4">
       <button id="popup-close" class="absolute top-2 right-2 text-gray-400 hover:text-white text-xl">&times;</button>
       <div id="popup-content" class="text-sm text-gray-200">Loading...</div>
@@ -49,7 +49,7 @@
 
     async function loadMods() {
       try {
-        const response = await fetch('mods.json?v=' + Date.now()); // Cache-busting
+        const response = await fetch('mods.json?v=' + Date.now());
         mods = await response.json();
         originalMods = [...mods];
         renderMods(mods);
@@ -58,109 +58,103 @@
       }
     }
 
-function renderMods(modArray) {
-  const container = document.getElementById('mod-list');
-  container.innerHTML = '';
+    function renderMods(modArray) {
+      const container = document.getElementById('mod-list');
+      container.innerHTML = '';
 
-  modArray.forEach(mod => {
-    const card = document.createElement('div');
-    card.className = 'bg-gray-800 p-3 rounded-md shadow-sm flex flex-col h-full'; // No min-height
+      modArray.forEach(mod => {
+        const card = document.createElement('div');
+        card.className = 'bg-gray-800 p-3 rounded-md shadow-sm flex flex-col h-full';
 
-    // Title + Rating
-    const titleRow = document.createElement('div');
-    titleRow.className = 'flex justify-between items-center mb-1';
+        // Title + Rating Row
+        const titleRow = document.createElement('div');
+        titleRow.className = 'flex justify-between items-center mb-1';
 
-    const title = document.createElement('h3');
-    title.className = 'text-lg font-semibold';
-    title.textContent = mod.title;
-    
+        const title = document.createElement('h3');
+        title.className = 'text-lg font-semibold';
+        title.textContent = mod.title;
 
-    // Standalone indicator
-const standaloneBadge = document.createElement('span');
-standaloneBadge.className = 'inline-block border border-white text-white text-xs font-medium px-2 py-0.5 rounded-full mb-1';
-standaloneBadge.textContent = mod.standalone ? 'Yes' : 'No';
+        const rating = document.createElement('div');
+        rating.className = 'flex items-center space-x-0.5 text-yellow-400';
+        const stars = renderStars(mod.rating || 0);
+        rating.innerHTML = stars;
 
-card.appendChild(titleRow);
-card.appendChild(standaloneBadge); // Add here
-card.appendChild(desc);
-    
+        titleRow.appendChild(title);
+        titleRow.appendChild(rating);
+        card.appendChild(titleRow);
 
+        // Standalone badge below title
+        const standaloneBadge = document.createElement('span');
+        standaloneBadge.className = 'inline-block border border-white text-white text-xs font-medium px-2 py-0.5 rounded-full mb-1';
+        standaloneBadge.textContent = mod.standalone ? 'Yes' : 'No';
+        card.appendChild(standaloneBadge);
 
-    const rating = document.createElement('div');
-    rating.className = 'flex items-center space-x-0.5 text-yellow-400';
-    const stars = renderStars(mod.rating || 0);
-    rating.innerHTML = stars;
+        // Description
+        const desc = document.createElement('p');
+        desc.className = 'text-gray-400 mb-1 text-sm';
+        desc.textContent = mod.description;
+        card.appendChild(desc);
 
-    titleRow.appendChild(title);
-    titleRow.appendChild(rating);
-
-    const desc = document.createElement('p');
-    desc.className = 'text-gray-400 mb-1 text-sm';
-    desc.textContent = mod.description;
-
-    const links = document.createElement('div');
-    links.className = 'mb-2';
-    (mod.links || []).forEach(link => {
-      const a = document.createElement('a');
-      a.href = link.url;
-      a.textContent = link.label;
-      a.className = 'block text-blue-400 hover:underline text-sm cursor-pointer';
-      if (link.label.toLowerCase().includes('install guide')) {
-        a.addEventListener('click', e => {
-          e.preventDefault();
-          openPopup(link.url);
+        // Links
+        const links = document.createElement('div');
+        links.className = 'mb-2';
+        (mod.links || []).forEach(link => {
+          const a = document.createElement('a');
+          a.href = link.url;
+          a.textContent = link.label;
+          a.className = 'block text-blue-400 hover:underline text-sm cursor-pointer';
+          if (link.label.toLowerCase().includes('install guide')) {
+            a.addEventListener('click', e => {
+              e.preventDefault();
+              openPopup(link.url);
+            });
+          } else {
+            a.target = '_blank';
+          }
+          links.appendChild(a);
         });
-      } else {
-        a.target = '_blank';
-      }
-      links.appendChild(a);
-    });
+        card.appendChild(links);
 
-    // Embed video always in same relative position
-    const videoWrapper = document.createElement('div');
-    videoWrapper.className = 'mt-2';
+        // Video
+        const videoWrapper = document.createElement('div');
+        videoWrapper.className = 'mt-2';
+        const video = document.createElement('iframe');
+        video.src = mod.video;
+        video.className = 'w-full aspect-video rounded';
+        video.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+        video.allowFullscreen = true;
+        videoWrapper.appendChild(video);
+        card.appendChild(videoWrapper);
 
-    const video = document.createElement('iframe');
-    video.src = mod.video;
-    video.className = 'w-full aspect-video rounded';
-    video.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-    video.allowFullscreen = true;
-    videoWrapper.appendChild(video);
+        // Pros & Cons
+        if ((mod.pros && mod.pros.length > 0) || (mod.cons && mod.cons.length > 0)) {
+          const prosConsContainer = document.createElement('div');
+          prosConsContainer.className = 'mt-2 grid grid-cols-2 gap-2 text-xs opacity-80';
 
-    card.appendChild(titleRow);
-    card.appendChild(desc);
-    card.appendChild(links);
-    card.appendChild(videoWrapper);
+          const prosDiv = document.createElement('div');
+          (mod.pros || []).forEach(pro => {
+            const p = document.createElement('p');
+            p.className = 'text-green-400';
+            p.textContent = `+ ${pro}`;
+            prosDiv.appendChild(p);
+          });
 
-    // Pros & Cons, only if present
-    if ((mod.pros && mod.pros.length > 0) || (mod.cons && mod.cons.length > 0)) {
-      const prosConsContainer = document.createElement('div');
-      prosConsContainer.className = 'mt-2 grid grid-cols-2 gap-2 text-xs opacity-80';
+          const consDiv = document.createElement('div');
+          (mod.cons || []).forEach(con => {
+            const p = document.createElement('p');
+            p.className = 'text-red-400';
+            p.textContent = `- ${con}`;
+            consDiv.appendChild(p);
+          });
 
-      const prosDiv = document.createElement('div');
-      (mod.pros || []).forEach(pro => {
-        const p = document.createElement('p');
-        p.className = 'text-green-400';
-        p.textContent = `+ ${pro}`;
-        prosDiv.appendChild(p);
+          prosConsContainer.appendChild(prosDiv);
+          prosConsContainer.appendChild(consDiv);
+          card.appendChild(prosConsContainer);
+        }
+
+        container.appendChild(card);
       });
-
-      const consDiv = document.createElement('div');
-      (mod.cons || []).forEach(con => {
-        const p = document.createElement('p');
-        p.className = 'text-red-400';
-        p.textContent = `- ${con}`;
-        consDiv.appendChild(p);
-      });
-
-      prosConsContainer.appendChild(prosDiv);
-      prosConsContainer.appendChild(consDiv);
-      card.appendChild(prosConsContainer);
     }
-
-    container.appendChild(card);
-  });
-}
 
     function renderStars(rating) {
       const fullStar = '<svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>';
@@ -189,7 +183,6 @@ card.appendChild(desc);
       return stars;
     }
 
-    // Toggle sort
     document.getElementById('sort-button').addEventListener('click', () => {
       sorted = !sorted;
       const modsToRender = sorted 
@@ -198,7 +191,6 @@ card.appendChild(desc);
       renderMods(modsToRender);
     });
 
-    // Search filter
     document.getElementById('search-input').addEventListener('input', e => {
       const term = e.target.value.toLowerCase();
       const filtered = (sorted ? [...mods].sort((a, b) => (b.rating || 0) - (a.rating || 0)) : originalMods)
@@ -206,7 +198,6 @@ card.appendChild(desc);
       renderMods(filtered);
     });
 
-    // Popup functions
     const overlay = document.getElementById('popup-overlay');
     const popupContent = document.getElementById('popup-content');
     const popupClose = document.getElementById('popup-close');
