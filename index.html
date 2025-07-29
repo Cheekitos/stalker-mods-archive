@@ -6,10 +6,22 @@
   <title>Cheeki's Mods Archive</title>
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .hide-videos iframe {
+      display: none;
+    }
+  </style>
 </head>
 <body class="bg-gray-900 text-white font-sans p-4">
   <div class="max-w-6xl mx-auto">
-    <h1 class="text-3xl font-bold mb-1">Cheeki's Mods Archive</h1>
+    <!-- Title and Video Toggle -->
+    <div class="flex justify-between items-center mb-1">
+      <h1 class="text-3xl font-bold">Cheeki's Mods Archive</h1>
+      <button id="toggle-videos" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
+        Hide Videos
+      </button>
+    </div>
+
     <h2 class="text-lg text-gray-400 mb-3">A collection of S.T.A.L.K.E.R. Story Mods</h2>
     <p class="text-gray-300 text-sm mb-6">
       A non-exhaustive archive of game modifications for the S.T.A.L.K.E.R. game franchise, mainly story-focused mods I reviewed on the YouTube Channel.
@@ -49,7 +61,7 @@
 
     async function loadMods() {
       try {
-        const response = await fetch('mods.json?v=' + Date.now()); // Cache-busting
+        const response = await fetch('mods.json?v=' + Date.now());
         mods = await response.json();
         originalMods = [...mods];
         renderMods(mods);
@@ -66,12 +78,11 @@
         const card = document.createElement('div');
         card.className = 'bg-gray-800 p-3 rounded-md shadow-sm flex flex-col h-full';
 
-        // Title + Rating
         const titleRow = document.createElement('div');
-        titleRow.className = 'flex justify-between items-center mb-3';  // Space between Title & Next Line
+        titleRow.className = 'flex justify-between items-center mb-3';
 
         const title = document.createElement('h3');
-        title.className = 'text-2xl font-semibold text-gray-100 drop-shadow';  // Title size (xl - 2xl - 3xl ...)
+        title.className = 'text-2xl font-semibold text-gray-100 drop-shadow';
         title.textContent = mod.title;
 
         const rating = document.createElement('div');
@@ -81,81 +92,68 @@
 
         titleRow.appendChild(title);
         titleRow.appendChild(rating);
-        
 
-        
+        const standaloneDiv = document.createElement('div');
+        standaloneDiv.className = 'text-xs text-white mb-2 flex items-center'; 
+        const labelStandalone = document.createElement('span');
+        labelStandalone.textContent = 'Standalone:';
+        labelStandalone.className = 'mr-2 leading-tight';
+        standaloneDiv.appendChild(labelStandalone);
 
-// Standalone
-const standaloneDiv = document.createElement('div');
-standaloneDiv.className = 'text-xs text-white mb-2 flex items-center'; 
+        const standaloneWrapper = document.createElement('div');
+        standaloneWrapper.className = 'inline-flex items-center gap-1 align-middle';
 
-const labelStandalone = document.createElement('span');
-labelStandalone.textContent = 'Standalone:';
-labelStandalone.className = 'mr-2 leading-tight'; // font-bold or not
-standaloneDiv.appendChild(labelStandalone);
+        const yesSpan = document.createElement('span');
+        yesSpan.textContent = 'Yes';
+        yesSpan.className = mod.standalone
+          ? 'border border-white bg-yellow-400 bg-opacity-45 px-1.5 py-[1px] rounded-sm text-[9px] inline-block text-white leading-tight align-middle'
+          : 'text-gray-400 text-[9px] leading-tight align-middle';
+        standaloneWrapper.appendChild(yesSpan);
 
-const standaloneWrapper = document.createElement('div');
-standaloneWrapper.className = 'inline-flex items-center gap-1 align-middle';
+        const sep = document.createElement('span');
+        sep.textContent = '|';
+        sep.className = 'text-gray-400 text-[9px] leading-tight align-middle';
+        standaloneWrapper.appendChild(sep);
 
-const yesSpan = document.createElement('span');
-yesSpan.textContent = 'Yes';
-yesSpan.className = mod.standalone
-  ? 'border border-white bg-yellow-400 bg-opacity-45 px-1.5 py-[1px] rounded-sm text-[9px] inline-block text-white leading-tight align-middle'
-  : 'text-gray-400 text-[9px] leading-tight align-middle';
-standaloneWrapper.appendChild(yesSpan);
+        const noSpan = document.createElement('span');
+        noSpan.textContent = 'No';
+        noSpan.className = !mod.standalone
+          ? 'border border-white bg-yellow-400 bg-opacity-45 px-1.5 py-[1px] rounded-sm text-[9px] inline-block text-white leading-tight align-middle'
+          : 'text-gray-400 text-[9px] leading-tight align-middle';
+        standaloneWrapper.appendChild(noSpan);
 
-const sep = document.createElement('span');
-sep.textContent = '|';
-sep.className = 'text-gray-400 text-[9px] leading-tight align-middle';
-standaloneWrapper.appendChild(sep);
+        standaloneDiv.appendChild(standaloneWrapper);
 
-const noSpan = document.createElement('span');
-noSpan.textContent = 'No';
-noSpan.className = !mod.standalone
-  ? 'border border-white bg-yellow-400 bg-opacity-45 px-1.5 py-[1px] rounded-sm text-[9px] inline-block text-white leading-tight align-middle'
-  : 'text-gray-400 text-[9px] leading-tight align-middle';
-standaloneWrapper.appendChild(noSpan);
+        const platformDiv = document.createElement('div');
+        platformDiv.className = 'text-xs text-white mb-2 flex items-center';
+        const labelPlatform = document.createElement('span');
+        labelPlatform.textContent = 'Platform:';
+        labelPlatform.className = 'mr-2 leading-tight';
+        platformDiv.appendChild(labelPlatform);
 
-standaloneDiv.appendChild(standaloneWrapper);
+        const platformWrapper = document.createElement('div');
+        platformWrapper.className = 'inline-flex items-center gap-1 align-middle';
 
-// Platform
-const platformDiv = document.createElement('div');
-platformDiv.className = 'text-xs text-white mb-2 flex items-center'; // mb-2 for spacing below
+        ['Shadow of Chernobyl', 'Clear Sky', 'Call of Pripyat'].forEach((plat, idx, arr) => {
+          const span = document.createElement('span');
+          span.textContent = plat;
+          span.className = (mod.platform === plat)
+            ? 'border border-white bg-yellow-400 bg-opacity-50 px-1.5 py-[1px] rounded-sm text-[9px] inline-block text-white leading-tight align-middle'
+            : 'text-gray-400 text-[9px] leading-tight align-middle';
+          platformWrapper.appendChild(span);
 
-const labelPlatform = document.createElement('span');
-labelPlatform.textContent = 'Platform:';
-labelPlatform.className = 'mr-2 leading-tight'; // font-bold or not
-platformDiv.appendChild(labelPlatform);
+          if (idx < arr.length - 1) {
+            const sep = document.createElement('span');
+            sep.textContent = '|';
+            sep.className = 'text-gray-400 text-[9px] leading-tight align-middle';
+            platformWrapper.appendChild(sep);
+          }
+        });
 
-const platformWrapper = document.createElement('div');
-platformWrapper.className = 'inline-flex items-center gap-1 align-middle';
-
-['Shadow of Chernobyl', 'Clear Sky', 'Call of Pripyat'].forEach((plat, idx, arr) => {
-  const span = document.createElement('span');
-  span.textContent = plat;
-  span.className = (mod.platform === plat)
-    ? 'border border-white bg-yellow-400 bg-opacity-50 px-1.5 py-[1px] rounded-sm text-[9px] inline-block text-white leading-tight align-middle'
-    : 'text-gray-400 text-[9px] leading-tight align-middle';
-  platformWrapper.appendChild(span);
-
-  if (idx < arr.length - 1) {
-    const sep = document.createElement('span');
-    sep.textContent = '|';
-    sep.className = 'text-gray-400 text-[9px] leading-tight align-middle';
-    platformWrapper.appendChild(sep);
-  }
-});
-
-platformDiv.appendChild(platformWrapper);
-
-
-
-
-
-        
+        platformDiv.appendChild(platformWrapper);
 
         const desc = document.createElement('p');
-        desc.className = 'text-gray-400 mb-2 text-sm'; // Spacing
+        desc.className = 'text-gray-400 mb-2 text-sm';
         desc.textContent = mod.description;
 
         const links = document.createElement('div');
@@ -176,7 +174,6 @@ platformDiv.appendChild(platformWrapper);
           links.appendChild(a);
         });
 
-        // Embed video
         const videoWrapper = document.createElement('div');
         videoWrapper.className = 'mt-2';
 
@@ -187,7 +184,6 @@ platformDiv.appendChild(platformWrapper);
         video.allowFullscreen = true;
         videoWrapper.appendChild(video);
 
-        // Assemble card
         card.appendChild(titleRow);
         card.appendChild(standaloneDiv);
         card.appendChild(platformDiv);
@@ -201,16 +197,7 @@ platformDiv.appendChild(platformWrapper);
 
     function renderStars(rating) {
       const fullStar = '<svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>';
-      const halfStar = `
-        <svg class="w-4 h-4" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="halfGrad" x1="0" x2="100%" y1="0" y2="0">
-              <stop offset="50%" stop-color="#facc15"/>
-              <stop offset="50%" stop-color="#4b5563"/>
-            </linearGradient>
-          </defs>
-          <path fill="url(#halfGrad)" d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/>
-        </svg>`;
+      const halfStar = `<svg class="w-4 h-4" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="halfGrad" x1="0" x2="100%" y1="0" y2="0"><stop offset="50%" stop-color="#facc15"/><stop offset="50%" stop-color="#4b5563"/></linearGradient></defs><path fill="url(#halfGrad)" d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>`;
       const emptyStar = '<svg class="w-4 h-4 fill-gray-600" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>';
 
       let stars = '';
@@ -226,7 +213,6 @@ platformDiv.appendChild(platformWrapper);
       return stars;
     }
 
-    // Toggle sort
     document.getElementById('sort-button').addEventListener('click', () => {
       sorted = !sorted;
       const modsToRender = sorted 
@@ -235,7 +221,6 @@ platformDiv.appendChild(platformWrapper);
       renderMods(modsToRender);
     });
 
-    // Search filter
     document.getElementById('search-input').addEventListener('input', e => {
       const term = e.target.value.toLowerCase();
       const filtered = (sorted ? [...mods].sort((a, b) => (b.rating || 0) - (a.rating || 0)) : originalMods)
@@ -243,7 +228,6 @@ platformDiv.appendChild(platformWrapper);
       renderMods(filtered);
     });
 
-    // Popup functions
     const overlay = document.getElementById('popup-overlay');
     const popupContent = document.getElementById('popup-content');
     const popupClose = document.getElementById('popup-close');
@@ -264,6 +248,13 @@ platformDiv.appendChild(platformWrapper);
     popupClose.addEventListener('click', () => overlay.classList.add('hidden'));
     overlay.addEventListener('click', e => {
       if (e.target === overlay) overlay.classList.add('hidden');
+    });
+
+    // Toggle Videos
+    document.getElementById('toggle-videos').addEventListener('click', function () {
+      const container = document.getElementById('mod-list');
+      const isHidden = container.classList.toggle('hide-videos');
+      this.textContent = isHidden ? 'Show Videos' : 'Hide Videos';
     });
 
     loadMods();
