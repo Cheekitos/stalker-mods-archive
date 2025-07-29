@@ -87,44 +87,44 @@
 
 // Standalone
 const standaloneDiv = document.createElement('div');
-standaloneDiv.className = 'text-xs text-white mb-1 flex items-center';
+standaloneDiv.className = 'text-xs text-white mb-2 flex items-center'; // mb-2 for vertical spacing
 
 const labelStandalone = document.createElement('span');
-labelStandalone.textContent = 'Standalone: ';
-labelStandalone.className = 'font-bold mr-3 leading-none'; // bigger right margin + no extra line height
+labelStandalone.textContent = 'Standalone:';
+labelStandalone.className = 'mr-2 leading-tight'; // lighter right margin, no bold
 standaloneDiv.appendChild(labelStandalone);
 
 const standaloneWrapper = document.createElement('div');
-standaloneWrapper.className = 'inline-flex items-center gap-1 align-middle'; // align middle
+standaloneWrapper.className = 'inline-flex items-center gap-1 align-middle';
 
 const yesSpan = document.createElement('span');
 yesSpan.textContent = 'Yes';
 yesSpan.className = mod.standalone
-  ? 'border border-white bg-yellow-400 bg-opacity-45 px-1 py-[0.5px] rounded-sm text-[9px] inline-block text-white leading-none align-middle'
-  : 'text-gray-400 text-[9px] leading-none align-middle';  // gray text + align middle
+  ? 'border border-white bg-yellow-400 bg-opacity-45 px-1.5 py-[1px] rounded-sm text-[9px] inline-block text-white leading-tight align-middle'
+  : 'text-gray-400 text-[9px] leading-tight align-middle';
 standaloneWrapper.appendChild(yesSpan);
 
 const sep = document.createElement('span');
 sep.textContent = '|';
-sep.className = 'text-gray-400 text-[9px] leading-none align-middle';
+sep.className = 'text-gray-400 text-[9px] leading-tight align-middle';
 standaloneWrapper.appendChild(sep);
 
 const noSpan = document.createElement('span');
 noSpan.textContent = 'No';
 noSpan.className = !mod.standalone
-  ? 'border border-white bg-yellow-400 bg-opacity-45 px-1 py-[0.5px] rounded-sm text-[9px] inline-block text-white leading-none align-middle'
-  : 'text-gray-400 text-[9px] leading-none align-middle';
+  ? 'border border-white bg-yellow-400 bg-opacity-45 px-1.5 py-[1px] rounded-sm text-[9px] inline-block text-white leading-tight align-middle'
+  : 'text-gray-400 text-[9px] leading-tight align-middle';
 standaloneWrapper.appendChild(noSpan);
 
 standaloneDiv.appendChild(standaloneWrapper);
 
 // Platform
 const platformDiv = document.createElement('div');
-platformDiv.className = 'text-xs text-white mb-1 flex items-center';
+platformDiv.className = 'text-xs text-white mb-2 flex items-center'; // mb-2 for spacing below
 
 const labelPlatform = document.createElement('span');
-labelPlatform.textContent = 'Platform: ';
-labelPlatform.className = 'font-bold mr-3 leading-none'; // bigger right margin + no extra line height
+labelPlatform.textContent = 'Platform:';
+labelPlatform.className = 'mr-2 leading-tight'; // no bold, small right margin
 platformDiv.appendChild(labelPlatform);
 
 const platformWrapper = document.createElement('div');
@@ -134,19 +134,20 @@ platformWrapper.className = 'inline-flex items-center gap-1 align-middle';
   const span = document.createElement('span');
   span.textContent = plat;
   span.className = (mod.platform === plat)
-    ? 'border border-white bg-yellow-400 bg-opacity-50 px-1 py-[0.5px] rounded-sm text-[9px] inline-block text-white leading-none align-middle'
-    : 'text-gray-400 text-[9px] leading-none align-middle';
+    ? 'border border-white bg-yellow-400 bg-opacity-50 px-1.5 py-[1px] rounded-sm text-[9px] inline-block text-white leading-tight align-middle'
+    : 'text-gray-400 text-[9px] leading-tight align-middle';
   platformWrapper.appendChild(span);
 
   if (idx < arr.length - 1) {
     const sep = document.createElement('span');
     sep.textContent = '|';
-    sep.className = 'text-gray-400 text-[9px] leading-none align-middle';
+    sep.className = 'text-gray-400 text-[9px] leading-tight align-middle';
     platformWrapper.appendChild(sep);
   }
 });
 
 platformDiv.appendChild(platformWrapper);
+
 
 
 
