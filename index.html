@@ -1,50 +1,222 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Meta tags and page title -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cheeki's Mods Archive</title>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-900 text-white font-sans p-4">
   <div class="max-w-6xl mx-auto">
-    <!-- Header with page title and description -->
+    <h1 class="text-3xl font-bold mb-1">Cheeki's Mods Archive</h1>
+    <h2 class="text-lg text-gray-400 mb-3">A collection of S.T.A.L.K.E.R. Story Mods</h2>
+    <p class="text-gray-300 text-sm mb-6">
+      A non-exhaustive archive of game modifications for the S.T.A.L.K.E.R. game franchise, mainly story-focused mods I reviewed on the YouTube Channel.
+      Everything listed here is for ease-of-access and posterity only. Consolidating files that tend to be scattered accross multiple websites, hosting services, with some unfortunately lost already. 
+      All credits go to the Authors of these mods.
+    </p>
 
-    <!-- Controls section including sort button and search input -->
+    <!-- Controls -->
+    <div class="flex flex-wrap items-center gap-2 mb-4">
+      <button id="sort-button" class="bg-yellow-500 hover:bg-yellow-600 text-black text-sm font-medium py-1 px-3 rounded">
+        Sort by Rating
+      </button>
+      <input id="search-input" type="text" placeholder="Search mods..." class="flex-1 min-w-[150px] px-2 py-1 text-sm rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500" />
+    </div>
 
-    <!-- Mod List container to display mod cards -->
+    <!-- Mod List -->
     <div id="mod-list" class="grid gap-4 grid-cols-[repeat(auto-fill,minmax(300px,1fr))]"></div>
 
-    <!-- Footer with link to your YouTube Channel -->
+    <!-- Footer -->
+    <footer class="mt-8 text-center text-sm text-gray-500">
+      Cheeki's Mods Archive - <a href="https://linktr.ee/cheekibreekii" target="_blank" class="text-blue-400 hover:underline">Check me Out!</a>
+    </footer>
   </div>
 
-  <!-- Popup Overlay for displaying installation guides -->
+  <!-- Popup Overlay -->
+<div id="popup-overlay" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center hidden z-50">
+    <div class="bg-gray-900 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-auto relative p-4">
+      <button id="popup-close" class="absolute top-2 right-2 text-gray-400 hover:text-white text-xl">&times;</button>
+      <div id="popup-content" class="text-sm text-gray-200">Loading...</div>
+    </div>
+  </div>
 
   <script>
-    // Initialize variables and arrays
     let mods = [];
     let sorted = false;
     let originalMods = [];
 
-    // Fetch mod data from mods.json file
-    async function loadMods() { ... }
+    async function loadMods() {
+      try {
+        const response = await fetch('mods.json?v=' + Date.now()); // Cache-busting
+        mods = await response.json();
+        originalMods = [...mods];
+        renderMods(mods);
+      } catch (err) {
+        console.error('Error loading mods.json:', err);
+      }
+    }
 
-    // Render mod cards based on the provided array of mod data
-    function renderMods(modArray) { ... }
+function renderMods(modArray) {
+  const container = document.getElementById('mod-list');
+  container.innerHTML = '';
 
-    // Generate star rating SVG elements based on a given rating
-    function renderStars(rating) { ... }
+  modArray.forEach(mod => {
+    const card = document.createElement('div');
+    card.className = 'bg-gray-800 p-3 rounded-md shadow-sm flex flex-col h-full'; // No min-height
 
-    // Toggle sorting when sort button is clicked
-    document.getElementById('sort-button').addEventListener('click', () => { ... });
+    // Title + Rating
+    const titleRow = document.createElement('div');
+    titleRow.className = 'flex justify-between items-center mb-1';
 
-    // Filter mods based on the search input value
-    document.getElementById('search-input').addEventListener('input', e => { ... });
+    const title = document.createElement('h3');
+    title.className = 'text-lg font-semibold';
+    title.textContent = mod.title;
 
-    // Functions to open and close popup for displaying installation guides
-    function openPopup(url) { ... }
+    const rating = document.createElement('div');
+    rating.className = 'flex items-center space-x-0.5 text-yellow-400';
+    const stars = renderStars(mod.rating || 0);
+    rating.innerHTML = stars;
+
+    titleRow.appendChild(title);
+    titleRow.appendChild(rating);
+
+    const desc = document.createElement('p');
+    desc.className = 'text-gray-400 mb-1 text-sm';
+    desc.textContent = mod.description;
+
+    const links = document.createElement('div');
+    links.className = 'mb-2';
+    (mod.links || []).forEach(link => {
+      const a = document.createElement('a');
+      a.href = link.url;
+      a.textContent = link.label;
+      a.className = 'block text-blue-400 hover:underline text-sm cursor-pointer';
+      if (link.label.toLowerCase().includes('install guide')) {
+        a.addEventListener('click', e => {
+          e.preventDefault();
+          openPopup(link.url);
+        });
+      } else {
+        a.target = '_blank';
+      }
+      links.appendChild(a);
+    });
+
+    // Embed video always in same relative position
+    const videoWrapper = document.createElement('div');
+    videoWrapper.className = 'mt-2';
+
+    const video = document.createElement('iframe');
+    video.src = mod.video;
+    video.className = 'w-full aspect-video rounded';
+    video.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+    video.allowFullscreen = true;
+    videoWrapper.appendChild(video);
+
+    card.appendChild(titleRow);
+    card.appendChild(desc);
+    card.appendChild(links);
+    card.appendChild(videoWrapper);
+
+    // Pros & Cons, only if present
+    if ((mod.pros && mod.pros.length > 0) || (mod.cons && mod.cons.length > 0)) {
+      const prosConsContainer = document.createElement('div');
+      prosConsContainer.className = 'mt-2 grid grid-cols-2 gap-2 text-xs opacity-80';
+
+      const prosDiv = document.createElement('div');
+      (mod.pros || []).forEach(pro => {
+        const p = document.createElement('p');
+        p.className = 'text-green-400';
+        p.textContent = `+ ${pro}`;
+        prosDiv.appendChild(p);
+      });
+
+      const consDiv = document.createElement('div');
+      (mod.cons || []).forEach(con => {
+        const p = document.createElement('p');
+        p.className = 'text-red-400';
+        p.textContent = `- ${con}`;
+        consDiv.appendChild(p);
+      });
+
+      prosConsContainer.appendChild(prosDiv);
+      prosConsContainer.appendChild(consDiv);
+      card.appendChild(prosConsContainer);
+    }
+
+    container.appendChild(card);
+  });
+}
+
+    function renderStars(rating) {
+      const fullStar = '<svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>';
+      const halfStar = `
+        <svg class="w-4 h-4" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="halfGrad" x1="0" x2="100%" y1="0" y2="0">
+              <stop offset="50%" stop-color="#facc15"/>
+              <stop offset="50%" stop-color="#4b5563"/>
+            </linearGradient>
+          </defs>
+          <path fill="url(#halfGrad)" d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/>
+        </svg>`;
+      const emptyStar = '<svg class="w-4 h-4 fill-gray-600" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>';
+
+      let stars = '';
+      for (let i = 1; i <= 5; i++) {
+        if (rating >= i) {
+          stars += fullStar;
+        } else if (rating >= i - 0.5) {
+          stars += halfStar;
+        } else {
+          stars += emptyStar;
+        }
+      }
+      return stars;
+    }
+
+    // Toggle sort
+    document.getElementById('sort-button').addEventListener('click', () => {
+      sorted = !sorted;
+      const modsToRender = sorted 
+        ? [...mods].sort((a, b) => (b.rating || 0) - (a.rating || 0)) 
+        : originalMods;
+      renderMods(modsToRender);
+    });
+
+    // Search filter
+    document.getElementById('search-input').addEventListener('input', e => {
+      const term = e.target.value.toLowerCase();
+      const filtered = (sorted ? [...mods].sort((a, b) => (b.rating || 0) - (a.rating || 0)) : originalMods)
+        .filter(mod => mod.title.toLowerCase().includes(term) || mod.description.toLowerCase().includes(term));
+      renderMods(filtered);
+    });
+
+    // Popup functions
+    const overlay = document.getElementById('popup-overlay');
+    const popupContent = document.getElementById('popup-content');
     const popupClose = document.getElementById('popup-close');
-    popupClose.addEventListener('click', () => overlay.classList.add('hidden'));
-    overlay.addEventListener('click', e => { ... });
 
-    // Load mod data on page load
+    function openPopup(url) {
+      popupContent.innerHTML = 'Loading...';
+      overlay.classList.remove('hidden');
+      fetch(url + '?v=' + Date.now())
+        .then(res => res.text())
+        .then(html => {
+          popupContent.innerHTML = html;
+        })
+        .catch(() => {
+          popupContent.innerHTML = '<p class="text-red-400">Failed to load guide.</p>';
+        });
+    }
+
+    popupClose.addEventListener('click', () => overlay.classList.add('hidden'));
+    overlay.addEventListener('click', e => {
+      if (e.target === overlay) overlay.classList.add('hidden');
+    });
+
     loadMods();
   </script>
 </body>
