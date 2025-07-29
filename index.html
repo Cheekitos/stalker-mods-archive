@@ -83,9 +83,14 @@
         titleRow.appendChild(rating);
         card.appendChild(titleRow);
 
-        // Standalone label + pill
-        const standaloneWrapper = document.createElement('div');
-standaloneWrapper.className = 'mb-1 text-sm';
+
+        // Create a flex container for both standalone and platform
+const infoLine = document.createElement('div');
+infoLine.className = 'mb-1 text-sm flex space-x-4 items-center';
+
+// --- Standalone ---
+const standaloneWrapper = document.createElement('div');
+standaloneWrapper.className = 'flex items-center space-x-1';
 
 const standaloneLabel = document.createElement('span');
 standaloneLabel.textContent = 'Standalone: ';
@@ -97,8 +102,6 @@ yesSpan.className = mod.standalone
   ? 'border border-white bg-yellow-400 bg-opacity-50 px-1 py-[1px] rounded-full text-xs inline-block text-white'
   : 'text-white text-xs';
 
-const space = document.createTextNode(' ');
-
 const noSpan = document.createElement('span');
 noSpan.textContent = 'No';
 noSpan.className = !mod.standalone
@@ -107,15 +110,12 @@ noSpan.className = !mod.standalone
 
 standaloneWrapper.appendChild(standaloneLabel);
 standaloneWrapper.appendChild(yesSpan);
-standaloneWrapper.appendChild(space);
+standaloneWrapper.appendChild(document.createTextNode(' '));
 standaloneWrapper.appendChild(noSpan);
-card.appendChild(standaloneWrapper);
 
-
-
-        // Platform label + pills
+// --- Platform ---
 const platformWrapper = document.createElement('div');
-platformWrapper.className = 'mb-1 text-sm';
+platformWrapper.className = 'flex items-center space-x-1';
 
 const platformLabel = document.createElement('span');
 platformLabel.textContent = 'Platform: ';
@@ -123,7 +123,6 @@ platformLabel.className = 'text-white';
 
 platformWrapper.appendChild(platformLabel);
 
-// Platform options
 const platforms = ['SoC', 'CS', 'CoP'];
 
 platforms.forEach((plat, index) => {
@@ -134,15 +133,18 @@ platforms.forEach((plat, index) => {
   } else {
     span.className = 'text-white text-xs';
   }
-  
   platformWrapper.appendChild(span);
   if (index < platforms.length - 1) {
-    platformWrapper.appendChild(document.createTextNode(' ')); // space between pills
+    platformWrapper.appendChild(document.createTextNode(' '));
   }
 });
 
-card.appendChild(platformWrapper);
+// Append both to the flex container
+infoLine.appendChild(standaloneWrapper);
+infoLine.appendChild(platformWrapper);
 
+// Add the flex container to the card
+card.appendChild(infoLine);
 
 
 
