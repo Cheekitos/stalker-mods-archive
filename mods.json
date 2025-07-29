@@ -14,14 +14,8 @@
 		],
 		"video": "https://www.youtube.com/embed/xixdI00LpNw?si=6E_9ucVBBEP5A3-_",
 		"rating": 4.5,
-		"pros": [
-			"lore-rich storyline",
-			""
-		],
-		"cons": [
-			"heavy on dialogue and fetch quests",
-			""
-		]
+		"pros": [],
+		"cons": []
 	},
 	{
 		"title": "GoldSphere",
@@ -38,14 +32,8 @@
 		],
 		"video": "https://www.youtube.com/embed/41uJQyhhItQ?si=iR27croZKrkzzif0",
 		"rating": 4.5,
-		"pros": [
-			"lore-rich storyline",
-			""
-		],
-		"cons": [
-			"heavy on dialogue and fetch quests",
-			""
-		]
+		"pros": [],
+		"cons": []
 	},
 	{
 		"title": "Wind of Time",
@@ -62,14 +50,8 @@
 		],
 		"video": "https://www.youtube.com/embed/UN8ZlXrJZOs?si=s6rnju96FXxSwxm6",
 		"rating": 4.5,
-		"pros": [
-			"lore-rich storyline",
-			""
-		],
-		"cons": [
-			"heavy on dialogue and fetch quests",
-			""
-		]
+		"pros": [],
+		"cons": []
 	},
 	{
 		"title": "Vector of Alienation",
@@ -86,13 +68,7 @@
 		],
 		"video": "https://www.youtube.com/embed/icdKtvzjtJk?si=9fxIOs4jIy86vqI4",
 		"rating": 4,
-		"pros": [
-			"lore-rich storyline",
-			""
-		],
-		"cons": [
-			"heavy on dialogue and fetch quests",
-			""
-		]
+		"pros": [],
+		"cons": []
 	}
 ]
