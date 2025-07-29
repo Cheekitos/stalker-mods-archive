@@ -111,6 +111,8 @@ standaloneWrapper.appendChild(space);
 standaloneWrapper.appendChild(noSpan);
 card.appendChild(standaloneWrapper);
 
+
+
         // Platform label + pills
 const platformWrapper = document.createElement('div');
 platformWrapper.className = 'mb-1 text-sm';
@@ -119,8 +121,10 @@ const platformLabel = document.createElement('span');
 platformLabel.textContent = 'Platform: ';
 platformLabel.className = 'text-white';
 
+platformWrapper.appendChild(platformLabel);
+
 // Platform options
-const platforms = ['Soc', 'CS', 'CoP'];
+const platforms = ['SoC', 'CS', 'CoP'];
 
 platforms.forEach((plat, index) => {
   const span = document.createElement('span');
@@ -138,6 +142,7 @@ platforms.forEach((plat, index) => {
 });
 
 card.appendChild(platformWrapper);
+
 
 
 
