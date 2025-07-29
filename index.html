@@ -73,6 +73,19 @@ function renderMods(modArray) {
     const title = document.createElement('h3');
     title.className = 'text-lg font-semibold';
     title.textContent = mod.title;
+    
+
+    // Standalone indicator
+const standaloneBadge = document.createElement('span');
+standaloneBadge.className = mod.standalone 
+  ? 'bg-green-600 text-white text-xs font-semibold px-2 py-0.5 rounded-full' 
+  : 'bg-red-600 text-white text-xs font-semibold px-2 py-0.5 rounded-full';
+standaloneBadge.textContent = mod.standalone ? 'Standalone: Yes' : 'Standalone: No';
+standaloneBadge.classList.add('ml-auto'); // Pushes it to the end of the flex container
+
+titleRow.appendChild(standaloneBadge);
+    
+
 
     const rating = document.createElement('div');
     rating.className = 'flex items-center space-x-0.5 text-yellow-400';
