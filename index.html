@@ -96,7 +96,7 @@ standaloneLabel.className = 'text-white';
 const yesSpan = document.createElement('span');
 yesSpan.textContent = 'Yes';
 yesSpan.className = mod.standalone
-  ? 'border border-white bg-yellow-400 bg-opacity-20 px-1 py-[1px] rounded-full text-xs inline-block text-white'
+  ? 'border border-white bg-yellow-400 bg-opacity-50 px-1 py-[1px] rounded-full text-xs inline-block text-white'
   : 'text-white text-xs';
 
 const space = document.createTextNode(' ');
@@ -104,7 +104,7 @@ const space = document.createTextNode(' ');
 const noSpan = document.createElement('span');
 noSpan.textContent = 'No';
 noSpan.className = !mod.standalone
-  ? 'border border-white bg-yellow-400 bg-opacity-20 px-1 py-[1px] rounded-full text-xs inline-block text-white'
+  ? 'border border-white bg-yellow-400 bg-opacity-50 px-1 py-[1px] rounded-full text-xs inline-block text-white'
   : 'text-white text-xs';
 
 standaloneWrapper.appendChild(standaloneLabel);
