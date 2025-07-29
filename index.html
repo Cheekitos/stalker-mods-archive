@@ -48,14 +48,20 @@
     let originalMods = [];
 
     async function loadMods() {
+      renderLoading(); // Show loading message
       try {
-        const response = await fetch('mods.json?v=' + Date.now()); // Cache-busting
+        const response = await fetch('mods.json?v=' + Date.now());
         mods = await response.json();
         originalMods = [...mods];
         renderMods(mods);
       } catch (err) {
         console.error('Error loading mods.json:', err);
+        document.getElementById('mod-list').innerHTML = '<p class="text-red-400">Failed to load mods. Please try again later.</p>';
       }
+    }
+
+    function renderLoading() {
+      document.getElementById('mod-list').innerHTML = '<p class="text-gray-400">Loading mods...</p>';
     }
 
     function renderMods(modArray) {
@@ -66,7 +72,6 @@
         const card = document.createElement('div');
         card.className = 'bg-gray-800 p-3 rounded-md shadow-sm flex flex-col h-full';
 
-        // Title + Rating
         const titleRow = document.createElement('div');
         titleRow.className = 'flex justify-between items-center mb-1';
 
@@ -76,13 +81,11 @@
 
         const rating = document.createElement('div');
         rating.className = 'flex items-center space-x-0.5 text-yellow-400';
-        const stars = renderStars(mod.rating || 0);
-        rating.innerHTML = stars;
+        rating.innerHTML = renderStars(mod.rating || 0);
 
         titleRow.appendChild(title);
         titleRow.appendChild(rating);
 
-        // Standalone
         const standaloneDiv = document.createElement('div');
         standaloneDiv.className = 'text-xs text-white mb-1';
         standaloneDiv.innerHTML = 'Standalone: ';
@@ -103,7 +106,6 @@
         standaloneDiv.appendChild(document.createTextNode(' '));
         standaloneDiv.appendChild(noSpan);
 
-        // Platform
         const platformDiv = document.createElement('div');
         platformDiv.className = 'text-xs text-white mb-1';
         platformDiv.innerHTML = 'Platform: ';
@@ -139,7 +141,6 @@
           links.appendChild(a);
         });
 
-        // Embed video
         const videoWrapper = document.createElement('div');
         videoWrapper.className = 'mt-2';
 
@@ -150,7 +151,6 @@
         video.allowFullscreen = true;
         videoWrapper.appendChild(video);
 
-        // Assemble card
         card.appendChild(titleRow);
         card.appendChild(standaloneDiv);
         card.appendChild(platformDiv);
@@ -189,16 +189,15 @@
       return stars;
     }
 
-    // Toggle sort
     document.getElementById('sort-button').addEventListener('click', () => {
       sorted = !sorted;
       const modsToRender = sorted 
         ? [...mods].sort((a, b) => (b.rating || 0) - (a.rating || 0)) 
         : originalMods;
       renderMods(modsToRender);
+      document.getElementById('sort-button').textContent = sorted ? 'Unsort' : 'Sort by Rating';
     });
 
-    // Search filter
     document.getElementById('search-input').addEventListener('input', e => {
       const term = e.target.value.toLowerCase();
       const filtered = (sorted ? [...mods].sort((a, b) => (b.rating || 0) - (a.rating || 0)) : originalMods)
@@ -206,7 +205,6 @@
       renderMods(filtered);
     });
 
-    // Popup functions
     const overlay = document.getElementById('popup-overlay');
     const popupContent = document.getElementById('popup-content');
     const popupClose = document.getElementById('popup-close');
