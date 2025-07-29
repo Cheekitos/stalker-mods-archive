@@ -83,11 +83,34 @@
         titleRow.appendChild(rating);
         card.appendChild(titleRow);
 
-        // Standalone badge below title
-        const standaloneBadge = document.createElement('span');
-        standaloneBadge.className = 'inline-block border border-white text-white text-xs font-medium px-2 py-0.5 rounded-full mb-1';
-        standaloneBadge.textContent = mod.standalone ? 'Yes' : 'No';
-        card.appendChild(standaloneBadge);
+        // Standalone label + pill
+const standaloneWrapper = document.createElement('div');
+standaloneWrapper.className = 'mb-1 text-sm';
+
+const standaloneLabel = document.createElement('span');
+standaloneLabel.textContent = 'Standalone: ';
+standaloneLabel.className = 'text-white';
+
+const yesSpan = document.createElement('span');
+yesSpan.textContent = 'Yes';
+yesSpan.className = mod.standalone
+  ? 'border border-white px-2 py-0.5 rounded-full'
+  : 'text-white';
+
+const space = document.createTextNode(' ');
+
+const noSpan = document.createElement('span');
+noSpan.textContent = 'No';
+noSpan.className = !mod.standalone
+  ? 'border border-white px-2 py-0.5 rounded-full'
+  : 'text-white';
+
+standaloneWrapper.appendChild(standaloneLabel);
+standaloneWrapper.appendChild(yesSpan);
+standaloneWrapper.appendChild(space);
+standaloneWrapper.appendChild(noSpan);
+card.appendChild(standaloneWrapper);
+
 
         // Description
         const desc = document.createElement('p');
