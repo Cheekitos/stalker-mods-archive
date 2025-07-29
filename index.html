@@ -84,41 +84,37 @@
         card.appendChild(titleRow);
 
 
-        // Create a flex container for both standalone and platform
-const infoLine = document.createElement('div');
-infoLine.className = 'mb-1 text-sm flex space-x-4 items-center';
-
-// --- Standalone ---
+// --- Standalone (separate line, smaller) ---
 const standaloneWrapper = document.createElement('div');
-standaloneWrapper.className = 'flex items-center space-x-1';
+standaloneWrapper.className = 'mb-1 text-sm flex items-center space-x-1';
 
 const standaloneLabel = document.createElement('span');
-standaloneLabel.textContent = 'Standalone: ';
+standaloneLabel.textContent = 'Standalone:';
 standaloneLabel.className = 'text-white';
 
 const yesSpan = document.createElement('span');
 yesSpan.textContent = 'Yes';
 yesSpan.className = mod.standalone
-  ? 'border border-white bg-yellow-400 bg-opacity-50 px-1 py-[1px] rounded-full text-xs inline-block text-white'
-  : 'text-white text-xs';
+  ? 'border border-white bg-yellow-400 bg-opacity-50 px-1 py-[1px] rounded-full text-[10px] inline-block text-white'
+  : 'text-white text-[10px]';
 
 const noSpan = document.createElement('span');
 noSpan.textContent = 'No';
 noSpan.className = !mod.standalone
-  ? 'border border-white bg-yellow-400 bg-opacity-50 px-1 py-[1px] rounded-full text-xs inline-block text-white'
-  : 'text-white text-xs';
+  ? 'border border-white bg-yellow-400 bg-opacity-50 px-1 py-[1px] rounded-full text-[10px] inline-block text-white'
+  : 'text-white text-[10px]';
 
 standaloneWrapper.appendChild(standaloneLabel);
 standaloneWrapper.appendChild(yesSpan);
-standaloneWrapper.appendChild(document.createTextNode(' '));
 standaloneWrapper.appendChild(noSpan);
+card.appendChild(standaloneWrapper);
 
-// --- Platform ---
+// --- Platform (separate line, smaller) ---
 const platformWrapper = document.createElement('div');
-platformWrapper.className = 'flex items-center space-x-1';
+platformWrapper.className = 'mb-1 text-sm flex items-center space-x-1';
 
 const platformLabel = document.createElement('span');
-platformLabel.textContent = 'Platform: ';
+platformLabel.textContent = 'Platform:';
 platformLabel.className = 'text-white';
 
 platformWrapper.appendChild(platformLabel);
@@ -128,23 +124,17 @@ const platforms = ['SoC', 'CS', 'CoP'];
 platforms.forEach((plat, index) => {
   const span = document.createElement('span');
   span.textContent = plat;
-  if (mod.platform === plat) {
-    span.className = 'border border-white bg-yellow-400 bg-opacity-50 px-1 py-[1px] rounded-full text-xs inline-block text-white';
-  } else {
-    span.className = 'text-white text-xs';
-  }
+  span.className = (mod.platform === plat)
+    ? 'border border-white bg-yellow-400 bg-opacity-50 px-1 py-[1px] rounded-full text-[10px] inline-block text-white'
+    : 'text-white text-[10px]';
+  
   platformWrapper.appendChild(span);
-  if (index < platforms.length - 1) {
-    platformWrapper.appendChild(document.createTextNode(' '));
-  }
 });
 
-// Append both to the flex container
-infoLine.appendChild(standaloneWrapper);
-infoLine.appendChild(platformWrapper);
+card.appendChild(platformWrapper);
 
-// Add the flex container to the card
-card.appendChild(infoLine);
+
+        
 
 
 
