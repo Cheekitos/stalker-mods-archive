@@ -85,10 +85,10 @@
 // Standalone
 const standaloneDiv = document.createElement('div');
 standaloneDiv.className = 'text-xs text-white mb-1';
-standaloneDiv.innerHTML = 'Standalone:  ';
+standaloneDiv.innerHTML = 'Standalone: ';
 
 const standaloneWrapper = document.createElement('div'); // renamed to standaloneWrapper
-standaloneWrapper.className = 'inline-flex items-center gap-1';
+standaloneWrapper.className = 'inline-flex items-center gap-1 ml-1';
 
 const yesSpan = document.createElement('span');
 yesSpan.textContent = 'Yes';
@@ -114,10 +114,10 @@ standaloneDiv.appendChild(standaloneWrapper);
 // Platform
 const platformDiv = document.createElement('div');
 platformDiv.className = 'text-xs text-white mb-1';
-platformDiv.innerHTML = 'Platform:  ';
+platformDiv.innerHTML = 'Platform: ';
 
 const platformWrapper = document.createElement('div'); // renamed to platformWrapper
-platformWrapper.className = 'inline-flex items-center gap-1';
+platformWrapper.className = 'inline-flex items-center gap-1 ml-1';
 
 ['Shadow of Chernobyl', 'Clear Sky', 'Call of Pripyat'].forEach((plat, idx, arr) => {
   const span = document.createElement('span');
