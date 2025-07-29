@@ -123,7 +123,7 @@ function renderMods(modArray) {
     // Pros & Cons, only if present
     if ((mod.pros && mod.pros.length > 0) || (mod.cons && mod.cons.length > 0)) {
       const prosConsContainer = document.createElement('div');
-      prosConsContainer.className = 'mt-2 grid grid-cols-2 gap-2 text-xs';
+      prosConsContainer.className = 'mt-2 grid grid-cols-2 gap-2 text-xs opacity-80';
 
       const prosDiv = document.createElement('div');
       (mod.pros || []).forEach(pro => {
