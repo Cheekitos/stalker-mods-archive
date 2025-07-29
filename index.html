@@ -77,13 +77,12 @@ function renderMods(modArray) {
 
     // Standalone indicator
 const standaloneBadge = document.createElement('span');
-standaloneBadge.className = mod.standalone 
-  ? 'bg-green-600 text-white text-xs font-semibold px-2 py-0.5 rounded-full' 
-  : 'bg-red-600 text-white text-xs font-semibold px-2 py-0.5 rounded-full';
-standaloneBadge.textContent = mod.standalone ? 'Standalone: Yes' : 'Standalone: No';
-standaloneBadge.classList.add('ml-auto'); // Pushes it to the end of the flex container
+standaloneBadge.className = 'inline-block border border-white text-white text-xs font-medium px-2 py-0.5 rounded-full mb-1';
+standaloneBadge.textContent = mod.standalone ? 'Yes' : 'No';
 
-titleRow.appendChild(standaloneBadge);
+card.appendChild(titleRow);
+card.appendChild(standaloneBadge); // Add here
+card.appendChild(desc);
     
 
 
