@@ -7,41 +7,8 @@
       { "label": "Install Guide", "url": "guides/mod-alpha.html" }
     ],
     "video": "https://www.youtube.com/embed/xixdI00LpNw?si=5tX4AB3DV6QKRKgr",
-    "rating": 0,
-    "pros": ["Great atmosphere", "Stable performance", "Fully Voiced"],
-    "cons": ["Outdated graphics", "Limited content"]
-  },
-  {
-    "title": "Mod B",
-    "description": "Description.",
-    "links": [
-      { "label": "Download Files", "url": "https://example.com/mod-beta" },
-      { "label": "Install Guide", "url": "guides/mod-beta.html" }
-    ],
-    "video": "https://www.youtube.com/embed/xixdI00LpNw?si=5tX4AB3DV6QKRKgr",
-    "rating": 1.5,
-    "pros": ["Great atmosphere"],
-    "cons": ["Outdated graphics", "Limited content"]
-  },
-  {
-    "title": "Mod C",
-    "description": "Description.",
-    "links": [
-      { "label": "Download Files", "url": "https://example.com/mod-gamma" },
-      { "label": "Install Guide", "url": "guides/mod-gamma.html" }
-    ],
-    "video": "https://www.youtube.com/embed/xixdI00LpNw?si=5tX4AB3DV6QKRKgr",
-    "rating": 3.5,
-    "pros": ["Great atmosphere"]
-  },
-  {
-    "title": "Mod D",
-    "description": "Description.",
-    "links": [
-      { "label": "Download Files", "url": "https://example.com/mod-delta" },
-      { "label": "Install Guide", "url": "guides/mod-delta.html" }
-    ],
-    "video": "https://www.youtube.com/embed/xixdI00LpNw?si=5tX4AB3DV6QKRKgr",
-    "rating": 5
+    "rating": 2,
+    "pros": ["", "", ""],
+    "cons": ["", ""]
   }
 ]
