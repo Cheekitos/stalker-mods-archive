@@ -71,7 +71,7 @@
         titleRow.className = 'flex justify-between items-center mb-3';  // Space between Title & Next Line
 
         const title = document.createElement('h3');
-        title.className = 'text-xl font-semibold'; // Title size (xl - 2xl - 3xl ...)
+        title.className = 'text-2xl font-semibold'; // Title size (xl - 2xl - 3xl ...)
         title.textContent = mod.title;
 
         const rating = document.createElement('div');
@@ -87,11 +87,11 @@
 
 // Standalone
 const standaloneDiv = document.createElement('div');
-standaloneDiv.className = 'text-xs text-white mb-2 flex items-center'; 
+standaloneDiv.className = 'text-xs text-white mb-2 flex items-center'; // mb-2 for vertical spacing
 
 const labelStandalone = document.createElement('span');
 labelStandalone.textContent = 'Standalone:';
-labelStandalone.className = 'mr-2 leading-tight'; // font-bold or not
+labelStandalone.className = 'mr-2 font-bold leading-tight'; // lighter right margin, no bold
 standaloneDiv.appendChild(labelStandalone);
 
 const standaloneWrapper = document.createElement('div');
@@ -124,7 +124,7 @@ platformDiv.className = 'text-xs text-white mb-2 flex items-center'; // mb-2 for
 
 const labelPlatform = document.createElement('span');
 labelPlatform.textContent = 'Platform:';
-labelPlatform.className = 'mr-2 leading-tight'; // font-bold or not
+labelPlatform.className = 'mr-2 font-bold leading-tight'; // no bold, small right margin
 platformDiv.appendChild(labelPlatform);
 
 const platformWrapper = document.createElement('div');
