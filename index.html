@@ -64,8 +64,7 @@ function renderMods(modArray) {
 
   modArray.forEach(mod => {
     const card = document.createElement('div');
-card.className = 'bg-gray-800 p-3 rounded-md shadow-sm flex flex-col h-full border-2';
-card.classList.add(mod.highlight ? 'border-yellow-400' : 'border-transparent');
+    card.className = 'bg-gray-800 p-3 rounded-md shadow-sm flex flex-col h-full'; // No min-height
 
     // Title + Rating
     const titleRow = document.createElement('div');
