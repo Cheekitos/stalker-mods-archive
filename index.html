@@ -84,32 +84,32 @@
         card.appendChild(titleRow);
 
         // Standalone label + pill
-const standaloneWrapper = document.createElement('div');
-standaloneWrapper.className = 'mb-1 text-sm';
+        const standaloneWrapper = document.createElement('div');
+        standaloneWrapper.className = 'mb-1 text-sm';
 
-const standaloneLabel = document.createElement('span');
-standaloneLabel.textContent = 'Standalone: ';
-standaloneLabel.className = 'text-white';
+        const standaloneLabel = document.createElement('span');
+        standaloneLabel.textContent = 'Standalone: ';
+        standaloneLabel.className = 'text-white';
 
-const yesSpan = document.createElement('span');
-yesSpan.textContent = 'Yes';
-yesSpan.className = mod.standalone
-  ? 'border border-white px-2 py-0.5 rounded-full'
-  : 'text-white';
+        const yesSpan = document.createElement('span');
+        yesSpan.textContent = 'Yes';
+        yesSpan.className = mod.standalone
+  ? 'border border-white px-1 py-[1px] rounded-full text-xs inline-block'
+  : 'text-white text-xs';
 
-const space = document.createTextNode(' ');
+        const space = document.createTextNode(' ');
 
-const noSpan = document.createElement('span');
-noSpan.textContent = 'No';
-noSpan.className = !mod.standalone
-  ? 'border border-white px-2 py-0.5 rounded-full'
-  : 'text-white';
+        const noSpan = document.createElement('span');
+        noSpan.textContent = 'No';
+        noSpan.className = !mod.standalone
+  ? 'border border-white px-1 py-[1px] rounded-full text-xs inline-block'
+  : 'text-white text-xs';
 
-standaloneWrapper.appendChild(standaloneLabel);
-standaloneWrapper.appendChild(yesSpan);
-standaloneWrapper.appendChild(space);
-standaloneWrapper.appendChild(noSpan);
-card.appendChild(standaloneWrapper);
+    standaloneWrapper.appendChild(standaloneLabel);
+    standaloneWrapper.appendChild(yesSpan);
+    standaloneWrapper.appendChild(space);
+    standaloneWrapper.appendChild(noSpan);
+    card.appendChild(standaloneWrapper);
 
 
         // Description
