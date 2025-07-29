@@ -49,7 +49,7 @@
 
     async function loadMods() {
       try {
-        const response = await fetch('mods.json?v=' + Date.now());
+        const response = await fetch('mods.json?v=' + Date.now()); // Cache-busting
         mods = await response.json();
         originalMods = [...mods];
         renderMods(mods);
@@ -71,7 +71,7 @@
         titleRow.className = 'flex justify-between items-center mb-1';
 
         const title = document.createElement('h3');
-        title.className = 'text-lg font-semibold';
+        title.className = 'text-xl font-semibold';
         title.textContent = mod.title;
 
         const rating = document.createElement('div');
@@ -81,63 +81,46 @@
 
         titleRow.appendChild(title);
         titleRow.appendChild(rating);
-        card.appendChild(titleRow);
 
-        // Standalone line
-        const standaloneWrapper = document.createElement('div');
-        standaloneWrapper.className = 'mb-1 text-sm flex items-center space-x-1';
-
-        const standaloneLabel = document.createElement('span');
-        standaloneLabel.textContent = 'Standalone:';
-        standaloneLabel.className = 'text-white';
+        // Standalone
+        const standaloneDiv = document.createElement('div');
+        standaloneDiv.className = 'text-xs text-white mb-1';
+        standaloneDiv.innerHTML = 'Standalone: ';
 
         const yesSpan = document.createElement('span');
         yesSpan.textContent = 'Yes';
         yesSpan.className = mod.standalone
-          ? 'border border-white bg-yellow-400 bg-opacity-50 px-[4px] py-[1px] rounded-sm text-[10px] inline-block text-white'
-          : 'text-white text-[10px]';
+          ? 'border border-white bg-yellow-400 bg-opacity-50 px-1 py-[1px] rounded-sm text-[9px] inline-block text-white ml-1'
+          : 'text-white text-[9px] ml-1';
 
         const noSpan = document.createElement('span');
         noSpan.textContent = 'No';
         noSpan.className = !mod.standalone
-          ? 'border border-white bg-yellow-400 bg-opacity-50 px-[4px] py-[1px] rounded-sm text-[10px] inline-block text-white'
-          : 'text-white text-[10px]';
+          ? 'border border-white bg-yellow-400 bg-opacity-50 px-1 py-[1px] rounded-sm text-[9px] inline-block text-white ml-1'
+          : 'text-white text-[9px] ml-1';
 
-        standaloneWrapper.appendChild(standaloneLabel);
-        standaloneWrapper.appendChild(yesSpan);
-        standaloneWrapper.appendChild(noSpan);
-        card.appendChild(standaloneWrapper);
+        standaloneDiv.appendChild(yesSpan);
+        standaloneDiv.appendChild(document.createTextNode(' '));
+        standaloneDiv.appendChild(noSpan);
 
-        // Platform line
-        const platformWrapper = document.createElement('div');
-        platformWrapper.className = 'mb-1 text-sm flex items-center space-x-1';
+        // Platform
+        const platformDiv = document.createElement('div');
+        platformDiv.className = 'text-xs text-white mb-1';
+        platformDiv.innerHTML = 'Platform: ';
 
-        const platformLabel = document.createElement('span');
-        platformLabel.textContent = 'Platform:';
-        platformLabel.className = 'text-white';
-
-        platformWrapper.appendChild(platformLabel);
-
-        const platforms = ['SoC', 'CS', 'CoP'];
-
-        platforms.forEach(plat => {
+        ['SoC', 'CS', 'CoP'].forEach(plat => {
           const span = document.createElement('span');
           span.textContent = plat;
           span.className = (mod.platform === plat)
-            ? 'border border-white bg-yellow-400 bg-opacity-50 px-[4px] py-[1px] rounded-sm text-[10px] inline-block text-white'
-            : 'text-white text-[10px]';
-          platformWrapper.appendChild(span);
+            ? 'border border-white bg-yellow-400 bg-opacity-50 px-1 py-[1px] rounded-sm text-[9px] inline-block text-white ml-1'
+            : 'text-white text-[9px] ml-1';
+          platformDiv.appendChild(span);
         });
 
-        card.appendChild(platformWrapper);
-
-        // Description
         const desc = document.createElement('p');
         desc.className = 'text-gray-400 mb-1 text-sm';
         desc.textContent = mod.description;
-        card.appendChild(desc);
 
-        // Links
         const links = document.createElement('div');
         links.className = 'mb-2';
         (mod.links || []).forEach(link => {
@@ -155,44 +138,25 @@
           }
           links.appendChild(a);
         });
-        card.appendChild(links);
 
-        // Video
+        // Embed video
         const videoWrapper = document.createElement('div');
         videoWrapper.className = 'mt-2';
+
         const video = document.createElement('iframe');
         video.src = mod.video;
         video.className = 'w-full aspect-video rounded';
         video.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
         video.allowFullscreen = true;
         videoWrapper.appendChild(video);
+
+        // Assemble card
+        card.appendChild(titleRow);
+        card.appendChild(standaloneDiv);
+        card.appendChild(platformDiv);
+        card.appendChild(desc);
+        card.appendChild(links);
         card.appendChild(videoWrapper);
-
-        // Pros & Cons
-        if ((mod.pros && mod.pros.length > 0) || (mod.cons && mod.cons.length > 0)) {
-          const prosConsContainer = document.createElement('div');
-          prosConsContainer.className = 'mt-2 grid grid-cols-2 gap-2 text-xs opacity-80';
-
-          const prosDiv = document.createElement('div');
-          (mod.pros || []).forEach(pro => {
-            const p = document.createElement('p');
-            p.className = 'text-green-400';
-            p.textContent = `+ ${pro}`;
-            prosDiv.appendChild(p);
-          });
-
-          const consDiv = document.createElement('div');
-          (mod.cons || []).forEach(con => {
-            const p = document.createElement('p');
-            p.className = 'text-red-400';
-            p.textContent = `- ${con}`;
-            consDiv.appendChild(p);
-          });
-
-          prosConsContainer.appendChild(prosDiv);
-          prosConsContainer.appendChild(consDiv);
-          card.appendChild(prosConsContainer);
-        }
 
         container.appendChild(card);
       });
@@ -225,6 +189,7 @@
       return stars;
     }
 
+    // Toggle sort
     document.getElementById('sort-button').addEventListener('click', () => {
       sorted = !sorted;
       const modsToRender = sorted 
@@ -233,6 +198,7 @@
       renderMods(modsToRender);
     });
 
+    // Search filter
     document.getElementById('search-input').addEventListener('input', e => {
       const term = e.target.value.toLowerCase();
       const filtered = (sorted ? [...mods].sort((a, b) => (b.rating || 0) - (a.rating || 0)) : originalMods)
@@ -240,6 +206,7 @@
       renderMods(filtered);
     });
 
+    // Popup functions
     const overlay = document.getElementById('popup-overlay');
     const popupContent = document.getElementById('popup-content');
     const popupClose = document.getElementById('popup-close');
