@@ -66,7 +66,7 @@
         const card = document.createElement('div');
         card.className = 'bg-gray-800 p-3 rounded-md shadow-sm flex flex-col h-full';
 
-        // Title + Rating Row
+        // Title + Rating
         const titleRow = document.createElement('div');
         titleRow.className = 'flex justify-between items-center mb-1';
 
@@ -83,63 +83,53 @@
         titleRow.appendChild(rating);
         card.appendChild(titleRow);
 
+        // Standalone line
+        const standaloneWrapper = document.createElement('div');
+        standaloneWrapper.className = 'mb-1 text-sm flex items-center space-x-1';
 
-// --- Standalone (separate line, smaller) ---
-const standaloneWrapper = document.createElement('div');
-standaloneWrapper.className = 'mb-1 text-sm flex items-center space-x-1';
+        const standaloneLabel = document.createElement('span');
+        standaloneLabel.textContent = 'Standalone:';
+        standaloneLabel.className = 'text-white';
 
-const standaloneLabel = document.createElement('span');
-standaloneLabel.textContent = 'Standalone:';
-standaloneLabel.className = 'text-white';
+        const yesSpan = document.createElement('span');
+        yesSpan.textContent = 'Yes';
+        yesSpan.className = mod.standalone
+          ? 'border border-white bg-yellow-400 bg-opacity-50 px-[4px] py-[1px] rounded-sm text-[10px] inline-block text-white'
+          : 'text-white text-[10px]';
 
-const yesSpan = document.createElement('span');
-yesSpan.textContent = 'Yes';
-yesSpan.className = mod.standalone
-  ? 'border border-white bg-yellow-400 bg-opacity-50 px-1 py-[1px] rounded-full text-[10px] inline-block text-white'
-  : 'text-white text-[10px]';
+        const noSpan = document.createElement('span');
+        noSpan.textContent = 'No';
+        noSpan.className = !mod.standalone
+          ? 'border border-white bg-yellow-400 bg-opacity-50 px-[4px] py-[1px] rounded-sm text-[10px] inline-block text-white'
+          : 'text-white text-[10px]';
 
-const noSpan = document.createElement('span');
-noSpan.textContent = 'No';
-noSpan.className = !mod.standalone
-  ? 'border border-white bg-yellow-400 bg-opacity-50 px-1 py-[1px] rounded-full text-[10px] inline-block text-white'
-  : 'text-white text-[10px]';
+        standaloneWrapper.appendChild(standaloneLabel);
+        standaloneWrapper.appendChild(yesSpan);
+        standaloneWrapper.appendChild(noSpan);
+        card.appendChild(standaloneWrapper);
 
-standaloneWrapper.appendChild(standaloneLabel);
-standaloneWrapper.appendChild(yesSpan);
-standaloneWrapper.appendChild(noSpan);
-card.appendChild(standaloneWrapper);
+        // Platform line
+        const platformWrapper = document.createElement('div');
+        platformWrapper.className = 'mb-1 text-sm flex items-center space-x-1';
 
-// --- Platform (separate line, smaller) ---
-const platformWrapper = document.createElement('div');
-platformWrapper.className = 'mb-1 text-sm flex items-center space-x-1';
+        const platformLabel = document.createElement('span');
+        platformLabel.textContent = 'Platform:';
+        platformLabel.className = 'text-white';
 
-const platformLabel = document.createElement('span');
-platformLabel.textContent = 'Platform:';
-platformLabel.className = 'text-white';
+        platformWrapper.appendChild(platformLabel);
 
-platformWrapper.appendChild(platformLabel);
+        const platforms = ['SoC', 'CS', 'CoP'];
 
-const platforms = ['SoC', 'CS', 'CoP'];
+        platforms.forEach(plat => {
+          const span = document.createElement('span');
+          span.textContent = plat;
+          span.className = (mod.platform === plat)
+            ? 'border border-white bg-yellow-400 bg-opacity-50 px-[4px] py-[1px] rounded-sm text-[10px] inline-block text-white'
+            : 'text-white text-[10px]';
+          platformWrapper.appendChild(span);
+        });
 
-platforms.forEach((plat, index) => {
-  const span = document.createElement('span');
-  span.textContent = plat;
-  span.className = (mod.platform === plat)
-    ? 'border border-white bg-yellow-400 bg-opacity-50 px-1 py-[1px] rounded-full text-[10px] inline-block text-white'
-    : 'text-white text-[10px]';
-  
-  platformWrapper.appendChild(span);
-});
-
-card.appendChild(platformWrapper);
-
-
-        
-
-
-
-        
-
+        card.appendChild(platformWrapper);
 
         // Description
         const desc = document.createElement('p');
