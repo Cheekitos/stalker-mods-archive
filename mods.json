@@ -9,7 +9,7 @@
 			},
 			{
 				"label": "Install Guide",
-				"url": "mod04-incubator.html"
+				"url": "guides/mod04-incubator.html"
 			}
 		],
 		"video": "https://www.youtube.com/embed/xixdI00LpNw?si=6E_9ucVBBEP5A3-_",
@@ -33,7 +33,7 @@
 			},
 			{
 				"label": "Install Guide",
-				"url": "mod03-goldsphere.html"
+				"url": "guides/mod03-goldsphere.html"
 			}
 		],
 		"video": "https://www.youtube.com/embed/41uJQyhhItQ?si=iR27croZKrkzzif0",
