@@ -83,8 +83,6 @@
         titleRow.appendChild(rating);
         card.appendChild(titleRow);
 
-        
-
         // Standalone label + pill
         const standaloneWrapper = document.createElement('div');
 standaloneWrapper.className = 'mb-1 text-sm';
@@ -112,6 +110,35 @@ standaloneWrapper.appendChild(yesSpan);
 standaloneWrapper.appendChild(space);
 standaloneWrapper.appendChild(noSpan);
 card.appendChild(standaloneWrapper);
+
+        // Platform label + pills
+const platformWrapper = document.createElement('div');
+platformWrapper.className = 'mb-1 text-sm';
+
+const platformLabel = document.createElement('span');
+platformLabel.textContent = 'Platform: ';
+platformLabel.className = 'text-white';
+
+// Platform options
+const platforms = ['Soc', 'CS', 'CoP'];
+
+platforms.forEach((plat, index) => {
+  const span = document.createElement('span');
+  span.textContent = plat;
+  if (mod.platform === plat) {
+    span.className = 'border border-white bg-yellow-400 bg-opacity-50 px-1 py-[1px] rounded-full text-xs inline-block text-white';
+  } else {
+    span.className = 'text-white text-xs';
+  }
+  
+  platformWrapper.appendChild(span);
+  if (index < platforms.length - 1) {
+    platformWrapper.appendChild(document.createTextNode(' ')); // space between pills
+  }
+});
+
+card.appendChild(platformWrapper);
+
 
 
         
