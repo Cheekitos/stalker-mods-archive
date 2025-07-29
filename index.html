@@ -49,7 +49,7 @@
 
     async function loadMods() {
       try {
-        const response = await fetch('mods.json?v=' + Date.now()); // Cache-busting
+        const response = await fetch('mods.json?v=' + Date.now());
         mods = await response.json();
         originalMods = [...mods];
         renderMods(mods);
@@ -66,7 +66,6 @@
         const card = document.createElement('div');
         card.className = 'bg-gray-800 p-3 rounded-md shadow-sm flex flex-col h-full';
 
-        // Title + Rating
         const titleRow = document.createElement('div');
         titleRow.className = 'flex justify-between items-center mb-1';
 
@@ -82,44 +81,48 @@
         titleRow.appendChild(title);
         titleRow.appendChild(rating);
 
-        // Standalone
-        const standaloneDiv = document.createElement('div');
-        standaloneDiv.className = 'text-xs text-white mb-1';
-        standaloneDiv.innerHTML = 'Standalone: ';
+        // Add separator line below title
+        const separator1 = document.createElement('hr');
+        separator1.className = 'border-t border-gray-700 my-2';
 
-        const yesSpan = document.createElement('span');
-        yesSpan.textContent = 'Yes';
-        yesSpan.className = mod.standalone
-          ? 'border border-white bg-yellow-400 bg-opacity-45 px-1 py-[1px] rounded-sm text-[9px] inline-block text-white ml-1'
-          : 'text-white text-[9px] ml-1';
+        // Standalone row
+        const standaloneRow = document.createElement('div');
+        standaloneRow.className = 'text-sm mb-1';
+        const standaloneLabel = document.createElement('span');
+        standaloneLabel.textContent = 'Standalone:';
+        const standaloneValue = document.createElement('span');
+        standaloneValue.textContent = mod.standalone === 'Yes' ? ' Yes' : ' No';
+        const pill = document.createElement('span');
+        pill.textContent = mod.standalone;
+        pill.className = 'border border-white bg-yellow-400 bg-opacity-50 px-1 py-[1px] rounded-sm text-[9px] inline-block text-white ml-1';
+        standaloneRow.appendChild(standaloneLabel);
+        standaloneRow.appendChild(pill);
 
-        const noSpan = document.createElement('span');
-        noSpan.textContent = 'No';
-        noSpan.className = !mod.standalone
-          ? 'border border-white bg-yellow-400 bg-opacity-45 px-1 py-[1px] rounded-sm text-[9px] inline-block text-white ml-1'
-          : 'text-white text-[9px] ml-1';
+        // Platform row
+        const platformRow = document.createElement('div');
+        platformRow.className = 'text-sm mb-2';
+        const platformLabel = document.createElement('span');
+        platformLabel.textContent = 'Platform:';
+        platformRow.appendChild(platformLabel);
 
-        standaloneDiv.appendChild(yesSpan);
-        standaloneDiv.appendChild(document.createTextNode(' '));
-        standaloneDiv.appendChild(noSpan);
-
-        // Platform
-        const platformDiv = document.createElement('div');
-        platformDiv.className = 'text-xs text-white mb-1';
-        platformDiv.innerHTML = 'Platform: ';
-
-        ['SoC', 'CS', 'CoP'].forEach(plat => {
+        ['SoC', 'CS', 'CoP'].forEach(opt => {
           const span = document.createElement('span');
-          span.textContent = plat;
-          span.className = (mod.platform === plat)
-            ? 'border border-white bg-yellow-400 bg-opacity-50 px-1 py-[1px] rounded-sm text-[9px] inline-block text-white ml-1'
-            : 'text-white text-[9px] ml-1';
-          platformDiv.appendChild(span);
+          span.textContent = opt;
+          if (mod.platform === opt) {
+            span.className = 'border border-white bg-yellow-400 bg-opacity-50 px-1 py-[1px] rounded-sm text-[9px] inline-block text-white ml-1';
+          } else {
+            span.className = 'text-[9px] inline-block ml-1 text-white opacity-70';
+          }
+          platformRow.appendChild(span);
         });
 
         const desc = document.createElement('p');
         desc.className = 'text-gray-400 mb-1 text-sm';
         desc.textContent = mod.description;
+
+        // Add separator line below description
+        const separator2 = document.createElement('hr');
+        separator2.className = 'border-t border-gray-700 my-2';
 
         const links = document.createElement('div');
         links.className = 'mb-2';
@@ -139,7 +142,6 @@
           links.appendChild(a);
         });
 
-        // Embed video
         const videoWrapper = document.createElement('div');
         videoWrapper.className = 'mt-2';
 
@@ -150,11 +152,12 @@
         video.allowFullscreen = true;
         videoWrapper.appendChild(video);
 
-        // Assemble card
         card.appendChild(titleRow);
-        card.appendChild(standaloneDiv);
-        card.appendChild(platformDiv);
+        card.appendChild(separator1);
+        card.appendChild(standaloneRow);
+        card.appendChild(platformRow);
         card.appendChild(desc);
+        card.appendChild(separator2);
         card.appendChild(links);
         card.appendChild(videoWrapper);
 
@@ -189,7 +192,6 @@
       return stars;
     }
 
-    // Toggle sort
     document.getElementById('sort-button').addEventListener('click', () => {
       sorted = !sorted;
       const modsToRender = sorted 
@@ -198,7 +200,6 @@
       renderMods(modsToRender);
     });
 
-    // Search filter
     document.getElementById('search-input').addEventListener('input', e => {
       const term = e.target.value.toLowerCase();
       const filtered = (sorted ? [...mods].sort((a, b) => (b.rating || 0) - (a.rating || 0)) : originalMods)
@@ -206,7 +207,6 @@
       renderMods(filtered);
     });
 
-    // Popup functions
     const overlay = document.getElementById('popup-overlay');
     const popupContent = document.getElementById('popup-content');
     const popupClose = document.getElementById('popup-close');
