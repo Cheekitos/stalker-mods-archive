@@ -4,14 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cheeki's Mods Archive</title>
-  <meta name="description" content="Archive of S.T.A.L.K.E.R. story mods by Cheeki, including guides and videos.">
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous" defer></script>
-  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
     .hide-videos iframe {
       display: none;
     }
 
+    /* Prevent titles, platform highlight block, and rating stars from spilling out */
     h3, .platform-block {
       white-space: nowrap;
       overflow: hidden;
@@ -26,7 +26,7 @@
     }
   </style>
 </head>
-<body class="bg-gray-900 text-white font-sans p-4" style="font-family: system-ui, sans-serif;">
+<body class="bg-gray-900 text-white font-sans p-4">
   <div class="max-w-6xl mx-auto">
     <!-- Title and Video Toggle -->
     <div class="flex justify-between items-center mb-1">
@@ -87,7 +87,6 @@
     function renderMods(modArray) {
       const container = document.getElementById('mod-list');
       container.innerHTML = '';
-      const fragment = document.createDocumentFragment();
 
       modArray.forEach(mod => {
         const card = document.createElement('div');
@@ -99,6 +98,10 @@
         const title = document.createElement('h3');
         title.className = 'text-2xl font-semibold text-gray-100 drop-shadow';
         title.textContent = mod.title;
+        // prevent line break + overflow
+        title.style.whiteSpace = 'nowrap';
+        title.style.overflow = 'hidden';
+        title.style.textOverflow = 'ellipsis';
 
         const rating = document.createElement('div');
         rating.className = 'flex items-center space-x-0.5 text-yellow-400 rating';
@@ -107,6 +110,7 @@
         titleRow.appendChild(title);
         titleRow.appendChild(rating);
 
+        // standalone
         const standaloneDiv = document.createElement('div');
         standaloneDiv.className = 'text-xs text-white mb-2 flex items-baseline gap-2';
 
@@ -120,27 +124,44 @@
 
         const yesSpan = document.createElement('span');
         yesSpan.textContent = 'Yes';
-        yesSpan.className = mod.standalone ? 'border border-white px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight' : 'text-gray-400 text-[10px] leading-tight';
-        if (mod.standalone) yesSpan.style.backgroundColor = 'rgba(250, 204, 21, 0.45)';
+        yesSpan.className = mod.standalone
+          ? 'border border-white px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight'
+          : 'text-gray-400 text-[10px] leading-tight';
+        if (mod.standalone) {
+          yesSpan.style.backgroundColor = 'rgba(250, 204, 21, 0.45)';
+        }
+
+        standaloneWrapper.appendChild(yesSpan);
 
         const sep = document.createElement('span');
         sep.textContent = '|';
         sep.className = 'text-gray-400 text-[10px] leading-tight';
+        standaloneWrapper.appendChild(sep);
 
         const noSpan = document.createElement('span');
         noSpan.textContent = 'No';
-        noSpan.className = !mod.standalone ? 'border border-white px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight' : 'text-gray-400 text-[10px] leading-tight';
-        if (!mod.standalone) noSpan.style.backgroundColor = 'rgba(250, 204, 21, 0.45)';
+        noSpan.className = !mod.standalone
+          ? 'border border-white px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight'
+          : 'text-gray-400 text-[10px] leading-tight';
+        if (!mod.standalone) {
+          noSpan.style.backgroundColor = 'rgba(250, 204, 21, 0.45)';
+        }
 
-        standaloneWrapper.append(yesSpan, sep, noSpan);
+        standaloneWrapper.appendChild(noSpan);
+
         standaloneDiv.appendChild(standaloneWrapper);
 
+        // Platform
         const platformDiv = document.createElement('div');
         platformDiv.className = 'text-xs text-white mb-2 flex items-baseline gap-2 platform-block';
+        platformDiv.style.whiteSpace = 'nowrap';
+        platformDiv.style.overflow = 'hidden';
+        platformDiv.style.textOverflow = 'ellipsis';
 
         const labelPlatform = document.createElement('span');
         labelPlatform.textContent = 'Platform:';
         labelPlatform.className = 'leading-tight';
+        platformDiv.appendChild(labelPlatform);
 
         const platformWrapper = document.createElement('div');
         platformWrapper.className = 'flex items-center gap-1';
@@ -148,8 +169,11 @@
         ['Shadow of Chernobyl', 'Clear Sky', 'Call of Pripyat'].forEach((plat, idx, arr) => {
           const span = document.createElement('span');
           span.textContent = plat;
-          span.className = (mod.platform === plat) ? 'border border-white bg-yellow-400 bg-opacity-50 px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight' : 'text-gray-400 text-[10px] leading-tight';
+          span.className = (mod.platform === plat)
+            ? 'border border-white bg-yellow-400 bg-opacity-50 px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight'
+            : 'text-gray-400 text-[10px] leading-tight';
           platformWrapper.appendChild(span);
+
           if (idx < arr.length - 1) {
             const sep = document.createElement('span');
             sep.textContent = '|';
@@ -158,7 +182,7 @@
           }
         });
 
-        platformDiv.append(labelPlatform, platformWrapper);
+        platformDiv.appendChild(platformWrapper);
 
         const desc = document.createElement('p');
         desc.className = 'text-gray-400 mb-2 text-sm';
@@ -190,60 +214,87 @@
         video.className = 'w-full aspect-video rounded';
         video.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
         video.allowFullscreen = true;
-        video.loading = 'lazy';
-        video.title = `Gameplay video of ${mod.title}`;
         videoWrapper.appendChild(video);
 
-        card.append(titleRow, standaloneDiv, platformDiv, desc, links, videoWrapper);
-        fragment.appendChild(card);
-      });
+        card.appendChild(titleRow);
+        card.appendChild(standaloneDiv);
+        card.appendChild(platformDiv);
+        card.appendChild(desc);
+        card.appendChild(links);
+        card.appendChild(videoWrapper);
 
-      container.appendChild(fragment);
+        container.appendChild(card);
+      });
     }
 
     function renderStars(rating) {
-      const full = '<svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>';
-      const half = '<svg class="w-4 h-4" viewBox="0 0 20 20"><defs><linearGradient id="halfGrad" x1="0" x2="100%"><stop offset="50%" stop-color="#facc15"/><stop offset="50%" stop-color="#4b5563"/></linearGradient></defs><path fill="url(#halfGrad)" d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>';
-      const empty = '<svg class="w-4 h-4 fill-gray-600" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>';
-      let stars = '';
+      const fullStar = '<svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>';
+      const halfStar = `<svg class="w-4 h-4" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="halfGrad" x1="0" x2="100%" y1="0" y2="0"><stop offset="50%" stop-color="#facc15"/><stop offset="50%" stop-color="#4b5563"/></linearGradient></defs><path fill="url(#halfGrad)" d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>`;
+      let starsHTML = '';
       for (let i = 1; i <= 5; i++) {
-        stars += (rating >= i) ? full : (rating + 0.5 >= i) ? half : empty;
+        if (rating >= i) {
+          starsHTML += fullStar;
+        } else if (rating + 0.5 >= i) {
+          starsHTML += halfStar;
+        } else {
+          starsHTML += `<svg class="w-4 h-4 fill-gray-600" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>`;
+        }
       }
-      return stars;
+      return starsHTML;
     }
 
-    function openPopup(url) {
-      popupContent.innerHTML = 'Loading...';
-      overlay.classList.remove('hidden');
-      fetch(url + '?v=' + Date.now()).then(res => res.text()).then(html => popupContent.innerHTML = html).catch(() => popupContent.innerHTML = '<p class="text-red-400">Failed to load guide.</p>');
-    }
-
+    // Popup code - dynamic content loading without iframe
     const overlay = document.getElementById('popup-overlay');
     const popupContent = document.getElementById('popup-content');
     const popupClose = document.getElementById('popup-close');
 
-    popupClose.addEventListener('click', () => overlay.classList.add('hidden'));
-    overlay.addEventListener('click', e => { if (e.target === overlay) overlay.classList.add('hidden'); });
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') overlay.classList.add('hidden'); });
+    function openPopup(url) {
+      popupContent.innerHTML = 'Loading...';
+      overlay.classList.remove('hidden');
+      fetch(url + '?v=' + Date.now())
+        .then(res => {
+          if (!res.ok) throw new Error('Failed to load');
+          return res.text();
+        })
+        .then(html => {
+          popupContent.innerHTML = html;
+          popupContent.scrollTop = 0;
+        })
+        .catch(() => {
+          popupContent.innerHTML = '<p class="text-red-400">Failed to load guide.</p>';
+        });
+    }
 
+    popupClose.addEventListener('click', () => overlay.classList.add('hidden'));
+    overlay.addEventListener('click', e => {
+      if (e.target === overlay) overlay.classList.add('hidden');
+    });
+
+    // Sorting and searching
     document.getElementById('sort-button').addEventListener('click', () => {
       sorted = !sorted;
-      const toRender = sorted ? [...mods].sort((a, b) => (b.rating || 0) - (a.rating || 0)) : originalMods;
+      const toRender = sorted
+        ? [...mods].sort((a, b) => (b.rating || 0) - (a.rating || 0))
+        : originalMods;
       renderMods(toRender);
-      document.getElementById('sort-button').textContent = sorted ? 'Sort: Highest Rated' : 'Sort by Rating';
+      document.getElementById('sort-button').textContent = sorted ? 'Unsort' : 'Sort by Rating';
     });
 
     document.getElementById('search-input').addEventListener('input', e => {
       const q = e.target.value.toLowerCase();
-      const filtered = mods.filter(mod => mod.title.toLowerCase().includes(q) || mod.description.toLowerCase().includes(q) || (mod.platform && mod.platform.toLowerCase().includes(q)));
+      const filtered = mods.filter(mod =>
+        mod.title.toLowerCase().includes(q) ||
+        mod.description.toLowerCase().includes(q) ||
+        (mod.platform && mod.platform.toLowerCase().includes(q))
+      );
       renderMods(filtered);
     });
 
+    // Toggle videos visibility
     document.getElementById('toggle-videos').addEventListener('click', () => {
       document.body.classList.toggle('hide-videos');
       const btn = document.getElementById('toggle-videos');
-      const hidden = document.body.classList.contains('hide-videos');
-      btn.textContent = hidden ? 'Show Videos' : 'Hide Videos';
+      btn.textContent = btn.textContent === 'Hide Videos' ? 'Show Videos' : 'Hide Videos';
     });
 
     loadMods();
