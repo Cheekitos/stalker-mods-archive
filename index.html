@@ -27,7 +27,6 @@
 </head>
 <body class="bg-gray-900 text-white font-sans p-4">
   <div class="max-w-6xl mx-auto">
-    <!-- Title and Video Toggle -->
     <div class="flex justify-between items-center mb-1">
       <h1 class="text-3xl font-bold">Cheeki's Mods Archive</h1>
       <button id="toggle-videos" aria-label="Toggle videos visibility" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
@@ -42,7 +41,6 @@
       All credits go to the Authors of these mods.
     </p>
 
-    <!-- Controls -->
     <div class="flex flex-wrap items-center gap-2 mb-4">
       <button id="sort-button" aria-label="Sort mods by rating" class="bg-yellow-500 hover:bg-yellow-600 text-black text-sm font-medium py-1 px-3 rounded">
         Sort by Rating
@@ -50,16 +48,13 @@
       <input id="search-input" type="text" aria-label="Search mods" placeholder="Search mods..." class="flex-1 min-w-[150px] px-2 py-1 text-sm rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500" />
     </div>
 
-    <!-- Mod List -->
     <div id="mod-list" class="grid gap-4 grid-cols-[repeat(auto-fill,minmax(300px,1fr))]"></div>
 
-    <!-- Footer -->
     <footer class="mt-8 text-center text-sm text-gray-500">
       Cheeki's Mods Archive - <a href="https://linktr.ee/cheekibreekii" target="_blank" class="text-blue-400 hover:underline">Check me Out!</a>
     </footer>
   </div>
 
-  <!-- Popup Overlay -->
   <div id="popup-overlay" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center hidden z-50">
     <div class="bg-gray-900 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-auto relative p-4">
       <button id="popup-close" aria-label="Close popup" class="absolute top-2 right-2 text-gray-400 hover:text-white text-xl">&times;</button>
@@ -103,7 +98,7 @@
 
         const rating = document.createElement('div');
         rating.className = 'flex items-center space-x-0.5 text-yellow-400 rating';
-        rating.innerHTML = renderStars(mod.rating || 0);
+        rating.innerHTML = renderStars(mod.rating);
 
         titleRow.appendChild(title);
         titleRow.appendChild(rating);
@@ -224,7 +219,7 @@
 
     function renderStars(rating) {
       const fullStar = '<svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>';
-      const halfStar = `<svg class="w-4 h-4" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="halfGrad" x1="0" x2="100%" y1="0" y2="0"><stop offset="50%" stop-color="#facc15"/><stop offset="50%" stop-color="#4b5563"/></linearGradient></defs><path fill="url(#halfGrad)" d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>`;
+      const halfStar = `<svg class="w-4 h-4" viewBox="0 0 20 20"><defs><linearGradient id="halfGrad" x1="0" x2="100%" y1="0" y2="0"><stop offset="50%" stop-color="#facc15"/><stop offset="50%" stop-color="#4b5563"/></linearGradient></defs><path fill="url(#halfGrad)" d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>`;
       let starsHTML = '';
       for (let i = 1; i <= 5; i++) {
         if (rating >= i) {
@@ -267,7 +262,7 @@
     document.getElementById('sort-button').addEventListener('click', () => {
       sorted = !sorted;
       const toRender = sorted
-        ? [...mods].sort((a, b) => (b.rating || 0) - (a.rating || 0))
+        ? [...mods].sort((a, b) => parseFloat(b.rating) - parseFloat(a.rating))
         : originalMods;
       renderMods(toRender);
     });
@@ -282,11 +277,10 @@
       renderMods(filtered);
     });
 
-    const toggleBtn = document.getElementById('toggle-videos');
-    toggleBtn.addEventListener('click', () => {
-      document.body.classList.toggle('hide-videos');
-      const hidden = document.body.classList.contains('hide-videos');
-      toggleBtn.textContent = hidden ? 'Show Videos' : 'Hide Videos';
+    document.getElementById('toggle-videos').addEventListener('click', () => {
+      const btn = document.getElementById('toggle-videos');
+      const isHiding = document.body.classList.toggle('hide-videos');
+      btn.textContent = isHiding ? 'Show Videos' : 'Hide Videos';
     });
 
     loadMods();
