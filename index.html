@@ -94,37 +94,46 @@
         titleRow.appendChild(rating);
 
         // standalone
-        const standaloneDiv = document.createElement('div');
-        standaloneDiv.className = 'text-xs text-white mb-2 flex items-baseline gap-2';
+const standaloneDiv = document.createElement('div');
+standaloneDiv.className = 'text-xs text-white mb-2 flex items-baseline gap-2';
 
-        const labelStandalone = document.createElement('span');
-        labelStandalone.textContent = 'Standalone:';
-        labelStandalone.className = 'leading-tight';
-        standaloneDiv.appendChild(labelStandalone);
+const labelStandalone = document.createElement('span');
+labelStandalone.textContent = 'Standalone:';
+labelStandalone.className = 'leading-tight';
+standaloneDiv.appendChild(labelStandalone);
 
-        const standaloneWrapper = document.createElement('div');
-        standaloneWrapper.className = 'flex items-center gap-1';
+const standaloneWrapper = document.createElement('div');
+standaloneWrapper.className = 'flex items-center gap-1';
 
-        const yesSpan = document.createElement('span');
-        yesSpan.textContent = 'Yes';
-        yesSpan.className = mod.standalone
-          ? 'border border-white bg-yellow-400 bg-opacity-45 px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight'
-          : 'text-gray-400 text-[10px] leading-tight';
-        standaloneWrapper.appendChild(yesSpan);
+const yesSpan = document.createElement('span');
+yesSpan.textContent = 'Yes';
+yesSpan.className = mod.standalone
+  ? 'border border-white px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight'
+  : 'text-gray-400 text-[10px] leading-tight';
+if (mod.standalone) {
+  yesSpan.style.backgroundColor = 'rgba(250, 204, 21, 0.45)';
+}
 
-        const sep = document.createElement('span');
-        sep.textContent = '|';
-        sep.className = 'text-gray-400 text-[10px] leading-tight';
-        standaloneWrapper.appendChild(sep);
+standaloneWrapper.appendChild(yesSpan);
 
-        const noSpan = document.createElement('span');
-        noSpan.textContent = 'No';
-        noSpan.className = !mod.standalone
-          ? 'border border-white bg-yellow-400 bg-opacity-45 px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight'
-          : 'text-gray-400 text-[10px] leading-tight';
-        standaloneWrapper.appendChild(noSpan);
+const sep = document.createElement('span');
+sep.textContent = '|';
+sep.className = 'text-gray-400 text-[10px] leading-tight';
+standaloneWrapper.appendChild(sep);
 
-        standaloneDiv.appendChild(standaloneWrapper);
+const noSpan = document.createElement('span');
+noSpan.textContent = 'No';
+noSpan.className = !mod.standalone
+  ? 'border border-white px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight'
+  : 'text-gray-400 text-[10px] leading-tight';
+if (!mod.standalone) {
+  noSpan.style.backgroundColor = 'rgba(250, 204, 21, 0.45)';
+}
+
+standaloneWrapper.appendChild(noSpan);
+
+standaloneDiv.appendChild(standaloneWrapper);
+
 
         // Platform
         const platformDiv = document.createElement('div');
