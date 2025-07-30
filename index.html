@@ -46,18 +46,46 @@
     </footer>
   </div>
 
-  <!-- Popup Overlay with iframe, reduced size -->
+  <!-- Popup Overlay -->
 <div id="popup-overlay" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center hidden z-50">
-  <div class="bg-gray-900 rounded-lg max-w-3xl w-[75%] relative p-4 flex flex-col max-h-[67.5vh]">
+  <div class="bg-gray-900 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-auto relative p-4">
     <button id="popup-close" class="absolute top-2 right-2 text-gray-400 hover:text-white text-xl">&times;</button>
-    <iframe id="popup-iframe" src="" class="w-full h-[60vh] border-none rounded"></iframe>
+    <div id="popup-content" class="text-sm text-gray-200">Loading...</div>
   </div>
 </div>
 
+<script>
+  const overlay = document.getElementById('popup-overlay');
+  const popupContent = document.getElementById('popup-content');
+  const popupClose = document.getElementById('popup-close');
 
-  </div>
+  // Open popup and inject HTML content dynamically
+  function openPopup(url) {
+    popupContent.innerHTML = 'Loading...';
+    overlay.classList.remove('hidden');
+    fetch(url + '?v=' + Date.now())
+      .then(res => res.text())
+      .then(html => {
+        popupContent.innerHTML = html;
+        // Optional: scroll popup content to top
+        popupContent.scrollTop = 0;
+      })
+      .catch(() => {
+        popupContent.innerHTML = '<p class="text-red-400">Failed to load guide.</p>';
+      });
+  }
 
-  <script>
+  // Close popup handlers
+  popupClose.addEventListener('click', () => overlay.classList.add('hidden'));
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) overlay.classList.add('hidden');
+  });
+
+  // Example: hook openPopup to your install guide links
+  // (You already do this in your original code)
+
+</script>
+
     let mods = [];
     let sorted = false;
     let originalMods = [];
