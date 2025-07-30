@@ -93,64 +93,72 @@
         titleRow.appendChild(title);
         titleRow.appendChild(rating);
 
-        const standaloneDiv = document.createElement('div');
-        standaloneDiv.className = 'text-xs text-white mb-2 flex items-center'; 
-        const labelStandalone = document.createElement('span');
-        labelStandalone.textContent = 'Standalone:';
-        labelStandalone.className = 'mr-2 leading-tight';
-        standaloneDiv.appendChild(labelStandalone);
 
-        const standaloneWrapper = document.createElement('div');
-        standaloneWrapper.className = 'inline-flex items-center gap-1 align-middle';
+        // standalone
+const standaloneDiv = document.createElement('div');
+standaloneDiv.className = 'text-xs text-white mb-2 flex items-center gap-2';
 
-        const yesSpan = document.createElement('span');
-        yesSpan.textContent = 'Yes';
-        yesSpan.className = mod.standalone
-          ? 'border border-white bg-yellow-400 bg-opacity-45 px-1.5 py-[1px] rounded-sm text-[9px] inline-block text-white leading-tight align-middle'
-          : 'text-gray-400 text-[9px] leading-tight align-middle';
-        standaloneWrapper.appendChild(yesSpan);
+const labelStandalone = document.createElement('span');
+labelStandalone.textContent = 'Standalone:';
+labelStandalone.className = 'leading-tight';
+standaloneDiv.appendChild(labelStandalone);
 
-        const sep = document.createElement('span');
-        sep.textContent = '|';
-        sep.className = 'text-gray-400 text-[9px] leading-tight align-middle';
-        standaloneWrapper.appendChild(sep);
+const standaloneWrapper = document.createElement('div');
+standaloneWrapper.className = 'flex items-center gap-1';
 
-        const noSpan = document.createElement('span');
-        noSpan.textContent = 'No';
-        noSpan.className = !mod.standalone
-          ? 'border border-white bg-yellow-400 bg-opacity-45 px-1.5 py-[1px] rounded-sm text-[9px] inline-block text-white leading-tight align-middle'
-          : 'text-gray-400 text-[9px] leading-tight align-middle';
-        standaloneWrapper.appendChild(noSpan);
+const yesSpan = document.createElement('span');
+yesSpan.textContent = 'Yes';
+yesSpan.className = mod.standalone
+  ? 'border border-white bg-yellow-400 bg-opacity-45 px-1.5 py-[1px] rounded-sm text-[9px] text-white leading-tight'
+  : 'text-gray-400 text-[9px] leading-tight';
+standaloneWrapper.appendChild(yesSpan);
 
-        standaloneDiv.appendChild(standaloneWrapper);
+const sep = document.createElement('span');
+sep.textContent = '|';
+sep.className = 'text-gray-400 text-[9px] leading-tight';
+standaloneWrapper.appendChild(sep);
 
-        const platformDiv = document.createElement('div');
-        platformDiv.className = 'text-xs text-white mb-2 flex items-center';
-        const labelPlatform = document.createElement('span');
-        labelPlatform.textContent = 'Platform:';
-        labelPlatform.className = 'mr-2 leading-tight';
-        platformDiv.appendChild(labelPlatform);
+const noSpan = document.createElement('span');
+noSpan.textContent = 'No';
+noSpan.className = !mod.standalone
+  ? 'border border-white bg-yellow-400 bg-opacity-45 px-1.5 py-[1px] rounded-sm text-[9px] text-white leading-tight'
+  : 'text-gray-400 text-[9px] leading-tight';
+standaloneWrapper.appendChild(noSpan);
 
-        const platformWrapper = document.createElement('div');
-        platformWrapper.className = 'inline-flex items-center gap-1 align-middle';
+standaloneDiv.appendChild(standaloneWrapper);
 
-        ['Shadow of Chernobyl', 'Clear Sky', 'Call of Pripyat'].forEach((plat, idx, arr) => {
-          const span = document.createElement('span');
-          span.textContent = plat;
-          span.className = (mod.platform === plat)
-            ? 'border border-white bg-yellow-400 bg-opacity-50 px-1.5 py-[1px] rounded-sm text-[9px] inline-block text-white leading-tight align-middle'
-            : 'text-gray-400 text-[9px] leading-tight align-middle';
-          platformWrapper.appendChild(span);
 
-          if (idx < arr.length - 1) {
-            const sep = document.createElement('span');
-            sep.textContent = '|';
-            sep.className = 'text-gray-400 text-[9px] leading-tight align-middle';
-            platformWrapper.appendChild(sep);
-          }
-        });
 
-        platformDiv.appendChild(platformWrapper);
+        // Platform
+const platformDiv = document.createElement('div');
+platformDiv.className = 'text-xs text-white mb-2 flex items-center gap-2';
+
+const labelPlatform = document.createElement('span');
+labelPlatform.textContent = 'Platform:';
+labelPlatform.className = 'leading-tight';
+platformDiv.appendChild(labelPlatform);
+
+const platformWrapper = document.createElement('div');
+platformWrapper.className = 'flex items-center gap-1';
+
+['Shadow of Chernobyl', 'Clear Sky', 'Call of Pripyat'].forEach((plat, idx, arr) => {
+  const span = document.createElement('span');
+  span.textContent = plat;
+  span.className = (mod.platform === plat)
+    ? 'border border-white bg-yellow-400 bg-opacity-50 px-1.5 py-[1px] rounded-sm text-[9px] text-white leading-tight'
+    : 'text-gray-400 text-[9px] leading-tight';
+  platformWrapper.appendChild(span);
+
+  if (idx < arr.length - 1) {
+    const sep = document.createElement('span');
+    sep.textContent = '|';
+    sep.className = 'text-gray-400 text-[9px] leading-tight';
+    platformWrapper.appendChild(sep);
+  }
+});
+
+platformDiv.appendChild(platformWrapper);
+
 
         const desc = document.createElement('p');
         desc.className = 'text-gray-400 mb-2 text-sm';
