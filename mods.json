@@ -22,7 +22,7 @@
 	{
 		"title": "GoldSphere",
 		"rating": 2.5,
-		"standalone": true,
+		"standalone": false,
 		"platform": "Clear Sky",
 		"description": "A sci-fi thriller that reimagines SoC lost 2004 storyline. Overhauled environments, deep plotlines and alternate endings, with a tense, atmospheric journey through a lonelier, more mysterious Zone.",
 		"links": [
@@ -62,7 +62,7 @@
 	{
 		"title": "Vector of Alienation",
 		"rating": 1,
-		"standalone": true,
+		"standalone": false,
 		"platform": "Call of Pripyat",
 		"description": "A sci-fi thriller that reimagines SoC lost 2004 storyline. Overhauled environments, deep plotlines and alternate endings, with a tense, atmospheric journey through a lonelier, more mysterious Zone.",
 		"links": [
