@@ -27,11 +27,16 @@
 </head>
 <body class="bg-gray-900 text-white font-sans p-4">
   <div class="max-w-6xl mx-auto">
-    <div class="flex justify-between items-center mb-1">
+    <div class="flex justify-between items-center mb-1 gap-2">
       <h1 class="text-3xl font-bold">Cheeki's Mods Archive</h1>
-      <button id="toggle-videos" aria-label="Toggle videos visibility" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
-        Hide Videos
-      </button>
+      <div class="flex gap-2">
+        <button id="contact-button" aria-label="Contact Me" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
+          Contact Me
+        </button>
+        <button id="toggle-videos" aria-label="Toggle videos visibility" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
+          Hide Videos
+        </button>
+      </div>
     </div>
 
     <h2 class="text-lg text-gray-400 mb-3">A collection of S.T.A.L.K.E.R. Story Mods</h2>
@@ -55,10 +60,23 @@
     </footer>
   </div>
 
+  <!-- Mod Install Guide Popup -->
   <div id="popup-overlay" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center hidden z-50">
     <div class="bg-gray-900 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-auto relative p-4">
       <button id="popup-close" aria-label="Close popup" class="absolute top-2 right-2 text-gray-400 hover:text-white text-xl">&times;</button>
       <div id="popup-content" class="text-sm text-gray-200">Loading...</div>
+    </div>
+  </div>
+
+  <!-- Contact Me Popup -->
+  <div id="contact-overlay" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center hidden z-50">
+    <div class="bg-gray-900 rounded-lg max-w-md w-full p-4 relative text-sm text-gray-200">
+      <button id="contact-close" aria-label="Close contact popup" class="absolute top-2 right-2 text-gray-400 hover:text-white text-xl">&times;</button>
+      <p class="mb-4">Only use this to report a broken link or incorrect information that needs fixing.</p>
+      <button id="reveal-email" class="bg-yellow-500 hover:bg-yellow-600 text-black text-xs font-medium py-1 px-2 rounded">
+        Reveal Email
+      </button>
+      <p id="email-text" class="mt-2 text-blue-400 hidden">cheeki.mods@example.com</p>
     </div>
   </div>
 
@@ -259,6 +277,13 @@
       if (e.target === overlay) overlay.classList.add('hidden');
     });
 
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        overlay.classList.add('hidden');
+        contactOverlay.classList.add('hidden');
+      }
+    });
+
     document.getElementById('sort-button').addEventListener('click', () => {
       sorted = !sorted;
       const toRender = sorted
@@ -281,6 +306,27 @@
       const btn = document.getElementById('toggle-videos');
       const isHiding = document.body.classList.toggle('hide-videos');
       btn.textContent = isHiding ? 'Show Videos' : 'Hide Videos';
+    });
+
+    // Contact popup logic
+    const contactButton = document.getElementById('contact-button');
+    const contactOverlay = document.getElementById('contact-overlay');
+    const contactClose = document.getElementById('contact-close');
+    const revealEmail = document.getElementById('reveal-email');
+    const emailText = document.getElementById('email-text');
+
+    contactButton.addEventListener('click', () => {
+      contactOverlay.classList.remove('hidden');
+      emailText.classList.add('hidden');
+    });
+
+    contactClose.addEventListener('click', () => contactOverlay.classList.add('hidden'));
+    contactOverlay.addEventListener('click', e => {
+      if (e.target === contactOverlay) contactOverlay.classList.add('hidden');
+    });
+
+    revealEmail.addEventListener('click', () => {
+      emailText.classList.remove('hidden');
     });
 
     loadMods();
