@@ -10,10 +10,9 @@
     .hide-videos iframe {
       display: none;
     }
-    /* Prevent awkward word breaks in titles */
-    h3 {
-      overflow-wrap: break-word;
-      word-break: break-word;
+    /* Prevent line breaks for titles and platform highlight block */
+    h3, .platform-block {
+      white-space: nowrap;
     }
   </style>
 </head>
@@ -22,11 +21,7 @@
     <!-- Title and Video Toggle -->
     <div class="flex justify-between items-center mb-1">
       <h1 class="text-3xl font-bold">Cheeki's Mods Archive</h1>
-      <button
-        id="toggle-videos"
-        aria-label="Toggle video visibility"
-        class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded"
-      >
+      <button id="toggle-videos" aria-label="Toggle videos visibility" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
         Hide Videos
       </button>
     </div>
@@ -40,51 +35,25 @@
 
     <!-- Controls -->
     <div class="flex flex-wrap items-center gap-2 mb-4">
-      <button
-        id="sort-button"
-        aria-label="Sort mods by rating"
-        class="bg-yellow-500 hover:bg-yellow-600 text-black text-sm font-medium py-1 px-3 rounded"
-      >
+      <button id="sort-button" aria-label="Sort mods by rating" class="bg-yellow-500 hover:bg-yellow-600 text-black text-sm font-medium py-1 px-3 rounded">
         Sort by Rating
       </button>
-      <input
-        id="search-input"
-        type="text"
-        placeholder="Search mods..."
-        class="flex-1 min-w-[150px] px-2 py-1 text-sm rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500"
-      />
+      <input id="search-input" type="text" placeholder="Search mods..." aria-label="Search mods" class="flex-1 min-w-[150px] px-2 py-1 text-sm rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500" />
     </div>
 
     <!-- Mod List -->
-    <div
-      id="mod-list"
-      class="grid gap-4 grid-cols-[repeat(auto-fill,minmax(300px,1fr))] items-stretch"
-    ></div>
+    <div id="mod-list" class="grid gap-4 grid-cols-[repeat(auto-fill,minmax(300px,1fr))] items-stretch"></div>
 
     <!-- Footer -->
     <footer class="mt-8 text-center text-sm text-gray-500">
-      Cheeki's Mods Archive - 
-      <a
-        href="https://linktr.ee/cheekibreekii"
-        target="_blank"
-        class="text-blue-400 hover:underline"
-      >Check me Out!</a>
+      Cheeki's Mods Archive - <a href="https://linktr.ee/cheekibreekii" target="_blank" class="text-blue-400 hover:underline">Check me Out!</a>
     </footer>
   </div>
 
   <!-- Popup Overlay -->
-  <div
-    id="popup-overlay"
-    class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center hidden z-50"
-  >
-    <div
-      class="bg-gray-900 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-auto relative p-4"
-    >
-      <button
-        id="popup-close"
-        class="absolute top-2 right-2 text-gray-400 hover:text-white text-xl"
-        aria-label="Close popup"
-      >&times;</button>
+  <div id="popup-overlay" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center hidden z-50">
+    <div class="bg-gray-900 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-auto relative p-4">
+      <button id="popup-close" aria-label="Close popup" class="absolute top-2 right-2 text-gray-400 hover:text-white text-xl">&times;</button>
       <div id="popup-content" class="text-sm text-gray-200">Loading...</div>
     </div>
   </div>
@@ -169,9 +138,9 @@
 
         standaloneDiv.appendChild(standaloneWrapper);
 
-        // Platform
+        // Platform block - NO WRAPPING
         const platformDiv = document.createElement('div');
-        platformDiv.className = 'text-xs text-white mb-2 flex items-baseline gap-2';
+        platformDiv.className = 'text-xs text-white mb-2 flex items-baseline gap-2 platform-block';
 
         const labelPlatform = document.createElement('span');
         labelPlatform.textContent = 'Platform:';
@@ -244,69 +213,61 @@
 
     function renderStars(rating) {
       const fullStar = '<svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>';
-      const halfStar = `<svg class="w-4 h-4" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="halfGrad" x1="0" x2="100%" y1="0" y2="0"><stop offset="50%" stop-color="#facc15"/><stop offset="50%" stop-color="#4b5563"/></linearGradient></defs><path fill="url(#halfGrad)" d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>`;
-      let starsHTML = '';
+      const emptyStar = '<svg class="w-4 h-4 fill-current text-gray-600" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>';
+      let stars = '';
       for (let i = 1; i <= 5; i++) {
-        if (rating >= i) {
-          starsHTML += fullStar;
-        } else if (rating + 0.5 >= i) {
-          starsHTML += halfStar;
-        } else {
-          starsHTML += `<svg class="w-4 h-4 fill-gray-600" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>`;
-        }
+        stars += i <= rating ? fullStar : emptyStar;
       }
-      return starsHTML;
+      return stars;
     }
 
-    // Popup code - dynamic content loading without iframe
-    const overlay = document.getElementById('popup-overlay');
-    const popupContent = document.getElementById('popup-content');
-    const popupClose = document.getElementById('popup-close');
-
     function openPopup(url) {
-      popupContent.innerHTML = 'Loading...';
+      const overlay = document.getElementById('popup-overlay');
+      const content = document.getElementById('popup-content');
       overlay.classList.remove('hidden');
-      fetch(url + '?v=' + Date.now())
-        .then(res => {
-          if (!res.ok) throw new Error('Failed to load');
-          return res.text();
-        })
+      content.textContent = 'Loading...';
+      fetch(url)
+        .then(res => res.text())
         .then(html => {
-          popupContent.innerHTML = html;
-          popupContent.scrollTop = 0;
+          content.innerHTML = html;
         })
         .catch(() => {
-          popupContent.innerHTML = '<p class="text-red-400">Failed to load guide.</p>';
+          content.textContent = 'Failed to load content.';
         });
     }
 
-    popupClose.addEventListener('click', () => overlay.classList.add('hidden'));
-    overlay.addEventListener('click', e => {
-      if (e.target === overlay) overlay.classList.add('hidden');
+    document.getElementById('popup-close').addEventListener('click', () => {
+      document.getElementById('popup-overlay').classList.add('hidden');
+      document.getElementById('popup-content').innerHTML = '';
     });
 
-    // Sorting and searching
+    document.getElementById('toggle-videos').addEventListener('click', e => {
+      const container = document.getElementById('mod-list');
+      if (container.classList.contains('hide-videos')) {
+        container.classList.remove('hide-videos');
+        e.target.textContent = 'Hide Videos';
+      } else {
+        container.classList.add('hide-videos');
+        e.target.textContent = 'Show Videos';
+      }
+    });
+
     document.getElementById('sort-button').addEventListener('click', () => {
-      sorted = !sorted;
-      const toRender = sorted
-        ? [...mods].sort((a, b) => (b.rating || 0) - (a.rating || 0))
-        : [...originalMods];
-      renderMods(toRender);
+      if (!sorted) {
+        mods.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+        sorted = true;
+      } else {
+        mods = [...originalMods];
+        sorted = false;
+      }
+      renderMods(mods);
     });
 
     document.getElementById('search-input').addEventListener('input', e => {
-      const term = e.target.value.toLowerCase();
-      const filtered = mods.filter(mod =>
-        mod.title.toLowerCase().includes(term) ||
-        mod.description.toLowerCase().includes(term)
-      );
+      const val = e.target.value.toLowerCase();
+      const filtered = originalMods.filter(mod => mod.title.toLowerCase().includes(val));
+      mods = filtered;
       renderMods(filtered);
-    });
-
-    // Video toggle
-    document.getElementById('toggle-videos').addEventListener('click', e => {
-      document.body.classList.toggle('hide-videos');
-      e.target.textContent = e.target.textContent === 'Hide Videos' ? 'Show Videos' : 'Hide Videos';
     });
 
     loadMods();
