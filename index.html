@@ -47,45 +47,14 @@
   </div>
 
   <!-- Popup Overlay -->
-<div id="popup-overlay" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center hidden z-50">
-  <div class="bg-gray-900 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-auto relative p-4">
-    <button id="popup-close" class="absolute top-2 right-2 text-gray-400 hover:text-white text-xl">&times;</button>
-    <div id="popup-content" class="text-sm text-gray-200">Loading...</div>
+  <div id="popup-overlay" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center hidden z-50">
+    <div class="bg-gray-900 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-auto relative p-4">
+      <button id="popup-close" class="absolute top-2 right-2 text-gray-400 hover:text-white text-xl">&times;</button>
+      <div id="popup-content" class="text-sm text-gray-200">Loading...</div>
+    </div>
   </div>
-</div>
 
-<script>
-  const overlay = document.getElementById('popup-overlay');
-  const popupContent = document.getElementById('popup-content');
-  const popupClose = document.getElementById('popup-close');
-
-  // Open popup and inject HTML content dynamically
-  function openPopup(url) {
-    popupContent.innerHTML = 'Loading...';
-    overlay.classList.remove('hidden');
-    fetch(url + '?v=' + Date.now())
-      .then(res => res.text())
-      .then(html => {
-        popupContent.innerHTML = html;
-        // Optional: scroll popup content to top
-        popupContent.scrollTop = 0;
-      })
-      .catch(() => {
-        popupContent.innerHTML = '<p class="text-red-400">Failed to load guide.</p>';
-      });
-  }
-
-  // Close popup handlers
-  popupClose.addEventListener('click', () => overlay.classList.add('hidden'));
-  overlay.addEventListener('click', e => {
-    if (e.target === overlay) overlay.classList.add('hidden');
-  });
-
-  // Example: hook openPopup to your install guide links
-  // (You already do this in your original code)
-
-</script>
-
+  <script>
     let mods = [];
     let sorted = false;
     let originalMods = [];
@@ -124,12 +93,13 @@
         titleRow.appendChild(title);
         titleRow.appendChild(rating);
 
-        // Standalone
+        // standalone
         const standaloneDiv = document.createElement('div');
         standaloneDiv.className = 'text-xs text-white mb-2 flex items-baseline gap-2';
 
         const labelStandalone = document.createElement('span');
         labelStandalone.textContent = 'Standalone:';
+        labelStandalone.className = 'leading-tight';
         standaloneDiv.appendChild(labelStandalone);
 
         const standaloneWrapper = document.createElement('div');
@@ -162,6 +132,7 @@
 
         const labelPlatform = document.createElement('span');
         labelPlatform.textContent = 'Platform:';
+        labelPlatform.className = 'leading-tight';
         platformDiv.appendChild(labelPlatform);
 
         const platformWrapper = document.createElement('div');
@@ -231,62 +202,69 @@
     function renderStars(rating) {
       const fullStar = '<svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>';
       const halfStar = `<svg class="w-4 h-4" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="halfGrad" x1="0" x2="100%" y1="0" y2="0"><stop offset="50%" stop-color="#facc15"/><stop offset="50%" stop-color="#4b5563"/></linearGradient></defs><path fill="url(#halfGrad)" d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>`;
-      const emptyStar = '<svg class="w-4 h-4 fill-gray-600" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>';
-
-      let stars = '';
+      let starsHTML = '';
       for (let i = 1; i <= 5; i++) {
         if (rating >= i) {
-          stars += fullStar;
-        } else if (rating >= i - 0.5) {
-          stars += halfStar;
+          starsHTML += fullStar;
+        } else if (rating + 0.5 >= i) {
+          starsHTML += halfStar;
         } else {
-          stars += emptyStar;
+          starsHTML += `<svg class="w-4 h-4 fill-gray-600" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>`;
         }
       }
-      return stars;
+      return starsHTML;
     }
 
+    // Popup code - dynamic content loading without iframe
+    const overlay = document.getElementById('popup-overlay');
+    const popupContent = document.getElementById('popup-content');
+    const popupClose = document.getElementById('popup-close');
+
+    function openPopup(url) {
+      popupContent.innerHTML = 'Loading...';
+      overlay.classList.remove('hidden');
+      fetch(url + '?v=' + Date.now())
+        .then(res => {
+          if (!res.ok) throw new Error('Failed to load');
+          return res.text();
+        })
+        .then(html => {
+          popupContent.innerHTML = html;
+          popupContent.scrollTop = 0;
+        })
+        .catch(() => {
+          popupContent.innerHTML = '<p class="text-red-400">Failed to load guide.</p>';
+        });
+    }
+
+    popupClose.addEventListener('click', () => overlay.classList.add('hidden'));
+    overlay.addEventListener('click', e => {
+      if (e.target === overlay) overlay.classList.add('hidden');
+    });
+
+    // Sorting and searching
     document.getElementById('sort-button').addEventListener('click', () => {
       sorted = !sorted;
-      const modsToRender = sorted 
-        ? [...mods].sort((a, b) => (b.rating || 0) - (a.rating || 0)) 
-        : originalMods;
-      renderMods(modsToRender);
+      const toRender = sorted
+        ? [...mods].sort((a, b) => (b.rating || 0) - (a.rating || 0))
+        : [...originalMods];
+      renderMods(toRender);
     });
 
     document.getElementById('search-input').addEventListener('input', e => {
       const term = e.target.value.toLowerCase();
-      const filtered = (sorted ? [...mods].sort((a, b) => (b.rating || 0) - (a.rating || 0)) : originalMods)
-        .filter(mod => mod.title.toLowerCase().includes(term) || mod.description.toLowerCase().includes(term));
+      const filtered = mods.filter(mod =>
+        mod.title.toLowerCase().includes(term) ||
+        (mod.description && mod.description.toLowerCase().includes(term))
+      );
       renderMods(filtered);
     });
 
-    const overlay = document.getElementById('popup-overlay');
-    const popupIframe = document.getElementById('popup-iframe');
-    const popupClose = document.getElementById('popup-close');
-
-    function openPopup(url) {
-      popupIframe.src = url + '?v=' + Date.now(); // Prevent cache
-      overlay.classList.remove('hidden');
-    }
-
-    popupClose.addEventListener('click', () => {
-      overlay.classList.add('hidden');
-      popupIframe.src = '';
-    });
-
-    overlay.addEventListener('click', e => {
-      if (e.target === overlay) {
-        overlay.classList.add('hidden');
-        popupIframe.src = '';
-      }
-    });
-
-    // Toggle Videos
-    document.getElementById('toggle-videos').addEventListener('click', function () {
-      const container = document.getElementById('mod-list');
-      const isHidden = container.classList.toggle('hide-videos');
-      this.textContent = isHidden ? 'Show Videos' : 'Hide Videos';
+    // Toggle videos visibility
+    const toggleVideosBtn = document.getElementById('toggle-videos');
+    toggleVideosBtn.addEventListener('click', () => {
+      document.body.classList.toggle('hide-videos');
+      toggleVideosBtn.textContent = document.body.classList.contains('hide-videos') ? 'Show Videos' : 'Hide Videos';
     });
 
     loadMods();
