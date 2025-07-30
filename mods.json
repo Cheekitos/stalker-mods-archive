@@ -1,7 +1,7 @@
 [
 	{
 		"title": "Incubator",
-		"rating": 1.5,
+		"rating": 0,
 		"standalone": true,
 		"platform": "Shadow of Chernobyl",
 		"description": "A sci-fi thriller that reimagines SoC lost 2004 storyline. Overhauled environments, deep plotlines and alternate endings, with a tense, atmospheric journey through a lonelier, more mysterious Zone.",
@@ -21,7 +21,7 @@
 	},
 	{
 		"title": "GoldSphere",
-		"rating": 2.5,
+		"rating": 1,
 		"standalone": false,
 		"platform": "Clear Sky",
 		"description": "A sci-fi thriller that reimagines SoC lost 2004 storyline. Overhauled environments, deep plotlines and alternate endings, with a tense, atmospheric journey through a lonelier, more mysterious Zone.",
@@ -41,7 +41,7 @@
 	},
 	{
 		"title": "Wind of Time",
-		"rating": 3.5,
+		"rating": 3,
 		"standalone": true,
 		"platform": "Call of Pripyat",
 		"description": "A sci-fi thriller that reimagines SoC lost 2004 storyline. Overhauled environments, deep plotlines and alternate endings, with a tense, atmospheric journey through a lonelier, more mysterious Zone.",
@@ -61,7 +61,7 @@
 	},
 	{
 		"title": "Vector of Alienation",
-		"rating": 1,
+		"rating": 5,
 		"standalone": false,
 		"platform": "Call of Pripyat",
 		"description": "A sci-fi thriller that reimagines SoC lost 2004 storyline. Overhauled environments, deep plotlines and alternate endings, with a tense, atmospheric journey through a lonelier, more mysterious Zone.",
