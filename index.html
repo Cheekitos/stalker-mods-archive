@@ -10,18 +10,25 @@
     .hide-videos iframe {
       display: none;
     }
+    /* Prevent awkward word breaks in titles */
+    h3 {
+      overflow-wrap: break-word;
+      word-break: break-word;
+    }
   </style>
 </head>
 <body class="bg-gray-900 text-white font-sans p-4">
   <div class="max-w-6xl mx-auto">
-    
     <!-- Title and Video Toggle -->
     <div class="flex justify-between items-center mb-1">
       <h1 class="text-3xl font-bold">Cheeki's Mods Archive</h1>
-      <button id="toggle-videos" aria-label="Toggle video visibility" class="bg-gray-700 ...">
+      <button
+        id="toggle-videos"
+        aria-label="Toggle video visibility"
+        class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded"
+      >
         Hide Videos
       </button>
-
     </div>
 
     <h2 class="text-lg text-gray-400 mb-3">A collection of S.T.A.L.K.E.R. Story Mods</h2>
@@ -33,25 +40,51 @@
 
     <!-- Controls -->
     <div class="flex flex-wrap items-center gap-2 mb-4">
-      <button id="sort-button" class="bg-yellow-500 hover:bg-yellow-600 text-black text-sm font-medium py-1 px-3 rounded">
+      <button
+        id="sort-button"
+        aria-label="Sort mods by rating"
+        class="bg-yellow-500 hover:bg-yellow-600 text-black text-sm font-medium py-1 px-3 rounded"
+      >
         Sort by Rating
       </button>
-      <input id="search-input" type="text" placeholder="Search mods..." class="flex-1 min-w-[150px] px-2 py-1 text-sm rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500" />
+      <input
+        id="search-input"
+        type="text"
+        placeholder="Search mods..."
+        class="flex-1 min-w-[150px] px-2 py-1 text-sm rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+      />
     </div>
 
     <!-- Mod List -->
-    <div id="mod-list" class="grid gap-4 grid-cols-[repeat(auto-fill,minmax(300px,1fr))]"></div>
+    <div
+      id="mod-list"
+      class="grid gap-4 grid-cols-[repeat(auto-fill,minmax(300px,1fr))] items-stretch"
+    ></div>
 
     <!-- Footer -->
     <footer class="mt-8 text-center text-sm text-gray-500">
-      Cheeki's Mods Archive - <a href="https://linktr.ee/cheekibreekii" target="_blank" class="text-blue-400 hover:underline">Check me Out!</a>
+      Cheeki's Mods Archive - 
+      <a
+        href="https://linktr.ee/cheekibreekii"
+        target="_blank"
+        class="text-blue-400 hover:underline"
+      >Check me Out!</a>
     </footer>
   </div>
 
   <!-- Popup Overlay -->
-  <div id="popup-overlay" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center hidden z-50">
-    <div class="bg-gray-900 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-auto relative p-4">
-      <button id="popup-close" class="absolute top-2 right-2 text-gray-400 hover:text-white text-xl">&times;</button>
+  <div
+    id="popup-overlay"
+    class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center hidden z-50"
+  >
+    <div
+      class="bg-gray-900 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-auto relative p-4"
+    >
+      <button
+        id="popup-close"
+        class="absolute top-2 right-2 text-gray-400 hover:text-white text-xl"
+        aria-label="Close popup"
+      >&times;</button>
       <div id="popup-content" class="text-sm text-gray-200">Loading...</div>
     </div>
   </div>
@@ -96,46 +129,45 @@
         titleRow.appendChild(rating);
 
         // standalone
-const standaloneDiv = document.createElement('div');
-standaloneDiv.className = 'text-xs text-white mb-2 flex items-baseline gap-2';
+        const standaloneDiv = document.createElement('div');
+        standaloneDiv.className = 'text-xs text-white mb-2 flex items-baseline gap-2';
 
-const labelStandalone = document.createElement('span');
-labelStandalone.textContent = 'Standalone:';
-labelStandalone.className = 'leading-tight';
-standaloneDiv.appendChild(labelStandalone);
+        const labelStandalone = document.createElement('span');
+        labelStandalone.textContent = 'Standalone:';
+        labelStandalone.className = 'leading-tight';
+        standaloneDiv.appendChild(labelStandalone);
 
-const standaloneWrapper = document.createElement('div');
-standaloneWrapper.className = 'flex items-center gap-1';
+        const standaloneWrapper = document.createElement('div');
+        standaloneWrapper.className = 'flex items-center gap-1';
 
-const yesSpan = document.createElement('span');
-yesSpan.textContent = 'Yes';
-yesSpan.className = mod.standalone
-  ? 'border border-white px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight'
-  : 'text-gray-400 text-[10px] leading-tight';
-if (mod.standalone) {
-  yesSpan.style.backgroundColor = 'rgba(250, 204, 21, 0.45)';
-}
+        const yesSpan = document.createElement('span');
+        yesSpan.textContent = 'Yes';
+        yesSpan.className = mod.standalone
+          ? 'border border-white px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight'
+          : 'text-gray-400 text-[10px] leading-tight';
+        if (mod.standalone) {
+          yesSpan.style.backgroundColor = 'rgba(250, 204, 21, 0.45)';
+        }
 
-standaloneWrapper.appendChild(yesSpan);
+        standaloneWrapper.appendChild(yesSpan);
 
-const sep = document.createElement('span');
-sep.textContent = '|';
-sep.className = 'text-gray-400 text-[10px] leading-tight';
-standaloneWrapper.appendChild(sep);
+        const sep = document.createElement('span');
+        sep.textContent = '|';
+        sep.className = 'text-gray-400 text-[10px] leading-tight';
+        standaloneWrapper.appendChild(sep);
 
-const noSpan = document.createElement('span');
-noSpan.textContent = 'No';
-noSpan.className = !mod.standalone
-  ? 'border border-white px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight'
-  : 'text-gray-400 text-[10px] leading-tight';
-if (!mod.standalone) {
-  noSpan.style.backgroundColor = 'rgba(250, 204, 21, 0.45)';
-}
+        const noSpan = document.createElement('span');
+        noSpan.textContent = 'No';
+        noSpan.className = !mod.standalone
+          ? 'border border-white px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight'
+          : 'text-gray-400 text-[10px] leading-tight';
+        if (!mod.standalone) {
+          noSpan.style.backgroundColor = 'rgba(250, 204, 21, 0.45)';
+        }
 
-standaloneWrapper.appendChild(noSpan);
+        standaloneWrapper.appendChild(noSpan);
 
-standaloneDiv.appendChild(standaloneWrapper);
-
+        standaloneDiv.appendChild(standaloneWrapper);
 
         // Platform
         const platformDiv = document.createElement('div');
@@ -266,16 +298,15 @@ standaloneDiv.appendChild(standaloneWrapper);
       const term = e.target.value.toLowerCase();
       const filtered = mods.filter(mod =>
         mod.title.toLowerCase().includes(term) ||
-        (mod.description && mod.description.toLowerCase().includes(term))
+        mod.description.toLowerCase().includes(term)
       );
       renderMods(filtered);
     });
 
-    // Toggle videos visibility
-    const toggleVideosBtn = document.getElementById('toggle-videos');
-    toggleVideosBtn.addEventListener('click', () => {
+    // Video toggle
+    document.getElementById('toggle-videos').addEventListener('click', e => {
       document.body.classList.toggle('hide-videos');
-      toggleVideosBtn.textContent = document.body.classList.contains('hide-videos') ? 'Show Videos' : 'Hide Videos';
+      e.target.textContent = e.target.textContent === 'Hide Videos' ? 'Show Videos' : 'Hide Videos';
     });
 
     loadMods();
