@@ -47,13 +47,13 @@
   </div>
 
   <!-- Popup Overlay with iframe -->
-  <div id="popup-overlay" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center hidden z-50">
-    <div class="bg-gray-900 rounded-lg max-w-2xl w-full max-h-[90vh] relative p-4 flex flex-col">
-      <button id="popup-close" class="absolute top-2 right-2 text-gray-400 hover:text-white text-xl">&times;</button>
-      <div class="flex-1 overflow-hidden rounded">
-        <iframe id="popup-iframe" src="" class="w-full h-full border-none rounded"></iframe>
-      </div>
-    </div>
+<div id="popup-overlay" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center hidden z-50">
+  <div class="bg-gray-900 rounded-lg max-w-4xl w-full relative p-4 flex flex-col max-h-[90vh]">
+    <button id="popup-close" class="absolute top-2 right-2 text-gray-400 hover:text-white text-xl">&times;</button>
+    <iframe id="popup-iframe" src="" class="w-full h-[80vh] border-none rounded"></iframe>
+  </div>
+</div>
+
   </div>
 
   <script>
