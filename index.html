@@ -10,8 +10,18 @@
     .hide-videos iframe {
       display: none;
     }
-    /* Prevent line breaks for titles and platform highlight block */
+
+    /* Prevent titles, platform highlight block, and rating stars from spilling out */
     h3, .platform-block {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .rating {
+      flex-shrink: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
       white-space: nowrap;
     }
   </style>
@@ -38,11 +48,11 @@
       <button id="sort-button" aria-label="Sort mods by rating" class="bg-yellow-500 hover:bg-yellow-600 text-black text-sm font-medium py-1 px-3 rounded">
         Sort by Rating
       </button>
-      <input id="search-input" type="text" placeholder="Search mods..." aria-label="Search mods" class="flex-1 min-w-[150px] px-2 py-1 text-sm rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500" />
+      <input id="search-input" type="text" aria-label="Search mods" placeholder="Search mods..." class="flex-1 min-w-[150px] px-2 py-1 text-sm rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500" />
     </div>
 
     <!-- Mod List -->
-    <div id="mod-list" class="grid gap-4 grid-cols-[repeat(auto-fill,minmax(300px,1fr))] items-stretch"></div>
+    <div id="mod-list" class="grid gap-4 grid-cols-[repeat(auto-fill,minmax(300px,1fr))]"></div>
 
     <!-- Footer -->
     <footer class="mt-8 text-center text-sm text-gray-500">
@@ -83,16 +93,19 @@
         card.className = 'bg-gray-800 p-3 rounded-md shadow-sm flex flex-col h-full';
 
         const titleRow = document.createElement('div');
-        titleRow.className = 'flex justify-between items-center mb-3';
+        titleRow.className = 'flex justify-between items-center mb-3 gap-2';
 
         const title = document.createElement('h3');
         title.className = 'text-2xl font-semibold text-gray-100 drop-shadow';
         title.textContent = mod.title;
+        // prevent line break + overflow
+        title.style.whiteSpace = 'nowrap';
+        title.style.overflow = 'hidden';
+        title.style.textOverflow = 'ellipsis';
 
         const rating = document.createElement('div');
-        rating.className = 'flex items-center space-x-0.5 text-yellow-400';
-        const stars = renderStars(mod.rating || 0);
-        rating.innerHTML = stars;
+        rating.className = 'flex items-center space-x-0.5 text-yellow-400 rating';
+        rating.innerHTML = renderStars(mod.rating || 0);
 
         titleRow.appendChild(title);
         titleRow.appendChild(rating);
@@ -138,9 +151,12 @@
 
         standaloneDiv.appendChild(standaloneWrapper);
 
-        // Platform block - NO WRAPPING
+        // Platform
         const platformDiv = document.createElement('div');
         platformDiv.className = 'text-xs text-white mb-2 flex items-baseline gap-2 platform-block';
+        platformDiv.style.whiteSpace = 'nowrap';
+        platformDiv.style.overflow = 'hidden';
+        platformDiv.style.textOverflow = 'ellipsis';
 
         const labelPlatform = document.createElement('span');
         labelPlatform.textContent = 'Platform:';
@@ -213,61 +229,72 @@
 
     function renderStars(rating) {
       const fullStar = '<svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>';
-      const emptyStar = '<svg class="w-4 h-4 fill-current text-gray-600" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>';
-      let stars = '';
+      const halfStar = `<svg class="w-4 h-4" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="halfGrad" x1="0" x2="100%" y1="0" y2="0"><stop offset="50%" stop-color="#facc15"/><stop offset="50%" stop-color="#4b5563"/></linearGradient></defs><path fill="url(#halfGrad)" d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>`;
+      let starsHTML = '';
       for (let i = 1; i <= 5; i++) {
-        stars += i <= rating ? fullStar : emptyStar;
+        if (rating >= i) {
+          starsHTML += fullStar;
+        } else if (rating + 0.5 >= i) {
+          starsHTML += halfStar;
+        } else {
+          starsHTML += `<svg class="w-4 h-4 fill-gray-600" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>`;
+        }
       }
-      return stars;
+      return starsHTML;
     }
 
+    // Popup code - dynamic content loading without iframe
+    const overlay = document.getElementById('popup-overlay');
+    const popupContent = document.getElementById('popup-content');
+    const popupClose = document.getElementById('popup-close');
+
     function openPopup(url) {
-      const overlay = document.getElementById('popup-overlay');
-      const content = document.getElementById('popup-content');
+      popupContent.innerHTML = 'Loading...';
       overlay.classList.remove('hidden');
-      content.textContent = 'Loading...';
-      fetch(url)
-        .then(res => res.text())
+      fetch(url + '?v=' + Date.now())
+        .then(res => {
+          if (!res.ok) throw new Error('Failed to load');
+          return res.text();
+        })
         .then(html => {
-          content.innerHTML = html;
+          popupContent.innerHTML = html;
+          popupContent.scrollTop = 0;
         })
         .catch(() => {
-          content.textContent = 'Failed to load content.';
+          popupContent.innerHTML = '<p class="text-red-400">Failed to load guide.</p>';
         });
     }
 
-    document.getElementById('popup-close').addEventListener('click', () => {
-      document.getElementById('popup-overlay').classList.add('hidden');
-      document.getElementById('popup-content').innerHTML = '';
+    popupClose.addEventListener('click', () => overlay.classList.add('hidden'));
+    overlay.addEventListener('click', e => {
+      if (e.target === overlay) overlay.classList.add('hidden');
     });
 
-    document.getElementById('toggle-videos').addEventListener('click', e => {
-      const container = document.getElementById('mod-list');
-      if (container.classList.contains('hide-videos')) {
-        container.classList.remove('hide-videos');
-        e.target.textContent = 'Hide Videos';
-      } else {
-        container.classList.add('hide-videos');
-        e.target.textContent = 'Show Videos';
-      }
-    });
-
+    // Sorting and searching
     document.getElementById('sort-button').addEventListener('click', () => {
-      if (!sorted) {
-        mods.sort((a, b) => (b.rating || 0) - (a.rating || 0));
-        sorted = true;
-      } else {
-        mods = [...originalMods];
-        sorted = false;
-      }
-      renderMods(mods);
+      sorted = !sorted;
+      const toRender = sorted
+        ? [...mods].sort((a, b) => (b.rating || 0) - (a.rating || 0))
+        : originalMods;
+      renderMods(toRender);
+      document.getElementById('sort-button').textContent = sorted ? 'Unsort' : 'Sort by Rating';
     });
 
     document.getElementById('search-input').addEventListener('input', e => {
-      const val = e.target.value.toLowerCase();
-      const filtered = originalMods.filter(mod => mod.title.toLowerCase().includes(val));
-      mods = filtered;
+      const q = e.target.value.toLowerCase();
+      const filtered = mods.filter(mod =>
+        mod.title.toLowerCase().includes(q) ||
+        mod.description.toLowerCase().includes(q) ||
+        (mod.platform && mod.platform.toLowerCase().includes(q))
+      );
       renderMods(filtered);
+    });
+
+    // Toggle videos visibility
+    document.getElementById('toggle-videos').addEventListener('click', () => {
+      document.body.classList.toggle('hide-videos');
+      const btn = document.getElementById('toggle-videos');
+      btn.textContent = btn.textContent === 'Hide Videos' ? 'Show Videos' : 'Hide Videos';
     });
 
     loadMods();
