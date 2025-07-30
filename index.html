@@ -46,11 +46,13 @@
     </footer>
   </div>
 
-  <!-- Popup Overlay -->
+  <!-- Popup Overlay with iframe -->
   <div id="popup-overlay" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center hidden z-50">
-    <div class="bg-gray-900 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-auto relative p-4">
+    <div class="bg-gray-900 rounded-lg max-w-2xl w-full max-h-[90vh] relative p-4 flex flex-col">
       <button id="popup-close" class="absolute top-2 right-2 text-gray-400 hover:text-white text-xl">&times;</button>
-      <div id="popup-content" class="text-sm text-gray-200">Loading...</div>
+      <div class="flex-1 overflow-hidden rounded">
+        <iframe id="popup-iframe" src="" class="w-full h-full border-none rounded"></iframe>
+      </div>
     </div>
   </div>
 
@@ -93,76 +95,66 @@
         titleRow.appendChild(title);
         titleRow.appendChild(rating);
 
+        // Standalone
+        const standaloneDiv = document.createElement('div');
+        standaloneDiv.className = 'text-xs text-white mb-2 flex items-baseline gap-2';
 
-        // standalone
-const standaloneDiv = document.createElement('div');
-standaloneDiv.className = 'text-xs text-white mb-2 flex items-baseline gap-2';
+        const labelStandalone = document.createElement('span');
+        labelStandalone.textContent = 'Standalone:';
+        standaloneDiv.appendChild(labelStandalone);
 
-const labelStandalone = document.createElement('span');
-labelStandalone.textContent = 'Standalone:';
-labelStandalone.className = 'leading-tight';
-standaloneDiv.appendChild(labelStandalone);
+        const standaloneWrapper = document.createElement('div');
+        standaloneWrapper.className = 'flex items-center gap-1';
 
-const standaloneWrapper = document.createElement('div');
-standaloneWrapper.className = 'flex items-center gap-1';
+        const yesSpan = document.createElement('span');
+        yesSpan.textContent = 'Yes';
+        yesSpan.className = mod.standalone
+          ? 'border border-white bg-yellow-400 bg-opacity-45 px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight'
+          : 'text-gray-400 text-[10px] leading-tight';
+        standaloneWrapper.appendChild(yesSpan);
 
-const yesSpan = document.createElement('span');
-yesSpan.textContent = 'Yes';
-yesSpan.className = mod.standalone
-  ? 'border border-white bg-yellow-400 bg-opacity-45 px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight'
-  : 'text-gray-400 text-[10px] leading-tight';
-standaloneWrapper.appendChild(yesSpan);
+        const sep = document.createElement('span');
+        sep.textContent = '|';
+        sep.className = 'text-gray-400 text-[10px] leading-tight';
+        standaloneWrapper.appendChild(sep);
 
-const sep = document.createElement('span');
-sep.textContent = '|';
-sep.className = 'text-gray-400 text-[10px] leading-tight';
-standaloneWrapper.appendChild(sep);
+        const noSpan = document.createElement('span');
+        noSpan.textContent = 'No';
+        noSpan.className = !mod.standalone
+          ? 'border border-white bg-yellow-400 bg-opacity-45 px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight'
+          : 'text-gray-400 text-[10px] leading-tight';
+        standaloneWrapper.appendChild(noSpan);
 
-const noSpan = document.createElement('span');
-noSpan.textContent = 'No';
-noSpan.className = !mod.standalone
-  ? 'border border-white bg-yellow-400 bg-opacity-45 px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight'
-  : 'text-gray-400 text-[10px] leading-tight';
-standaloneWrapper.appendChild(noSpan);
-
-standaloneDiv.appendChild(standaloneWrapper);
-
-
-
+        standaloneDiv.appendChild(standaloneWrapper);
 
         // Platform
-const platformDiv = document.createElement('div');
-platformDiv.className = 'text-xs text-white mb-2 flex items-baseline gap-2';
+        const platformDiv = document.createElement('div');
+        platformDiv.className = 'text-xs text-white mb-2 flex items-baseline gap-2';
 
-const labelPlatform = document.createElement('span');
-labelPlatform.textContent = 'Platform:';
-labelPlatform.className = 'leading-tight';
-platformDiv.appendChild(labelPlatform);
+        const labelPlatform = document.createElement('span');
+        labelPlatform.textContent = 'Platform:';
+        platformDiv.appendChild(labelPlatform);
 
-const platformWrapper = document.createElement('div');
-platformWrapper.className = 'flex items-center gap-1';
+        const platformWrapper = document.createElement('div');
+        platformWrapper.className = 'flex items-center gap-1';
 
-['Shadow of Chernobyl', 'Clear Sky', 'Call of Pripyat'].forEach((plat, idx, arr) => {
-  const span = document.createElement('span');
-  span.textContent = plat;
-  span.className = (mod.platform === plat)
-    ? 'border border-white bg-yellow-400 bg-opacity-50 px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight'
-    : 'text-gray-400 text-[10px] leading-tight';
-  platformWrapper.appendChild(span);
+        ['Shadow of Chernobyl', 'Clear Sky', 'Call of Pripyat'].forEach((plat, idx, arr) => {
+          const span = document.createElement('span');
+          span.textContent = plat;
+          span.className = (mod.platform === plat)
+            ? 'border border-white bg-yellow-400 bg-opacity-50 px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight'
+            : 'text-gray-400 text-[10px] leading-tight';
+          platformWrapper.appendChild(span);
 
-  if (idx < arr.length - 1) {
-    const sep = document.createElement('span');
-    sep.textContent = '|';
-    sep.className = 'text-gray-400 text-[10px] leading-tight';
-    platformWrapper.appendChild(sep);
-  }
-});
+          if (idx < arr.length - 1) {
+            const sep = document.createElement('span');
+            sep.textContent = '|';
+            sep.className = 'text-gray-400 text-[10px] leading-tight';
+            platformWrapper.appendChild(sep);
+          }
+        });
 
-platformDiv.appendChild(platformWrapper);
-
-
-        
-
+        platformDiv.appendChild(platformWrapper);
 
         const desc = document.createElement('p');
         desc.className = 'text-gray-400 mb-2 text-sm';
@@ -241,25 +233,24 @@ platformDiv.appendChild(platformWrapper);
     });
 
     const overlay = document.getElementById('popup-overlay');
-    const popupContent = document.getElementById('popup-content');
+    const popupIframe = document.getElementById('popup-iframe');
     const popupClose = document.getElementById('popup-close');
 
     function openPopup(url) {
-      popupContent.innerHTML = 'Loading...';
+      popupIframe.src = url + '?v=' + Date.now(); // Prevent cache
       overlay.classList.remove('hidden');
-      fetch(url + '?v=' + Date.now())
-        .then(res => res.text())
-        .then(html => {
-          popupContent.innerHTML = html;
-        })
-        .catch(() => {
-          popupContent.innerHTML = '<p class="text-red-400">Failed to load guide.</p>';
-        });
     }
 
-    popupClose.addEventListener('click', () => overlay.classList.add('hidden'));
+    popupClose.addEventListener('click', () => {
+      overlay.classList.add('hidden');
+      popupIframe.src = '';
+    });
+
     overlay.addEventListener('click', e => {
-      if (e.target === overlay) overlay.classList.add('hidden');
+      if (e.target === overlay) {
+        overlay.classList.add('hidden');
+        popupIframe.src = '';
+      }
     });
 
     // Toggle Videos
