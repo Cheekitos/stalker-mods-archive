@@ -10,13 +10,11 @@
     .hide-videos iframe {
       display: none;
     }
-
     h3, .platform-block {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
-
     .rating {
       flex-shrink: 0;
       overflow: hidden;
@@ -30,11 +28,11 @@
     <div class="flex justify-between items-center mb-1 gap-2">
       <h1 class="text-3xl font-bold">Cheeki's Mods Archive</h1>
       <div class="flex gap-2">
-        <button id="contact-button" aria-label="Contact Me" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
-          Contact Me
-        </button>
         <button id="toggle-videos" aria-label="Toggle videos visibility" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
           Hide Videos
+        </button>
+        <button id="contact-button" aria-label="Contact me" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
+          Contact me
         </button>
       </div>
     </div>
@@ -60,7 +58,7 @@
     </footer>
   </div>
 
-  <!-- Mod Install Guide Popup -->
+  <!-- Install Guide Popup -->
   <div id="popup-overlay" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center hidden z-50">
     <div class="bg-gray-900 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-auto relative p-4">
       <button id="popup-close" aria-label="Close popup" class="absolute top-2 right-2 text-gray-400 hover:text-white text-xl">&times;</button>
@@ -76,7 +74,7 @@
       <button id="reveal-email" class="bg-yellow-500 hover:bg-yellow-600 text-black text-xs font-medium py-1 px-2 rounded">
         Reveal Email
       </button>
-      <p id="email-text" class="mt-2 text-blue-400 hidden">cheeki.mods@example.com</p>
+      <p id="email-text" class="mt-2 text-blue-400 hidden">cheekitos@proton.me</p>
     </div>
   </div>
 
@@ -99,7 +97,6 @@
     function renderMods(modArray) {
       const container = document.getElementById('mod-list');
       container.innerHTML = '';
-
       modArray.forEach(mod => {
         const card = document.createElement('div');
         card.className = 'bg-gray-800 p-3 rounded-md shadow-sm flex flex-col h-full';
@@ -309,25 +306,18 @@
     });
 
     // Contact popup logic
-    const contactButton = document.getElementById('contact-button');
     const contactOverlay = document.getElementById('contact-overlay');
+    const contactBtn = document.getElementById('contact-button');
     const contactClose = document.getElementById('contact-close');
     const revealEmail = document.getElementById('reveal-email');
     const emailText = document.getElementById('email-text');
 
-    contactButton.addEventListener('click', () => {
-      contactOverlay.classList.remove('hidden');
-      emailText.classList.add('hidden');
-    });
-
+    contactBtn.addEventListener('click', () => contactOverlay.classList.remove('hidden'));
     contactClose.addEventListener('click', () => contactOverlay.classList.add('hidden'));
     contactOverlay.addEventListener('click', e => {
       if (e.target === contactOverlay) contactOverlay.classList.add('hidden');
     });
-
-    revealEmail.addEventListener('click', () => {
-      emailText.classList.remove('hidden');
-    });
+    revealEmail.addEventListener('click', () => emailText.classList.remove('hidden'));
 
     loadMods();
   </script>
