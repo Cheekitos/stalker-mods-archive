@@ -20,11 +20,11 @@
 		"cons": []
 	},
 	{
-		"title": "GoldSphere [OGSR]",
+		"title": "GoldSphere",
 		"rating": 4,
 		"standalone": true,
 		"platform": "Shadow of Chernobyl",
-		"description": "write me",
+		"description": "write me - OGSR Version",
 		"links": [
 			{
 				"label": "Download Files",
