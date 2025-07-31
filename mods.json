@@ -1,10 +1,10 @@
 [
 	{
 		"title": "Incubator",
-		"rating": 0,
+		"rating": 5,
 		"standalone": true,
-		"platform": "Shadow of Chernobyl",
-		"description": "write me",
+		"platform": "Call of Pripyat",
+		"description": "Fully voiced characters, amazing cutscenes and impressive production value, topped by a great intrigue to slowly uncover, this is a must-play classic by the vivient team.",
 		"links": [
 			{
 				"label": "Download Files",
