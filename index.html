@@ -42,6 +42,22 @@
   #mod-list > div iframe {
     margin-top: auto;
   }
+   .title-row {
+  min-height: 3rem; /* Adjust height for title row */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.standalone-row,
+.platform-row {
+  min-height: 2rem; /* Equalize heights for rows */
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 </style>
 
 
@@ -125,7 +141,7 @@
         card.className = 'bg-gray-800 p-3 rounded-md shadow-sm flex flex-col h-full';
 
         const titleRow = document.createElement('div');
-        titleRow.className = 'flex justify-between items-center mb-3 gap-2';
+        titleRow.className = 'title-row mb-3';
 
         const title = document.createElement('h3');
         title.className = 'text-2xl font-semibold text-gray-100 drop-shadow';
@@ -142,7 +158,8 @@
         titleRow.appendChild(rating);
 
         const standaloneDiv = document.createElement('div');
-        standaloneDiv.className = 'text-xs text-white mb-2 flex items-baseline gap-2';
+       standaloneDiv.className = 'standalone-row text-xs text-white mb-2';
+
 
         const labelStandalone = document.createElement('span');
         labelStandalone.textContent = 'Standalone:';
@@ -181,7 +198,8 @@
         standaloneDiv.appendChild(standaloneWrapper);
 
         const platformDiv = document.createElement('div');
-        platformDiv.className = 'text-xs text-white mb-2 flex items-baseline gap-2 platform-block';
+       platformDiv.className = 'platform-row text-xs text-white mb-2 platform-block';
+
         platformDiv.style.whiteSpace = 'nowrap';
         platformDiv.style.overflow = 'hidden';
         platformDiv.style.textOverflow = 'ellipsis';
