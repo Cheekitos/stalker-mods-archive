@@ -8,30 +8,33 @@
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    .hide-videos iframe {
-      display: none;
-    }
-    h3, .platform-block {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .rating {
-      flex-shrink: 0;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    #mod-list > div {
-  display: flex;
-  flex-direction: column;
-}
+  .hide-videos iframe {
+    display: none;
+  }
+  h3, .platform-block {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .rating {
+    flex-shrink: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 
-#mod-list > div > iframe {
-  margin-top: auto;
-}
+  /* Align videos at bottom for consistent layout */
+  #mod-list > div {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
 
-  </style>
+  #mod-list > div iframe {
+    margin-top: auto;
+  }
+</style>
+
 </head>
 <body class="bg-gray-900 text-white font-sans p-4">
   <div class="max-w-6xl mx-auto">
