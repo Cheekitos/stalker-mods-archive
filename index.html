@@ -7,7 +7,8 @@
   <title>Cheeki's Mods Archive</title>
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
   <script src="https://cdn.tailwindcss.com"></script>
-  <style>
+  
+ <style>
   .hide-videos iframe {
     display: none;
   }
@@ -23,17 +24,25 @@
     white-space: nowrap;
   }
 
-  /* Align videos at bottom for consistent layout */
+  #mod-list {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+
   #mod-list > div {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     height: 100%;
+    min-height: 450px; /* Adjust this number as needed */
   }
 
   #mod-list > div iframe {
     margin-top: auto;
   }
 </style>
+
 
 </head>
 <body class="bg-gray-900 text-white font-sans p-4">
