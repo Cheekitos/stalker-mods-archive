@@ -30,18 +30,47 @@
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   }
 
+  /* card container flex column */
   #mod-list > div {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     height: 100%;
-    min-height: 450px; /* Adjust this number as needed */
+    min-height: 450px; /* Adjust as needed */
   }
 
-  #mod-list > div iframe {
-    margin-top: auto;
+  /* Block 1: fixed height, consistent across cards */
+  .mod-block1 {
+    /* Adjust height to fit your content comfortably */
+    flex: 0 0 90px; /* fixed height, won’t grow or shrink */
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  /* Description block grows and shrinks to fill space */
+  .mod-description {
+    flex: 1 1 auto;
+    margin: 0.5rem 0;
+    overflow: auto; /* optional, if description too long */
+  }
+
+  /* Block 2: fixed height, consistent across cards */
+  .mod-block2 {
+    flex: 0 0 160px; /* fixed height, adjust to fit download links + video */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  /* Video at bottom */
+  .mod-block2 iframe {
+    margin-top: 0.5rem;
+    flex-shrink: 0;
+    width: 100%;
+    height: 140px;
   }
 </style>
+
 
 
 </head>
