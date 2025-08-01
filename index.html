@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -298,92 +299,78 @@
       return starsHTML;
     }
 
-    function openPopup(url) {
-      const overlay = document.getElementById('popup-overlay');
-      const content = document.getElementById('popup-content');
-      content.textContent = 'Loading...';
-      overlay.classList.remove('hidden');
+    const overlay = document.getElementById('popup-overlay');
+    const popupContent = document.getElementById('popup-content');
+    const popupClose = document.getElementById('popup-close');
 
-      fetch(url)
-        .then(resp => resp.text())
-        .then(text => {
-          content.innerHTML = text;
+    function openPopup(url) {
+      popupContent.innerHTML = 'Loading...';
+      overlay.classList.remove('hidden');
+      fetch(url + '?v=' + Date.now())
+        .then(res => {
+          if (!res.ok) throw new Error('Failed to load');
+          return res.text();
+        })
+        .then(html => {
+          popupContent.innerHTML = html;
+          popupContent.scrollTop = 0;
         })
         .catch(() => {
-          content.textContent = 'Failed to load content.';
+          popupContent.innerHTML = '<p class="text-red-400">Failed to load guide.</p>';
         });
     }
 
-    function closePopup() {
-      document.getElementById('popup-overlay').classList.add('hidden');
-    }
+    popupClose.addEventListener('click', () => overlay.classList.add('hidden'));
+    overlay.addEventListener('click', e => {
+      if (e.target === overlay) overlay.classList.add('hidden');
+    });
 
-    function toggleVideos() {
-      const btn = document.getElementById('toggle-videos');
-      const container = document.getElementById('mod-list');
-      const iframes = container.querySelectorAll('iframe');
-      if (btn.textContent === 'Hide videos') {
-        iframes.forEach(f => (f.style.display = 'none'));
-        btn.textContent = 'Show videos';
-      } else {
-        iframes.forEach(f => (f.style.display = 'block'));
-        btn.textContent = 'Hide videos';
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        overlay.classList.add('hidden');
+        contactOverlay.classList.add('hidden');
       }
-    }
+    });
 
-    function sortByRating() {
-      const btn = document.getElementById('sort-button');
-      if (!sorted) {
-        mods.sort((a, b) => b.rating - a.rating);
-        btn.textContent = 'Sort: Rating Desc';
-        sorted = true;
-      } else {
-        mods = [...originalMods];
-        btn.textContent = 'Sort by Rating';
-        sorted = false;
-      }
-      renderMods(mods);
-    }
+    document.getElementById('sort-button').addEventListener('click', () => {
+      sorted = !sorted;
+      const toRender = sorted
+        ? [...mods].sort((a, b) => parseFloat(b.rating) - parseFloat(a.rating))
+        : originalMods;
+      renderMods(toRender);
+    });
 
-    function filterMods() {
-      const input = document.getElementById('search-input').value.toLowerCase();
-      const filtered = mods.filter(mod => 
-        mod.title.toLowerCase().includes(input) ||
-        mod.description.toLowerCase().includes(input)
+    document.getElementById('search-input').addEventListener('input', e => {
+      const q = e.target.value.toLowerCase();
+      const filtered = mods.filter(mod =>
+        mod.title.toLowerCase().includes(q) ||
+        mod.description.toLowerCase().includes(q) ||
+        (mod.platform && mod.platform.toLowerCase().includes(q))
       );
       renderMods(filtered);
-    }
-
-    function setupContact() {
-      const contactBtn = document.getElementById('contact-button');
-      const contactOverlay = document.getElementById('contact-overlay');
-      const contactClose = document.getElementById('contact-close');
-      const revealEmailBtn = document.getElementById('reveal-email');
-      const emailText = document.getElementById('email-text');
-
-      contactBtn.addEventListener('click', () => {
-        contactOverlay.classList.remove('hidden');
-      });
-
-      contactClose.addEventListener('click', () => {
-        contactOverlay.classList.add('hidden');
-        emailText.classList.add('hidden');
-      });
-
-      revealEmailBtn.addEventListener('click', () => {
-        emailText.classList.remove('hidden');
-      });
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-      loadMods();
-
-      document.getElementById('popup-close').addEventListener('click', closePopup);
-      document.getElementById('toggle-videos').addEventListener('click', toggleVideos);
-      document.getElementById('sort-button').addEventListener('click', sortByRating);
-      document.getElementById('search-input').addEventListener('input', filterMods);
-      setupContact();
     });
+
+    document.getElementById('toggle-videos').addEventListener('click', () => {
+      const btn = document.getElementById('toggle-videos');
+      const isHiding = document.body.classList.toggle('hide-videos');
+      btn.textContent = isHiding ? 'Show Videos' : 'Hide Videos';
+    });
+
+    // Contact popup logic
+    const contactOverlay = document.getElementById('contact-overlay');
+    const contactBtn = document.getElementById('contact-button');
+    const contactClose = document.getElementById('contact-close');
+    const revealEmail = document.getElementById('reveal-email');
+    const emailText = document.getElementById('email-text');
+
+    contactBtn.addEventListener('click', () => contactOverlay.classList.remove('hidden'));
+    contactClose.addEventListener('click', () => contactOverlay.classList.add('hidden'));
+    contactOverlay.addEventListener('click', e => {
+      if (e.target === contactOverlay) contactOverlay.classList.add('hidden');
+    });
+    revealEmail.addEventListener('click', () => emailText.classList.remove('hidden'));
+
+    loadMods();
   </script>
 </body>
 </html>
