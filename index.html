@@ -114,8 +114,17 @@
         title.style.textOverflow = 'ellipsis';
 
         const rating = document.createElement('div');
-        rating.className = 'flex items-center space-x-0.5 text-yellow-400 rating';
-        rating.innerHTML = renderStars(mod.rating);
+        rating.className = 'flex items-center space-x-1 text-yellow-400 rating';
+        
+        const ratingNumber = document.createElement('span');
+        ratingNumber.className = 'text-sm font-medium';
+        ratingNumber.textContent = mod.rating.toFixed(1);
+        rating.appendChild(ratingNumber);
+        
+        const starsContainer = document.createElement('div');
+        starsContainer.className = 'flex items-center space-x-0.5';
+        starsContainer.innerHTML = renderStars(mod.rating);
+        rating.appendChild(starsContainer);
 
         titleRow.appendChild(title);
         titleRow.appendChild(rating);
@@ -237,11 +246,15 @@
     function renderStars(rating) {
       const fullStar = '<svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>';
       const halfStar = `<svg class="w-4 h-4" viewBox="0 0 20 20"><defs><linearGradient id="halfGrad" x1="0" x2="100%" y1="0" y2="0"><stop offset="50%" stop-color="#facc15"/><stop offset="50%" stop-color="#4b5563"/></linearGradient></defs><path fill="url(#halfGrad)" d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>`;
+      
+      // Round to nearest 0.5 for star display
+      const roundedRating = Math.round(rating * 2) / 2;
+      
       let starsHTML = '';
       for (let i = 1; i <= 5; i++) {
-        if (rating >= i) {
+        if (roundedRating >= i) {
           starsHTML += fullStar;
-        } else if (rating + 0.5 >= i) {
+        } else if (roundedRating + 0.5 >= i) {
           starsHTML += halfStar;
         } else {
           starsHTML += `<svg class="w-4 h-4 fill-gray-600" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>`;
