@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -281,13 +282,18 @@
       }
     });
 
-    document.getElementById('sort-button').addEventListener('click', () => {
-      sorted = !sorted;
-      const toRender = sorted
-        ? [...mods].sort((a, b) => parseFloat(b.rating) - parseFloat(a.rating))
-        : originalMods;
-      renderMods(toRender);
-    });
+document.getElementById('sort-button').addEventListener('click', () => {
+  sorted = !sorted;
+  const toRender = sorted
+    ? [...mods].sort((a, b) => {
+        const ratingA = parseFloat(a.rating) || 0;
+        const ratingB = parseFloat(b.rating) || 0;
+        return ratingB - ratingA;
+      })
+    : [...originalMods]; // Clone to avoid reference issues
+  renderMods(toRender);
+});
+
 
     document.getElementById('search-input').addEventListener('input', e => {
       const q = e.target.value.toLowerCase();
