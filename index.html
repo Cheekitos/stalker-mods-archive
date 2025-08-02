@@ -3,179 +3,203 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cheeki's Mods Archive</title>
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <title>Stalker Mods</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    .hide-videos iframe {
-      display: none;
-    }
-    h3, .platform-block, .rating {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    .rating svg {
+      width: 1rem;
+      height: 1rem;
     }
   </style>
 </head>
-<body class="bg-gray-900 text-white font-sans p-4">
-  <div class="max-w-6xl mx-auto">
-    <div class="flex justify-between items-center mb-1 gap-2">
-      <h1 class="text-3xl font-bold">Cheeki's Mods Archive</h1>
-      <div class="flex gap-2">
-        <button id="toggle-videos" aria-label="Toggle videos visibility" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">Hide videos</button>
-        <button id="contact-button" aria-label="Contact me" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">Contact me</button>
-      </div>
-    </div>
-
-    <h2 class="text-lg text-gray-400 mb-3">A collection of S.T.A.L.K.E.R. Story Mods</h2>
-    <p class="text-gray-300 text-sm mb-6">
-      A non-exhaustive archive of game modifications for the S.T.A.L.K.E.R. game franchise, mainly story-focused mods I reviewed on the YouTube Channel.
-      Everything listed here is for ease-of-access and posterity only. Consolidating files that tend to be scattered accross multiple websites, hosting services, with some unfortunately lost already. 
-      All credits go to the Authors of these mods.
-    </p>
-
-    <div class="flex flex-wrap items-center gap-2 mb-4">
-      <button id="sort-button" aria-label="Sort mods by rating" class="bg-yellow-500 hover:bg-yellow-600 text-black text-sm font-medium py-1 px-3 rounded">Sort by Rating</button>
-      <input id="search-input" type="text" aria-label="Search mods" placeholder="Search mods..." class="flex-1 min-w-[150px] px-2 py-1 text-sm rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500" />
-    </div>
-
-    <div id="mod-list" class="grid gap-4 grid-cols-[repeat(auto-fill,minmax(300px,1fr))]"></div>
-
-    <footer class="mt-8 text-center text-sm text-gray-500">
-      Cheeki's Mods Archive - <a href="https://linktr.ee/cheekibreekii" target="_blank" class="text-blue-400 hover:underline">Check me Out!</a>
-    </footer>
-  </div>
-
-  <div id="popup-overlay" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center hidden z-50">
-    <div class="bg-gray-900 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-auto relative p-4">
-      <button id="popup-close" aria-label="Close popup" class="absolute top-2 right-2 text-gray-400 hover:text-white text-xl">&times;</button>
-      <div id="popup-content" class="text-sm text-gray-200">Loading...</div>
-    </div>
-  </div>
-
-  <div id="contact-overlay" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center hidden z-50">
-    <div class="bg-gray-900 rounded-lg max-w-md w-full p-4 relative text-sm text-gray-200">
-      <button id="contact-close" aria-label="Close contact popup" class="absolute top-2 right-2 text-gray-400 hover:text-white text-xl">&times;</button>
-      <p class="mb-4">Only use this to report a broken link or incorrect information that needs fixing.</p>
-      <button id="reveal-email" class="bg-yellow-500 hover:bg-yellow-600 text-black text-xs font-medium py-1 px-2 rounded">Reveal Email</button>
-      <p id="email-text" class="mt-2 text-blue-400 hidden">cheekitos@proton.me</p>
-    </div>
+<body class="bg-gray-900 text-white p-4">
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-3xl font-bold mb-6">Stalker Mods</h1>
+    <div id="mod-list" class="grid gap-4"></div>
   </div>
 
   <script>
-    let mods = [], sorted = false, originalMods = [];
-
-    const modList = document.getElementById('mod-list');
-    const overlay = document.getElementById('popup-overlay');
-    const popupContent = document.getElementById('popup-content');
-    const contactOverlay = document.getElementById('contact-overlay');
-    const emailText = document.getElementById('email-text');
-
-    async function loadMods() {
-      try {
-        const res = await fetch('mods.json?v=' + Date.now());
-        mods = await res.json();
-        originalMods = [...mods];
-        renderMods(mods);
-      } catch (e) {
-        console.error('Error loading mods.json:', e);
+    const mods = [
+      {
+        title: "Mod Title 1",
+        rating: 4,
+        standalone: true,
+        platform: "Call of Pripyat",
+        description: "Description of Mod 1.",
+        links: [
+          { label: "Install Guide", url: "https://example.com/install1" },
+          { label: "Official Site", url: "https://example.com/site1" }
+        ],
+        video: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+      },
+      {
+        title: "Mod Title 2",
+        rating: 5,
+        standalone: false,
+        platform: "Shadow of Chernobyl",
+        description: "Description of Mod 2.",
+        links: [
+          { label: "Install Guide", url: "https://example.com/install2" },
+          { label: "ModDB Page", url: "https://moddb.com" }
+        ],
+        video: "https://www.youtube.com/embed/dQw4w9WgXcQ"
       }
+    ];
+
+    function renderStars(rating) {
+      let stars = '';
+      for (let i = 0; i < 5; i++) {
+        stars += i < rating
+          ? '<svg fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.973a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.384 2.46a1 1 0 00-.364 1.118l1.287 3.973c.3.921-.755 1.688-1.538 1.118l-3.384-2.46a1 1 0 00-1.175 0l-3.384 2.46c-.783.57-1.838-.197-1.538-1.118l1.287-3.973a1 1 0 00-.364-1.118l-3.384-2.46c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.973z" /></svg>'
+          : '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.973a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.384 2.46a1 1 0 00-.364 1.118l1.287 3.973c.3.921-.755 1.688-1.538 1.118l-3.384-2.46a1 1 0 00-1.175 0l-3.384 2.46c-.783.57-1.838-.197-1.538-1.118l1.287-3.973a1 1 0 00-.364-1.118L2.82 9.4c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.973z"/></svg>';
+      }
+      return stars;
+    }
+
+    function openPopup(url) {
+      const width = 600;
+      const height = 400;
+      const left = (screen.width / 2) - (width / 2);
+      const top = (screen.height / 2) - (height / 2);
+      window.open(url, 'Install Guide', `width=${width},height=${height},top=${top},left=${left}`);
     }
 
     function renderMods(modArray) {
-      modList.innerHTML = '';
+      const container = document.getElementById('mod-list');
+      container.innerHTML = '';
       modArray.forEach(mod => {
         const card = document.createElement('div');
         card.className = 'bg-gray-800 p-3 rounded-md shadow-sm flex flex-col h-full';
 
-        card.innerHTML = `
-          <div class="flex justify-between items-center mb-3 gap-2">
-            <h3 class="text-2xl font-semibold text-gray-100 drop-shadow">${mod.title}</h3>
-            <div class="flex items-center space-x-0.5 text-yellow-400 rating">${renderStars(mod.rating)}</div>
-          </div>
-          <div class="text-xs text-white mb-2 flex items-baseline gap-2">
-            <span class="leading-tight">Standalone:</span>
-            <div class="flex items-center gap-1">
-              <span class="${mod.standalone ? 'border border-white bg-yellow-400 bg-opacity-45' : 'text-gray-400'} px-2 py-0.5 rounded-sm text-[10px] leading-tight">Yes</span>
-              <span class="text-gray-400 text-[10px] leading-tight">|</span>
-              <span class="${!mod.standalone ? 'border border-white bg-yellow-400 bg-opacity-45' : 'text-gray-400'} px-2 py-0.5 rounded-sm text-[10px] leading-tight">No</span>
-            </div>
-          </div>
-          <div class="text-xs text-white mb-2 flex items-baseline gap-2 platform-block">
-            <span class="leading-tight">Platform:</span>
-            <div class="flex items-center gap-1">
-              ${['Shadow of Chernobyl', 'Clear Sky', 'Call of Pripyat'].map((plat, i) => `
-                <span class="${mod.platform === plat ? 'border border-white bg-yellow-400 bg-opacity-50' : 'text-gray-400'} px-2 py-0.5 rounded-sm text-[10px] leading-tight">${plat}</span>
-                ${i < 2 ? '<span class="text-gray-400 text-[10px] leading-tight">|</span>' : ''}
-              `).join('')}
-            </div>
-          </div>
-          <p class="text-gray-400 mb-2 text-sm">${mod.description}</p>
-          <div class="mb-2">
-            ${(mod.links || []).map(link => `
-              <a href="${link.url}" class="block text-blue-400 hover:underline text-sm cursor-pointer" ${link.label.toLowerCase().includes('install guide') ? '' : 'target="_blank"'}>${link.label}</a>
-            `).join('')}
-          </div>
-          <div class="mt-2">
-            <iframe src="${mod.video}" class="w-full aspect-video rounded" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </div>
-        `;
+        const titleRow = document.createElement('div');
+        titleRow.className = 'flex justify-between items-center mb-3 gap-2';
 
-        modList.appendChild(card);
+        const title = document.createElement('h3');
+        title.className = 'text-2xl font-semibold text-gray-100 drop-shadow';
+        title.textContent = mod.title;
+        title.style.whiteSpace = 'nowrap';
+        title.style.overflow = 'hidden';
+        title.style.textOverflow = 'ellipsis';
 
-        card.querySelectorAll('a').forEach(a => {
-          if (a.textContent.toLowerCase().includes('install guide')) {
-            a.addEventListener('click', e => {
-              e.preventDefault();
-              openPopup(a.href);
-            });
+        const rating = document.createElement('div');
+        rating.className = 'flex items-center space-x-0.5 text-yellow-400 rating';
+        rating.innerHTML = renderStars(mod.rating);
+
+        titleRow.appendChild(title);
+        titleRow.appendChild(rating);
+
+        const standaloneDiv = document.createElement('div');
+        standaloneDiv.className = 'text-xs text-white mb-2 flex items-baseline gap-2';
+
+        const labelStandalone = document.createElement('span');
+        labelStandalone.textContent = 'Standalone:';
+        labelStandalone.className = 'leading-tight';
+        standaloneDiv.appendChild(labelStandalone);
+
+        const standaloneWrapper = document.createElement('div');
+        standaloneWrapper.className = 'flex items-center gap-1';
+
+        const yesSpan = document.createElement('span');
+        yesSpan.textContent = 'Yes';
+        yesSpan.className = mod.standalone
+          ? 'border border-white px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight'
+          : 'text-gray-400 text-[10px] leading-tight';
+        if (mod.standalone) {
+          yesSpan.style.backgroundColor = 'rgba(250, 204, 21, 0.45)';
+        }
+
+        standaloneWrapper.appendChild(yesSpan);
+
+        const sep = document.createElement('span');
+        sep.textContent = '|';
+        sep.className = 'text-gray-400 text-[10px] leading-tight';
+        standaloneWrapper.appendChild(sep);
+
+        const noSpan = document.createElement('span');
+        noSpan.textContent = 'No';
+        noSpan.className = !mod.standalone
+          ? 'border border-white px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight'
+          : 'text-gray-400 text-[10px] leading-tight';
+        if (!mod.standalone) {
+          noSpan.style.backgroundColor = 'rgba(250, 204, 21, 0.45)';
+        }
+
+        standaloneWrapper.appendChild(noSpan);
+        standaloneDiv.appendChild(standaloneWrapper);
+
+        const platformDiv = document.createElement('div');
+        platformDiv.className = 'text-xs text-white mb-2 flex items-baseline gap-2';
+
+        const labelPlatform = document.createElement('span');
+        labelPlatform.textContent = 'Platform:';
+        labelPlatform.className = 'leading-tight';
+        platformDiv.appendChild(labelPlatform);
+
+        const platformWrapper = document.createElement('div');
+        platformWrapper.className = 'flex items-center gap-1';
+
+        ['Shadow of Chernobyl', 'Clear Sky', 'Call of Pripyat'].forEach((plat, idx, arr) => {
+          const span = document.createElement('span');
+          span.textContent = plat;
+          span.className = (mod.platform === plat)
+            ? 'border border-white bg-yellow-400 bg-opacity-50 px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight'
+            : 'text-gray-400 text-[10px] leading-tight';
+          platformWrapper.appendChild(span);
+
+          if (idx < arr.length - 1) {
+            const sep = document.createElement('span');
+            sep.textContent = '|';
+            sep.className = 'text-gray-400 text-[10px] leading-tight';
+            platformWrapper.appendChild(sep);
           }
         });
+
+        platformDiv.appendChild(platformWrapper);
+
+        const desc = document.createElement('p');
+        desc.className = 'text-gray-400 mb-2 text-sm';
+        desc.textContent = mod.description;
+
+        const links = document.createElement('div');
+        links.className = 'mb-2';
+        (mod.links || []).forEach(link => {
+          const a = document.createElement('a');
+          a.href = link.url;
+          a.textContent = link.label;
+          a.className = 'block text-blue-400 hover:underline text-sm cursor-pointer';
+          if (link.label.toLowerCase().includes('install guide')) {
+            a.addEventListener('click', e => {
+              e.preventDefault();
+              openPopup(link.url);
+            });
+          } else {
+            a.target = '_blank';
+          }
+          links.appendChild(a);
+        });
+
+        const videoWrapper = document.createElement('div');
+        videoWrapper.className = 'mt-2';
+
+        const video = document.createElement('iframe');
+        video.src = mod.video;
+        video.className = 'w-full aspect-video rounded';
+        video.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+        video.allowFullscreen = true;
+        videoWrapper.appendChild(video);
+
+        card.appendChild(titleRow);
+        card.appendChild(standaloneDiv);
+        card.appendChild(platformDiv);
+        card.appendChild(desc);
+        card.appendChild(links);
+        card.appendChild(videoWrapper);
+
+        container.appendChild(card);
       });
     }
 
-    function renderStars(rating) {
-      const star = (cls) => `<svg class="w-4 h-4 ${cls}" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>`;
-      const halfStar = `<svg class="w-4 h-4" viewBox="0 0 20 20"><defs><linearGradient id="halfGrad" x1="0" x2="100%"><stop offset="50%" stop-color="#facc15"/><stop offset="50%" stop-color="#4b5563"/></linearGradient></defs><path fill="url(#halfGrad)" d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>`;
-      return Array.from({length: 5}, (_, i) => rating >= i + 1 ? star('fill-current') : rating >= i + 0.5 ? halfStar : star('fill-gray-600')).join('');
-    }
-
-    function openPopup(url) {
-      popupContent.innerHTML = 'Loading...';
-      overlay.classList.remove('hidden');
-      fetch(url + '?v=' + Date.now()).then(r => r.ok ? r.text() : Promise.reject()).then(html => {
-        popupContent.innerHTML = html;
-        popupContent.scrollTop = 0;
-      }).catch(() => {
-        popupContent.innerHTML = '<p class="text-red-400">Failed to load guide.</p>';
-      });
-    }
-
-    document.getElementById('popup-close').onclick = () => overlay.classList.add('hidden');
-    overlay.onclick = e => { if (e.target === overlay) overlay.classList.add('hidden'); };
-    document.getElementById('contact-button').onclick = () => contactOverlay.classList.remove('hidden');
-    document.getElementById('contact-close').onclick = () => contactOverlay.classList.add('hidden');
-    contactOverlay.onclick = e => { if (e.target === contactOverlay) contactOverlay.classList.add('hidden'); };
-    document.getElementById('reveal-email').onclick = () => emailText.classList.remove('hidden');
-    document.getElementById('toggle-videos').onclick = () => {
-      document.body.classList.toggle('hide-videos');
-      document.getElementById('toggle-videos').textContent = document.body.classList.contains('hide-videos') ? 'Show Videos' : 'Hide Videos';
-    };
-    document.getElementById('sort-button').onclick = () => {
-      sorted = !sorted;
-      renderMods(sorted ? [...mods].sort((a, b) => b.rating - a.rating) : originalMods);
-    };
-    document.getElementById('search-input').oninput = e => {
-      const q = e.target.value.toLowerCase();
-      renderMods(mods.filter(m => m.title.toLowerCase().includes(q) || m.description.toLowerCase().includes(q) || (m.platform && m.platform.toLowerCase().includes(q))));
-    };
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') {
-        overlay.classList.add('hidden');
-        contactOverlay.classList.add('hidden');
-      }
-    });
-    loadMods();
+    renderMods(mods);
   </script>
 </body>
 </html>
