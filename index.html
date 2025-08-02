@@ -157,7 +157,7 @@
 
     function createModCard(mod) {
       const card = document.createElement('div');
-      card.className = 'bg-gray-800 p-3 rounded-md shadow-sm flex flex-col h-full';
+      card.className = 'bg-gray-800 p-3 rounded-md shadow-sm flex flex-col h-full justify-between';
 
       // Create platform options efficiently
       const platforms = ['Shadow of Chernobyl', 'Clear Sky', 'Call of Pripyat'];
@@ -179,31 +179,35 @@
       }).join('');
 
       card.innerHTML = `
-        <div class="flex justify-between items-center mb-3 gap-2">
-          <h3 class="text-2xl font-semibold text-gray-100 drop-shadow" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${mod.title}</h3>
-          <div class="flex items-center space-x-0.5 text-yellow-400 rating">${renderStars(mod.rating)}</div>
-        </div>
-        
-        <div class="text-xs text-white mb-2 flex items-baseline gap-2">
-          <span class="leading-tight">Standalone:</span>
-          <div class="flex items-center gap-1">
-            <span class="${mod.standalone ? 'border border-white px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight' : 'text-gray-400 text-[10px] leading-tight'}" ${mod.standalone ? 'style="background-color: rgba(250, 204, 21, 0.45);"' : ''}>Yes</span>
-            <span class="text-gray-400 text-[10px] leading-tight">|</span>
-            <span class="${!mod.standalone ? 'border border-white px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight' : 'text-gray-400 text-[10px] leading-tight'}" ${!mod.standalone ? 'style="background-color: rgba(250, 204, 21, 0.45);"' : ''}>No</span>
+        <div class="flex-shrink-0">
+          <div class="flex justify-between items-center mb-3 gap-2">
+            <h3 class="text-2xl font-semibold text-gray-100 drop-shadow" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${mod.title}</h3>
+            <div class="flex items-center space-x-0.5 text-yellow-400 rating">${renderStars(mod.rating)}</div>
           </div>
+          
+          <div class="text-xs text-white mb-2 flex items-baseline gap-2">
+            <span class="leading-tight">Standalone:</span>
+            <div class="flex items-center gap-1">
+              <span class="${mod.standalone ? 'border border-white px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight' : 'text-gray-400 text-[10px] leading-tight'}" ${mod.standalone ? 'style="background-color: rgba(250, 204, 21, 0.45);"' : ''}>Yes</span>
+              <span class="text-gray-400 text-[10px] leading-tight">|</span>
+              <span class="${!mod.standalone ? 'border border-white px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight' : 'text-gray-400 text-[10px] leading-tight'}" ${!mod.standalone ? 'style="background-color: rgba(250, 204, 21, 0.45);"' : ''}>No</span>
+            </div>
+          </div>
+          
+          <div class="text-xs text-white mb-2 flex items-baseline gap-2 platform-block" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+            <span class="leading-tight">Platform:</span>
+            <div class="flex items-center gap-1">${platformHTML}</div>
+          </div>
+          
+          <p class="text-gray-400 text-sm">${mod.description}</p>
         </div>
         
-        <div class="text-xs text-white mb-2 flex items-baseline gap-2 platform-block" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-          <span class="leading-tight">Platform:</span>
-          <div class="flex items-center gap-1">${platformHTML}</div>
-        </div>
-        
-        <p class="text-gray-400 mb-2 text-sm">${mod.description}</p>
-        
-        <div class="mb-2">${linksHTML}</div>
-        
-        <div class="mt-2">
-          <iframe src="${mod.video}" class="w-full aspect-video rounded" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <div class="flex-shrink-0 mt-4">
+          <div class="mb-2">${linksHTML}</div>
+          
+          <div>
+            <iframe src="${mod.video}" class="w-full aspect-video rounded" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
         </div>
       `;
 
