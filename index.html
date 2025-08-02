@@ -51,7 +51,7 @@
       <input id="search-input" type="text" aria-label="Search mods" placeholder="Search mods..." class="flex-1 min-w-[150px] px-2 py-1 text-sm rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500" />
     </div>
 
-    <div id="mod-list" class="grid gap-4" style="grid-template-columns: repeat(auto-fit, minmax(max(250px, 100%/5), 1fr));"></div>
+    <div id="mod-list" class="grid gap-4 grid-cols-[repeat(auto-fill,minmax(300px,1fr))]"></div>
 
     <footer class="mt-8 text-center text-sm text-gray-500">
       Cheeki's Mods Archive - <a href="https://linktr.ee/cheekibreekii" target="_blank" class="text-blue-400 hover:underline">Check me Out!</a>
@@ -71,12 +71,10 @@
     <div class="bg-gray-900 rounded-lg max-w-md w-full p-4 relative text-sm text-gray-200">
       <button id="contact-close" aria-label="Close contact popup" class="absolute top-2 right-2 text-gray-400 hover:text-white text-xl">&times;</button>
       <p class="mb-4">Only use this to report a broken link or incorrect information that needs fixing.</p>
-      <div class="flex items-center gap-2">
-        <button id="reveal-email" class="bg-yellow-500 hover:bg-yellow-600 text-black text-xs font-medium py-1 px-2 rounded">
-          Reveal Email
-        </button>
-        <p id="email-text" class="text-blue-400 hidden">cheekitos@proton.me</p>
-      </div>
+      <button id="reveal-email" class="bg-yellow-500 hover:bg-yellow-600 text-black text-xs font-medium py-1 px-2 rounded">
+        Reveal Email
+      </button>
+      <p id="email-text" class="mt-2 text-blue-400 hidden">cheekitos@proton.me</p>
     </div>
   </div>
 
@@ -196,9 +194,9 @@
             </div>
           </div>
           
-          <div class="text-xs text-white mb-2" style="display: flex; align-items: baseline; gap: 0.5rem; min-width: 0;">
-            <span class="leading-tight" style="flex-shrink: 0; width: 55px;">Platform:</span>
-            <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; flex: 1;">${platformHTML}</span>
+          <div class="text-xs text-white mb-2 platform-block" style="display: flex; align-items: baseline; gap: 0.5rem; min-width: 0;">
+            <span class="leading-tight" style="flex-shrink: 0;">Platform:</span>
+            <div style="flex: 1; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${platformHTML}</div>
           </div>
           
           <p class="text-gray-400 text-sm">${mod.description}</p>
