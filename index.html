@@ -98,7 +98,7 @@
     // State variables
     let mods = [];
     let originalMods = [];
-    let sorted = false;
+    let sortState = 0; // 0: original, 1: highest, 2: lowest
     let currentFilter = '';
 
     // Cache star HTML templates
@@ -271,11 +271,26 @@
     });
 
     elements.sortButton.addEventListener('click', () => {
-      sorted = !sorted;
+      sortState = (sortState + 1) % 3;
+      
       const baseArray = currentFilter ? filterMods(currentFilter) : originalMods;
-      const toRender = sorted 
-        ? [...baseArray].sort((a, b) => parseFloat(b.rating) - parseFloat(a.rating))
-        : baseArray;
+      let toRender;
+      
+      switch(sortState) {
+        case 0: // Original order
+          elements.sortButton.textContent = 'Sort by Rating';
+          toRender = baseArray;
+          break;
+        case 1: // Highest to lowest
+          elements.sortButton.textContent = 'Highest';
+          toRender = [...baseArray].sort((a, b) => parseFloat(b.rating) - parseFloat(a.rating));
+          break;
+        case 2: // Lowest to highest
+          elements.sortButton.textContent = 'Lowest';
+          toRender = [...baseArray].sort((a, b) => parseFloat(a.rating) - parseFloat(b.rating));
+          break;
+      }
+      
       renderMods(toRender);
     });
 
