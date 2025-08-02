@@ -166,9 +166,9 @@
         const spanClass = isActive 
           ? 'border border-white bg-yellow-400 bg-opacity-50 px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight inline-block'
           : 'text-gray-400 text-[10px] leading-tight inline-block';
-        const separator = idx < platforms.length - 1 ? ' <span class="text-gray-400 text-[10px] leading-tight inline-block mx-1">|</span> ' : '';
+        const separator = idx < platforms.length - 1 ? '<span class="text-gray-400 text-[10px] leading-tight inline-block mx-1">|</span>' : '';
         return `<span class="${spanClass}">${plat}</span>${separator}`;
-      }).join('');
+      }).join(' ');
 
       // Build links HTML
       const linksHTML = (mod.links || []).map(link => {
