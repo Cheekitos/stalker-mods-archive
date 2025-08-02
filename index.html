@@ -88,7 +88,7 @@
       try {
         const response = await fetch('mods.json?v=' + Date.now());
         mods = await response.json();
-        originalMods = [...mods];
+        originalMods = JSON.parse(JSON.stringify(mods));
         renderMods(mods);
       } catch (err) {
         console.error('Error loading mods.json:', err);
@@ -285,14 +285,11 @@
 document.getElementById('sort-button').addEventListener('click', () => {
   sorted = !sorted;
   const toRender = sorted
-    ? [...mods].sort((a, b) => {
-        const ratingA = parseFloat(a.rating) || 0;
-        const ratingB = parseFloat(b.rating) || 0;
-        return ratingB - ratingA;
-      })
-    : [...originalMods]; // Clone to avoid reference issues
+    ? [...mods].sort((a, b) => parseFloat(b.rating) - parseFloat(a.rating))
+    : [...originalMods]; // use fresh copy to avoid stale order
   renderMods(toRender);
 });
+
 
 
     document.getElementById('search-input').addEventListener('input', e => {
