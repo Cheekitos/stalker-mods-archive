@@ -3,65 +3,95 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Stalker Mods</title>
+  <title>Cheeki's Mods Archive</title>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    .rating svg {
-      width: 1rem;
-      height: 1rem;
+    .hide-videos iframe {
+      display: none;
+    }
+    h3, .platform-block {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .rating {
+      flex-shrink: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   </style>
 </head>
-<body class="bg-gray-900 text-white p-4">
-  <div class="max-w-4xl mx-auto">
-    <h1 class="text-3xl font-bold mb-6">Stalker Mods</h1>
-    <div id="mod-list" class="grid gap-4"></div>
+<body class="bg-gray-900 text-white font-sans p-4">
+  <div class="max-w-6xl mx-auto">
+    <div class="flex justify-between items-center mb-1 gap-2">
+      <h1 class="text-3xl font-bold">Cheeki's Mods Archive</h1>
+      <div class="flex gap-2">
+        <button id="toggle-videos" aria-label="Toggle videos visibility" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
+          Hide videos
+        </button>
+        <button id="contact-button" aria-label="Contact me" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
+          Contact me
+        </button>
+      </div>
+    </div>
+
+    <h2 class="text-lg text-gray-400 mb-3">A collection of S.T.A.L.K.E.R. Story Mods</h2>
+    <p class="text-gray-300 text-sm mb-6">
+      A non-exhaustive archive of game modifications for the S.T.A.L.K.E.R. game franchise, mainly story-focused mods I reviewed on the YouTube Channel.
+      Everything listed here is for ease-of-access and posterity only. Consolidating files that tend to be scattered accross multiple websites, hosting services, with some unfortunately lost already. 
+      All credits go to the Authors of these mods.
+    </p>
+
+    <div class="flex flex-wrap items-center gap-2 mb-4">
+      <button id="sort-button" aria-label="Sort mods by rating" class="bg-yellow-500 hover:bg-yellow-600 text-black text-sm font-medium py-1 px-3 rounded">
+        Sort by Rating
+      </button>
+      <input id="search-input" type="text" aria-label="Search mods" placeholder="Search mods..." class="flex-1 min-w-[150px] px-2 py-1 text-sm rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500" />
+    </div>
+
+    <div id="mod-list" class="grid gap-4 grid-cols-[repeat(auto-fill,minmax(300px,1fr))]"></div>
+
+    <footer class="mt-8 text-center text-sm text-gray-500">
+      Cheeki's Mods Archive - <a href="https://linktr.ee/cheekibreekii" target="_blank" class="text-blue-400 hover:underline">Check me Out!</a>
+    </footer>
+  </div>
+
+  <!-- Install Guide Popup -->
+  <div id="popup-overlay" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center hidden z-50">
+    <div class="bg-gray-900 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-auto relative p-4">
+      <button id="popup-close" aria-label="Close popup" class="absolute top-2 right-2 text-gray-400 hover:text-white text-xl">&times;</button>
+      <div id="popup-content" class="text-sm text-gray-200">Loading...</div>
+    </div>
+  </div>
+
+  <!-- Contact Me Popup -->
+  <div id="contact-overlay" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center hidden z-50">
+    <div class="bg-gray-900 rounded-lg max-w-md w-full p-4 relative text-sm text-gray-200">
+      <button id="contact-close" aria-label="Close contact popup" class="absolute top-2 right-2 text-gray-400 hover:text-white text-xl">&times;</button>
+      <p class="mb-4">Only use this to report a broken link or incorrect information that needs fixing.</p>
+      <button id="reveal-email" class="bg-yellow-500 hover:bg-yellow-600 text-black text-xs font-medium py-1 px-2 rounded">
+        Reveal Email
+      </button>
+      <p id="email-text" class="mt-2 text-blue-400 hidden">cheekitos@proton.me</p>
+    </div>
   </div>
 
   <script>
-    const mods = [
-      {
-        title: "Mod Title 1",
-        rating: 4,
-        standalone: true,
-        platform: "Call of Pripyat",
-        description: "Description of Mod 1.",
-        links: [
-          { label: "Install Guide", url: "https://example.com/install1" },
-          { label: "Official Site", url: "https://example.com/site1" }
-        ],
-        video: "https://www.youtube.com/embed/dQw4w9WgXcQ"
-      },
-      {
-        title: "Mod Title 2",
-        rating: 5,
-        standalone: false,
-        platform: "Shadow of Chernobyl",
-        description: "Description of Mod 2.",
-        links: [
-          { label: "Install Guide", url: "https://example.com/install2" },
-          { label: "ModDB Page", url: "https://moddb.com" }
-        ],
-        video: "https://www.youtube.com/embed/dQw4w9WgXcQ"
-      }
-    ];
+    let mods = [];
+    let sorted = false;
+    let originalMods = [];
 
-    function renderStars(rating) {
-      let stars = '';
-      for (let i = 0; i < 5; i++) {
-        stars += i < rating
-          ? '<svg fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.973a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.384 2.46a1 1 0 00-.364 1.118l1.287 3.973c.3.921-.755 1.688-1.538 1.118l-3.384-2.46a1 1 0 00-1.175 0l-3.384 2.46c-.783.57-1.838-.197-1.538-1.118l1.287-3.973a1 1 0 00-.364-1.118l-3.384-2.46c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.973z" /></svg>'
-          : '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.973a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.384 2.46a1 1 0 00-.364 1.118l1.287 3.973c.3.921-.755 1.688-1.538 1.118l-3.384-2.46a1 1 0 00-1.175 0l-3.384 2.46c-.783.57-1.838-.197-1.538-1.118l1.287-3.973a1 1 0 00-.364-1.118L2.82 9.4c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.973z"/></svg>';
+    async function loadMods() {
+      try {
+        const response = await fetch('mods.json?v=' + Date.now());
+        mods = await response.json();
+        originalMods = [...mods];
+        renderMods(mods);
+      } catch (err) {
+        console.error('Error loading mods.json:', err);
       }
-      return stars;
-    }
-
-    function openPopup(url) {
-      const width = 600;
-      const height = 400;
-      const left = (screen.width / 2) - (width / 2);
-      const top = (screen.height / 2) - (height / 2);
-      window.open(url, 'Install Guide', `width=${width},height=${height},top=${top},left=${left}`);
     }
 
     function renderMods(modArray) {
@@ -128,7 +158,10 @@
         standaloneDiv.appendChild(standaloneWrapper);
 
         const platformDiv = document.createElement('div');
-        platformDiv.className = 'text-xs text-white mb-2 flex items-baseline gap-2';
+        platformDiv.className = 'text-xs text-white mb-2 flex items-baseline gap-2 platform-block';
+        platformDiv.style.whiteSpace = 'nowrap';
+        platformDiv.style.overflow = 'hidden';
+        platformDiv.style.textOverflow = 'ellipsis';
 
         const labelPlatform = document.createElement('span');
         labelPlatform.textContent = 'Platform:';
@@ -199,7 +232,94 @@
       });
     }
 
-    renderMods(mods);
+    function renderStars(rating) {
+      const fullStar = '<svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>';
+      const halfStar = `<svg class="w-4 h-4" viewBox="0 0 20 20"><defs><linearGradient id="halfGrad" x1="0" x2="100%" y1="0" y2="0"><stop offset="50%" stop-color="#facc15"/><stop offset="50%" stop-color="#4b5563"/></linearGradient></defs><path fill="url(#halfGrad)" d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>`;
+      let starsHTML = '';
+      for (let i = 1; i <= 5; i++) {
+        if (rating >= i) {
+          starsHTML += fullStar;
+        } else if (rating + 0.5 >= i) {
+          starsHTML += halfStar;
+        } else {
+          starsHTML += `<svg class="w-4 h-4 fill-gray-600" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>`;
+        }
+      }
+      return starsHTML;
+    }
+
+    const overlay = document.getElementById('popup-overlay');
+    const popupContent = document.getElementById('popup-content');
+    const popupClose = document.getElementById('popup-close');
+
+    function openPopup(url) {
+      popupContent.innerHTML = 'Loading...';
+      overlay.classList.remove('hidden');
+      fetch(url + '?v=' + Date.now())
+        .then(res => {
+          if (!res.ok) throw new Error('Failed to load');
+          return res.text();
+        })
+        .then(html => {
+          popupContent.innerHTML = html;
+          popupContent.scrollTop = 0;
+        })
+        .catch(() => {
+          popupContent.innerHTML = '<p class="text-red-400">Failed to load guide.</p>';
+        });
+    }
+
+    popupClose.addEventListener('click', () => overlay.classList.add('hidden'));
+    overlay.addEventListener('click', e => {
+      if (e.target === overlay) overlay.classList.add('hidden');
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        overlay.classList.add('hidden');
+        contactOverlay.classList.add('hidden');
+      }
+    });
+
+    document.getElementById('sort-button').addEventListener('click', () => {
+      sorted = !sorted;
+      const toRender = sorted
+        ? [...mods].sort((a, b) => parseFloat(b.rating) - parseFloat(a.rating))
+        : originalMods;
+      renderMods(toRender);
+    });
+
+    document.getElementById('search-input').addEventListener('input', e => {
+      const q = e.target.value.toLowerCase();
+      const filtered = mods.filter(mod =>
+        mod.title.toLowerCase().includes(q) ||
+        mod.description.toLowerCase().includes(q) ||
+        (mod.platform && mod.platform.toLowerCase().includes(q))
+      );
+      renderMods(filtered);
+    });
+
+    document.getElementById('toggle-videos').addEventListener('click', () => {
+      const btn = document.getElementById('toggle-videos');
+      const isHiding = document.body.classList.toggle('hide-videos');
+      btn.textContent = isHiding ? 'Show Videos' : 'Hide Videos';
+    });
+
+    // Contact popup logic
+    const contactOverlay = document.getElementById('contact-overlay');
+    const contactBtn = document.getElementById('contact-button');
+    const contactClose = document.getElementById('contact-close');
+    const revealEmail = document.getElementById('reveal-email');
+    const emailText = document.getElementById('email-text');
+
+    contactBtn.addEventListener('click', () => contactOverlay.classList.remove('hidden'));
+    contactClose.addEventListener('click', () => contactOverlay.classList.add('hidden'));
+    contactOverlay.addEventListener('click', e => {
+      if (e.target === contactOverlay) contactOverlay.classList.add('hidden');
+    });
+    revealEmail.addEventListener('click', () => emailText.classList.remove('hidden'));
+
+    loadMods();
   </script>
 </body>
 </html>
