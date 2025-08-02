@@ -45,7 +45,7 @@
     </p>
 
     <div class="flex flex-wrap items-center gap-2 mb-4">
-      <button id="sort-button" aria-label="Sort mods by rating" class="bg-yellow-500 hover:bg-yellow-600 text-black text-sm font-medium py-1 px-3 rounded">
+      <button id="sort-button" aria-label="Sort mods by rating" class="bg-yellow-500 hover:bg-yellow-600 text-black text-sm font-medium py-1 px-3 rounded w-32">
         Sort by Rating
       </button>
       <input id="search-input" type="text" aria-label="Search mods" placeholder="Search mods..." class="flex-1 min-w-[150px] px-2 py-1 text-sm rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500" />
@@ -71,16 +71,18 @@
     <div class="bg-gray-900 rounded-lg max-w-md w-full p-4 relative text-sm text-gray-200">
       <button id="contact-close" aria-label="Close contact popup" class="absolute top-2 right-2 text-gray-400 hover:text-white text-xl">&times;</button>
       <p class="mb-4">Only use this to report a broken link or incorrect information that needs fixing.</p>
-      <button id="reveal-email" class="bg-yellow-500 hover:bg-yellow-600 text-black text-xs font-medium py-1 px-2 rounded">
-        Reveal Email
-      </button>
-      <p id="email-text" class="mt-2 text-blue-400 hidden">cheekitos@proton.me</p>
+      <div class="flex items-center gap-2">
+        <button id="reveal-email" class="bg-yellow-500 hover:bg-yellow-600 text-black text-xs font-medium py-1 px-2 rounded">
+          Reveal Email
+        </button>
+        <p id="email-text" class="text-blue-400 hidden">cheekitos@proton.me</p>
+      </div>
     </div>
   </div>
 
   <script>
     let mods = [];
-    let sorted = false;
+    let sortState = 0; // 0: default, 1: highest, 2: lowest
     let originalMods = [];
 
     async function loadMods() {
@@ -282,10 +284,24 @@
     });
 
     document.getElementById('sort-button').addEventListener('click', () => {
-      sorted = !sorted;
-      const toRender = sorted
-        ? [...mods].sort((a, b) => parseFloat(b.rating) - parseFloat(a.rating))
-        : originalMods;
+      const btn = document.getElementById('sort-button');
+      sortState = (sortState + 1) % 3;
+      
+      let toRender;
+      switch(sortState) {
+        case 0: // Default
+          btn.textContent = 'Sort by Rating';
+          toRender = originalMods;
+          break;
+        case 1: // Highest first
+          btn.textContent = 'Highest First';
+          toRender = [...mods].sort((a, b) => parseFloat(b.rating) - parseFloat(a.rating));
+          break;
+        case 2: // Lowest first
+          btn.textContent = 'Lowest First';
+          toRender = [...mods].sort((a, b) => parseFloat(a.rating) - parseFloat(b.rating));
+          break;
+      }
       renderMods(toRender);
     });
 
