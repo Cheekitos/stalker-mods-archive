@@ -79,13 +79,54 @@
   </div>
 
   <script>
+    // Cache DOM elements
+    const elements = {
+      modList: document.getElementById('mod-list'),
+      sortButton: document.getElementById('sort-button'),
+      searchInput: document.getElementById('search-input'),
+      toggleVideos: document.getElementById('toggle-videos'),
+      popupOverlay: document.getElementById('popup-overlay'),
+      popupContent: document.getElementById('popup-content'),
+      popupClose: document.getElementById('popup-close'),
+      contactOverlay: document.getElementById('contact-overlay'),
+      contactButton: document.getElementById('contact-button'),
+      contactClose: document.getElementById('contact-close'),
+      revealEmail: document.getElementById('reveal-email'),
+      emailText: document.getElementById('email-text')
+    };
+
+    // State variables
     let mods = [];
-    let sorted = false;
     let originalMods = [];
+    let sorted = false;
+    let currentFilter = '';
+
+    // Cache star HTML templates
+    const starTemplates = {
+      full: '<svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>',
+      half: '<svg class="w-4 h-4" viewBox="0 0 20 20"><defs><linearGradient id="halfGrad" x1="0" x2="100%" y1="0" y2="0"><stop offset="50%" stop-color="#facc15"/><stop offset="50%" stop-color="#4b5563"/></linearGradient></defs><path fill="url(#halfGrad)" d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>',
+      empty: '<svg class="w-4 h-4 fill-gray-600" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>'
+    };
+
+    // Cached star ratings HTML
+    const starCache = new Map();
+
+    // Debounce utility
+    function debounce(func, wait) {
+      let timeout;
+      return function executedFunction(...args) {
+        const later = () => {
+          clearTimeout(timeout);
+          func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+      };
+    }
 
     async function loadMods() {
       try {
-        const response = await fetch('mods.json?v=' + Date.now());
+        const response = await fetch(`mods.json?v=${Date.now()}`);
         mods = await response.json();
         originalMods = [...mods];
         renderMods(mods);
@@ -94,231 +135,179 @@
       }
     }
 
-    function renderMods(modArray) {
-      const container = document.getElementById('mod-list');
-      container.innerHTML = '';
-      modArray.forEach(mod => {
-        const card = document.createElement('div');
-        card.className = 'bg-gray-800 p-3 rounded-md shadow-sm flex flex-col h-full';
-
-        const titleRow = document.createElement('div');
-        titleRow.className = 'flex justify-between items-center mb-3 gap-2';
-
-        const title = document.createElement('h3');
-        title.className = 'text-2xl font-semibold text-gray-100 drop-shadow';
-        title.textContent = mod.title;
-        title.style.whiteSpace = 'nowrap';
-        title.style.overflow = 'hidden';
-        title.style.textOverflow = 'ellipsis';
-
-        const rating = document.createElement('div');
-        rating.className = 'flex items-center space-x-0.5 text-yellow-400 rating';
-        rating.innerHTML = renderStars(mod.rating);
-
-        titleRow.appendChild(title);
-        titleRow.appendChild(rating);
-
-        const standaloneDiv = document.createElement('div');
-        standaloneDiv.className = 'text-xs text-white mb-2 flex items-baseline gap-2';
-
-        const labelStandalone = document.createElement('span');
-        labelStandalone.textContent = 'Standalone:';
-        labelStandalone.className = 'leading-tight';
-        standaloneDiv.appendChild(labelStandalone);
-
-        const standaloneWrapper = document.createElement('div');
-        standaloneWrapper.className = 'flex items-center gap-1';
-
-        const yesSpan = document.createElement('span');
-        yesSpan.textContent = 'Yes';
-        yesSpan.className = mod.standalone
-          ? 'border border-white px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight'
-          : 'text-gray-400 text-[10px] leading-tight';
-        if (mod.standalone) {
-          yesSpan.style.backgroundColor = 'rgba(250, 204, 21, 0.45)';
-        }
-
-        standaloneWrapper.appendChild(yesSpan);
-
-        const sep = document.createElement('span');
-        sep.textContent = '|';
-        sep.className = 'text-gray-400 text-[10px] leading-tight';
-        standaloneWrapper.appendChild(sep);
-
-        const noSpan = document.createElement('span');
-        noSpan.textContent = 'No';
-        noSpan.className = !mod.standalone
-          ? 'border border-white px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight'
-          : 'text-gray-400 text-[10px] leading-tight';
-        if (!mod.standalone) {
-          noSpan.style.backgroundColor = 'rgba(250, 204, 21, 0.45)';
-        }
-
-        standaloneWrapper.appendChild(noSpan);
-        standaloneDiv.appendChild(standaloneWrapper);
-
-        const platformDiv = document.createElement('div');
-        platformDiv.className = 'text-xs text-white mb-2 flex items-baseline gap-2 platform-block';
-        platformDiv.style.whiteSpace = 'nowrap';
-        platformDiv.style.overflow = 'hidden';
-        platformDiv.style.textOverflow = 'ellipsis';
-
-        const labelPlatform = document.createElement('span');
-        labelPlatform.textContent = 'Platform:';
-        labelPlatform.className = 'leading-tight';
-        platformDiv.appendChild(labelPlatform);
-
-        const platformWrapper = document.createElement('div');
-        platformWrapper.className = 'flex items-center gap-1';
-
-        ['Shadow of Chernobyl', 'Clear Sky', 'Call of Pripyat'].forEach((plat, idx, arr) => {
-          const span = document.createElement('span');
-          span.textContent = plat;
-          span.className = (mod.platform === plat)
-            ? 'border border-white bg-yellow-400 bg-opacity-50 px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight'
-            : 'text-gray-400 text-[10px] leading-tight';
-          platformWrapper.appendChild(span);
-
-          if (idx < arr.length - 1) {
-            const sep = document.createElement('span');
-            sep.textContent = '|';
-            sep.className = 'text-gray-400 text-[10px] leading-tight';
-            platformWrapper.appendChild(sep);
-          }
-        });
-
-        platformDiv.appendChild(platformWrapper);
-
-        const desc = document.createElement('p');
-        desc.className = 'text-gray-400 mb-2 text-sm';
-        desc.textContent = mod.description;
-
-        const links = document.createElement('div');
-        links.className = 'mb-2';
-        (mod.links || []).forEach(link => {
-          const a = document.createElement('a');
-          a.href = link.url;
-          a.textContent = link.label;
-          a.className = 'block text-blue-400 hover:underline text-sm cursor-pointer';
-          if (link.label.toLowerCase().includes('install guide')) {
-            a.addEventListener('click', e => {
-              e.preventDefault();
-              openPopup(link.url);
-            });
-          } else {
-            a.target = '_blank';
-          }
-          links.appendChild(a);
-        });
-
-        const videoWrapper = document.createElement('div');
-        videoWrapper.className = 'mt-2';
-
-        const video = document.createElement('iframe');
-        video.src = mod.video;
-        video.className = 'w-full aspect-video rounded';
-        video.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-        video.allowFullscreen = true;
-        videoWrapper.appendChild(video);
-
-        card.appendChild(titleRow);
-        card.appendChild(standaloneDiv);
-        card.appendChild(platformDiv);
-        card.appendChild(desc);
-        card.appendChild(links);
-        card.appendChild(videoWrapper);
-
-        container.appendChild(card);
-      });
-    }
-
     function renderStars(rating) {
-      const fullStar = '<svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>';
-      const halfStar = `<svg class="w-4 h-4" viewBox="0 0 20 20"><defs><linearGradient id="halfGrad" x1="0" x2="100%" y1="0" y2="0"><stop offset="50%" stop-color="#facc15"/><stop offset="50%" stop-color="#4b5563"/></linearGradient></defs><path fill="url(#halfGrad)" d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>`;
+      if (starCache.has(rating)) {
+        return starCache.get(rating);
+      }
+
       let starsHTML = '';
       for (let i = 1; i <= 5; i++) {
         if (rating >= i) {
-          starsHTML += fullStar;
+          starsHTML += starTemplates.full;
         } else if (rating + 0.5 >= i) {
-          starsHTML += halfStar;
+          starsHTML += starTemplates.half;
         } else {
-          starsHTML += `<svg class="w-4 h-4 fill-gray-600" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>`;
+          starsHTML += starTemplates.empty;
         }
       }
+
+      starCache.set(rating, starsHTML);
       return starsHTML;
     }
 
-    const overlay = document.getElementById('popup-overlay');
-    const popupContent = document.getElementById('popup-content');
-    const popupClose = document.getElementById('popup-close');
+    function createModCard(mod) {
+      const card = document.createElement('div');
+      card.className = 'bg-gray-800 p-3 rounded-md shadow-sm flex flex-col h-full';
+
+      // Create platform options efficiently
+      const platforms = ['Shadow of Chernobyl', 'Clear Sky', 'Call of Pripyat'];
+      const platformHTML = platforms.map((plat, idx) => {
+        const isActive = mod.platform === plat;
+        const spanClass = isActive 
+          ? 'border border-white bg-yellow-400 bg-opacity-50 px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight'
+          : 'text-gray-400 text-[10px] leading-tight';
+        const separator = idx < platforms.length - 1 ? '<span class="text-gray-400 text-[10px] leading-tight">|</span>' : '';
+        return `<span class="${spanClass}">${plat}</span>${separator}`;
+      }).join('');
+
+      // Build links HTML
+      const linksHTML = (mod.links || []).map(link => {
+        const isInstallGuide = link.label.toLowerCase().includes('install guide');
+        const target = isInstallGuide ? '' : 'target="_blank"';
+        const dataGuide = isInstallGuide ? `data-guide-url="${link.url}"` : '';
+        return `<a href="${link.url}" ${target} ${dataGuide} class="block text-blue-400 hover:underline text-sm cursor-pointer">${link.label}</a>`;
+      }).join('');
+
+      card.innerHTML = `
+        <div class="flex justify-between items-center mb-3 gap-2">
+          <h3 class="text-2xl font-semibold text-gray-100 drop-shadow" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${mod.title}</h3>
+          <div class="flex items-center space-x-0.5 text-yellow-400 rating">${renderStars(mod.rating)}</div>
+        </div>
+        
+        <div class="text-xs text-white mb-2 flex items-baseline gap-2">
+          <span class="leading-tight">Standalone:</span>
+          <div class="flex items-center gap-1">
+            <span class="${mod.standalone ? 'border border-white px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight' : 'text-gray-400 text-[10px] leading-tight'}" ${mod.standalone ? 'style="background-color: rgba(250, 204, 21, 0.45);"' : ''}>Yes</span>
+            <span class="text-gray-400 text-[10px] leading-tight">|</span>
+            <span class="${!mod.standalone ? 'border border-white px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight' : 'text-gray-400 text-[10px] leading-tight'}" ${!mod.standalone ? 'style="background-color: rgba(250, 204, 21, 0.45);"' : ''}>No</span>
+          </div>
+        </div>
+        
+        <div class="text-xs text-white mb-2 flex items-baseline gap-2 platform-block" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+          <span class="leading-tight">Platform:</span>
+          <div class="flex items-center gap-1">${platformHTML}</div>
+        </div>
+        
+        <p class="text-gray-400 mb-2 text-sm">${mod.description}</p>
+        
+        <div class="mb-2">${linksHTML}</div>
+        
+        <div class="mt-2">
+          <iframe src="${mod.video}" class="w-full aspect-video rounded" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      `;
+
+      return card;
+    }
+
+    function renderMods(modArray) {
+      const fragment = document.createDocumentFragment();
+      modArray.forEach(mod => {
+        fragment.appendChild(createModCard(mod));
+      });
+      elements.modList.innerHTML = '';
+      elements.modList.appendChild(fragment);
+    }
+
+    function filterMods(query) {
+      const q = query.toLowerCase();
+      return mods.filter(mod =>
+        mod.title.toLowerCase().includes(q) ||
+        mod.description.toLowerCase().includes(q) ||
+        (mod.platform && mod.platform.toLowerCase().includes(q))
+      );
+    }
 
     function openPopup(url) {
-      popupContent.innerHTML = 'Loading...';
-      overlay.classList.remove('hidden');
-      fetch(url + '?v=' + Date.now())
+      elements.popupContent.innerHTML = 'Loading...';
+      elements.popupOverlay.classList.remove('hidden');
+      
+      fetch(`${url}?v=${Date.now()}`)
         .then(res => {
           if (!res.ok) throw new Error('Failed to load');
           return res.text();
         })
         .then(html => {
-          popupContent.innerHTML = html;
-          popupContent.scrollTop = 0;
+          elements.popupContent.innerHTML = html;
+          elements.popupContent.scrollTop = 0;
         })
         .catch(() => {
-          popupContent.innerHTML = '<p class="text-red-400">Failed to load guide.</p>';
+          elements.popupContent.innerHTML = '<p class="text-red-400">Failed to load guide.</p>';
         });
     }
 
-    popupClose.addEventListener('click', () => overlay.classList.add('hidden'));
-    overlay.addEventListener('click', e => {
-      if (e.target === overlay) overlay.classList.add('hidden');
-    });
+    function closePopups() {
+      elements.popupOverlay.classList.add('hidden');
+      elements.contactOverlay.classList.add('hidden');
+    }
 
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') {
-        overlay.classList.add('hidden');
-        contactOverlay.classList.add('hidden');
+    // Debounced search handler
+    const debouncedSearch = debounce((query) => {
+      currentFilter = query;
+      const filtered = filterMods(query);
+      renderMods(filtered);
+    }, 300);
+
+    // Event listeners using event delegation where appropriate
+    elements.modList.addEventListener('click', (e) => {
+      if (e.target.matches('[data-guide-url]')) {
+        e.preventDefault();
+        openPopup(e.target.dataset.guideUrl);
       }
     });
 
-    document.getElementById('sort-button').addEventListener('click', () => {
+    elements.sortButton.addEventListener('click', () => {
       sorted = !sorted;
-      const toRender = sorted
-        ? [...mods].sort((a, b) => parseFloat(b.rating) - parseFloat(a.rating))
-        : originalMods;
+      const baseArray = currentFilter ? filterMods(currentFilter) : originalMods;
+      const toRender = sorted 
+        ? [...baseArray].sort((a, b) => parseFloat(b.rating) - parseFloat(a.rating))
+        : baseArray;
       renderMods(toRender);
     });
 
-    document.getElementById('search-input').addEventListener('input', e => {
-      const q = e.target.value.toLowerCase();
-      const filtered = mods.filter(mod =>
-        mod.title.toLowerCase().includes(q) ||
-        mod.description.toLowerCase().includes(q) ||
-        (mod.platform && mod.platform.toLowerCase().includes(q))
-      );
-      renderMods(filtered);
+    elements.searchInput.addEventListener('input', (e) => {
+      debouncedSearch(e.target.value);
     });
 
-    document.getElementById('toggle-videos').addEventListener('click', () => {
-      const btn = document.getElementById('toggle-videos');
+    elements.toggleVideos.addEventListener('click', () => {
       const isHiding = document.body.classList.toggle('hide-videos');
-      btn.textContent = isHiding ? 'Show Videos' : 'Hide Videos';
+      elements.toggleVideos.textContent = isHiding ? 'Show Videos' : 'Hide Videos';
     });
 
-    // Contact popup logic
-    const contactOverlay = document.getElementById('contact-overlay');
-    const contactBtn = document.getElementById('contact-button');
-    const contactClose = document.getElementById('contact-close');
-    const revealEmail = document.getElementById('reveal-email');
-    const emailText = document.getElementById('email-text');
-
-    contactBtn.addEventListener('click', () => contactOverlay.classList.remove('hidden'));
-    contactClose.addEventListener('click', () => contactOverlay.classList.add('hidden'));
-    contactOverlay.addEventListener('click', e => {
-      if (e.target === contactOverlay) contactOverlay.classList.add('hidden');
+    // Popup event listeners
+    elements.popupClose.addEventListener('click', closePopups);
+    elements.popupOverlay.addEventListener('click', (e) => {
+      if (e.target === elements.popupOverlay) closePopups();
     });
-    revealEmail.addEventListener('click', () => emailText.classList.remove('hidden'));
 
+    // Contact popup event listeners
+    elements.contactButton.addEventListener('click', () => {
+      elements.contactOverlay.classList.remove('hidden');
+    });
+    elements.contactClose.addEventListener('click', closePopups);
+    elements.contactOverlay.addEventListener('click', (e) => {
+      if (e.target === elements.contactOverlay) closePopups();
+    });
+    elements.revealEmail.addEventListener('click', () => {
+      elements.emailText.classList.remove('hidden');
+    });
+
+    // Keyboard event listener
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closePopups();
+    });
+
+    // Initialize
     loadMods();
   </script>
 </body>
