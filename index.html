@@ -192,7 +192,7 @@
         platformDiv.appendChild(platformWrapper);
 
         const desc = document.createElement('p');
-        desc.className = 'text-gray-400 mb-2 text-sm';
+        desc.className = 'text-gray-400 mb-2 text-sm flex-grow';
         desc.textContent = mod.description;
 
         const links = document.createElement('div');
@@ -214,7 +214,7 @@
         });
 
         const videoWrapper = document.createElement('div');
-        videoWrapper.className = 'mt-2';
+        videoWrapper.className = 'mt-auto';
 
         const video = document.createElement('iframe');
         video.src = mod.video;
