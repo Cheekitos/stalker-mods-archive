@@ -45,7 +45,7 @@
     </p>
 
     <div class="flex flex-wrap items-center gap-2 mb-4">
-      <button id="sort-button" aria-label="Sort mods by rating" class="bg-yellow-500 hover:bg-yellow-600 text-black text-sm font-medium py-1 px-3 rounded">
+      <button id="sort-button" aria-label="Sort mods by rating" class="bg-yellow-500 hover:bg-yellow-600 text-black text-sm font-medium py-1 px-3 rounded w-32 text-center">
         Sort by Rating
       </button>
       <input id="search-input" type="text" aria-label="Search mods" placeholder="Search mods..." class="flex-1 min-w-[150px] px-2 py-1 text-sm rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500" />
@@ -164,9 +164,9 @@
       const platformHTML = platforms.map((plat, idx) => {
         const isActive = mod.platform === plat;
         const spanClass = isActive 
-          ? 'border border-white bg-yellow-400 bg-opacity-50 px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight'
-          : 'text-gray-400 text-[10px] leading-tight';
-        const separator = idx < platforms.length - 1 ? '<span class="text-gray-400 text-[10px] leading-tight">|</span>' : '';
+          ? 'border border-white bg-yellow-400 bg-opacity-50 px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight inline-block'
+          : 'text-gray-400 text-[10px] leading-tight inline-block';
+        const separator = idx < platforms.length - 1 ? '<span class="text-gray-400 text-[10px] leading-tight inline-block">|</span>' : '';
         return `<span class="${spanClass}">${plat}</span>${separator}`;
       }).join('');
 
