@@ -196,9 +196,9 @@
             </div>
           </div>
           
-          <div class="text-xs text-white mb-2" style="display: block; overflow: hidden;">
-            <span class="leading-tight" style="display: inline;">Platform:</span>
-            <span style="display: inline; margin-left: 0.5rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: calc(100% - 60px);">${platformHTML}</span>
+          <div class="text-xs text-white mb-2" style="display: flex; white-space: nowrap; overflow: hidden; align-items: baseline; gap: 0.5rem;">
+            <span class="leading-tight" style="flex-shrink: 0;">Platform:</span>
+            <span style="overflow: hidden; text-overflow: ellipsis; min-width: 0; flex: 1;">${platformHTML}</span>
           </div>
           
           <p class="text-gray-400 text-sm">${mod.description}</p>
