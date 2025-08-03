@@ -151,11 +151,10 @@
         title.style.overflow = 'hidden'; // Hide overflow
         title.style.textOverflow = 'ellipsis'; // Show ... when text is cut off
 
-        // Rating container - yellow color, flex layout
-        // SPACING CONTROL: Change 'space-x-1' to increase/decrease gap between rating number and stars
-        // space-x-1 = 4px gap, space-x-2 = 8px gap, space-x-3 = 12px gap, space-x-4 = 16px gap, etc.
+   
         const rating = document.createElement('div');
-        rating.className = 'flex items-center space-x-2 text-yellow-400 rating';
+        rating.className = 'flex items-center text-yellow-400 rating';
+        rating.style.gap = '6px';
         
         // Rating number (like "4.2") - medium text size, bold
         const ratingNumber = document.createElement('span');
