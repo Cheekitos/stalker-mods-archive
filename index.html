@@ -151,10 +151,11 @@
         title.style.overflow = 'hidden'; // Hide overflow
         title.style.textOverflow = 'ellipsis'; // Show ... when text is cut off
 
-   
+        // Rating container - yellow color, flex layout
+        // SPACING CONTROL: Change 'space-x-1' to increase/decrease gap between rating number and stars
+        // space-x-1 = 4px gap, space-x-2 = 8px gap, space-x-3 = 12px gap, space-x-4 = 16px gap, etc.
         const rating = document.createElement('div');
-        rating.className = 'flex items-center text-yellow-400 rating';
-        rating.style.gap = '6px';
+        rating.className = 'flex items-center space-x-2 text-yellow-400 rating';
         
         // Rating number (like "4.2") - medium text size, bold
         const ratingNumber = document.createElement('span');
@@ -163,8 +164,10 @@
         rating.appendChild(ratingNumber);
         
         // Stars container - holds the 5 star icons
+        // STAR COLOR CONTROL: Change opacity-80 to adjust star brightness
+        // opacity-100 = full brightness, opacity-80 = 80% brightness, opacity-60 = 60% brightness, etc.
         const starsContainer = document.createElement('div');
-        starsContainer.className = 'flex items-center space-x-0.5';
+        starsContainer.className = 'flex items-center space-x-0.5 opacity-80';
         starsContainer.innerHTML = renderStars(mod.rating); // Generate star HTML
         rating.appendChild(starsContainer);
 
