@@ -27,6 +27,49 @@
       text-overflow: ellipsis;
       white-space: nowrap;
     }
+    /* Hover effect for mod cards */
+    .mod-card {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .mod-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    }
+    /* Skeleton loading animation */
+    .skeleton {
+      background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
+      background-size: 200% 100%;
+      animation: loading 1.5s infinite;
+    }
+    @keyframes loading {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+    /* Back to top button styling */
+    .back-to-top {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #374151;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      font-size: 18px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease, background-color 0.2s ease;
+      z-index: 40;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+    .back-to-top:hover {
+      background: #4b5563;
+    }
   </style>
 </head>
 <!-- Main page background: dark gray (bg-gray-900), white text, font family, padding around edges -->
@@ -78,6 +121,9 @@
     </footer>
   </div>
 
+  <!-- Back to top button -->
+  <button id="back-to-top" class="back-to-top" aria-label="Back to top">↑</button>
+
   <!-- Install Guide Popup - hidden by default, covers full screen with dark overlay -->
   <div id="popup-overlay" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center hidden z-50">
     <!-- Popup content box - dark background, rounded corners, maximum size limits -->
@@ -115,9 +161,43 @@
     let sortState = 0; // 0: default order, 1: highest rating first, 2: lowest rating first
     let originalMods = []; // Original unfiltered mod data for resetting
 
+    // Function to create skeleton loading cards
+    function renderSkeletons() {
+      const container = document.getElementById('mod-list');
+      container.innerHTML = '';
+      
+      // Create 6 skeleton cards
+      for (let i = 0; i < 6; i++) {
+        const card = document.createElement('div');
+        card.className = 'bg-gray-800 p-3 rounded-md shadow-sm flex flex-col h-full';
+        
+        card.innerHTML = `
+          <div class="flex justify-between items-center mb-3 gap-2">
+            <div class="h-8 bg-gray-700 rounded skeleton flex-1"></div>
+            <div class="h-6 w-20 bg-gray-700 rounded skeleton"></div>
+          </div>
+          <div class="h-5 bg-gray-700 rounded skeleton mb-2"></div>
+          <div class="h-5 bg-gray-700 rounded skeleton mb-2"></div>
+          <div class="h-16 bg-gray-700 rounded skeleton mb-2"></div>
+          <div class="space-y-1 mb-2">
+            <div class="h-4 bg-gray-700 rounded skeleton w-3/4"></div>
+            <div class="h-4 bg-gray-700 rounded skeleton w-1/2"></div>
+          </div>
+          <div class="mt-auto">
+            <div class="w-full aspect-video bg-gray-700 rounded skeleton"></div>
+          </div>
+        `;
+        
+        container.appendChild(card);
+      }
+    }
+
     // Function to load mod data from JSON file
     async function loadMods() {
       try {
+        // Show skeleton loading
+        renderSkeletons();
+        
         // Fetch mods.json file with cache-busting parameter
         const response = await fetch('mods.json?v=' + Date.now());
         mods = await response.json(); // Convert response to JavaScript array
@@ -137,7 +217,7 @@
       modArray.forEach(mod => {
         // Create main card container - dark background, padding, rounded corners, full height
         const card = document.createElement('div');
-        card.className = 'bg-gray-800 p-3 rounded-md shadow-sm flex flex-col h-full';
+        card.className = 'bg-gray-800 p-3 rounded-md shadow-sm flex flex-col h-full mod-card';
 
         // Create title row containing mod name and rating
         const titleRow = document.createElement('div');
@@ -155,7 +235,7 @@
         // SPACING CONTROL: Change 'space-x-1' to increase/decrease gap between rating number and stars
         // space-x-1 = 4px gap, space-x-2 = 8px gap, space-x-3 = 12px gap, space-x-4 = 16px gap, etc.
         const rating = document.createElement('div');
-        rating.className = 'flex items-center space-x-1.5 text-yellow-400 rating';
+        rating.className = 'flex items-center space-x-2 text-yellow-400 rating';
         
         // Rating number (like "4.2") - medium text size, bold
         const ratingNumber = document.createElement('span');
@@ -417,6 +497,26 @@
       const isHiding = document.body.classList.toggle('hide-videos');
       // Update button text based on current state
       btn.textContent = isHiding ? 'Show Videos' : 'Hide Videos';
+    });
+
+    // Back to top button functionality
+    const backToTopBtn = document.getElementById('back-to-top');
+    
+    // Show/hide button based on scroll position
+    window.addEventListener('scroll', () => {
+      if (window.pageYOffset > 300) {
+        backToTopBtn.classList.add('visible');
+      } else {
+        backToTopBtn.classList.remove('visible');
+      }
+    });
+    
+    // Scroll to top when clicked
+    backToTopBtn.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
     });
 
     // Contact popup functionality
