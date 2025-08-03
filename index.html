@@ -164,10 +164,10 @@
         rating.appendChild(ratingNumber);
         
         // Stars container - holds the 5 star icons
-        // STAR COLOR CONTROL: Change opacity-80 to adjust star brightness
-        // opacity-100 = full brightness, opacity-80 = 80% brightness, opacity-60 = 60% brightness, etc.
+        // STAR COLOR CONTROL: Change opacity-90 to adjust star brightness
+        // opacity-100 = full brightness, opacity-90 = 90% brightness, opacity-80 = 80% brightness, etc.
         const starsContainer = document.createElement('div');
-        starsContainer.className = 'flex items-center space-x-0.5 opacity-80';
+        starsContainer.className = 'flex items-center space-x-0.5 opacity-90';
         starsContainer.innerHTML = renderStars(mod.rating); // Generate star HTML
         rating.appendChild(starsContainer);
 
