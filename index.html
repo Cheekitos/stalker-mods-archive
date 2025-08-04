@@ -7,7 +7,7 @@
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    .hide-videos iframe {
+    .hide-videos .video-container {
       display: none;
     }
     h3, .platform-block {
@@ -28,6 +28,55 @@
       transform: scale(1.01);
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
       background-color: rgba(55, 65, 81, 0.5);
+    }
+    .video-thumbnail {
+      position: relative;
+      cursor: pointer;
+      background: #000;
+      border-radius: 0.375rem;
+      overflow: hidden;
+      aspect-ratio: 16/9;
+    }
+    .video-thumbnail img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: opacity 0.2s ease;
+    }
+    .video-thumbnail:hover img {
+      opacity: 0.8;
+    }
+    .play-button {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 68px;
+      height: 48px;
+      background: rgba(255, 0, 0, 0.8);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+    .play-button:hover {
+      background: rgba(255, 0, 0, 1);
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+    .play-button::after {
+      content: '';
+      width: 0;
+      height: 0;
+      border-left: 20px solid white;
+      border-top: 12px solid transparent;
+      border-bottom: 12px solid transparent;
+      margin-left: 4px;
+    }
+    .video-loaded iframe {
+      width: 100%;
+      aspect-ratio: 16/9;
+      border-radius: 0.375rem;
     }
   </style>
 </head>
@@ -91,6 +140,59 @@
     let sortState = 0;
     let originalMods = [];
 
+    // Extract YouTube video ID from various YouTube URL formats
+    function getYouTubeVideoId(url) {
+      const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+      const match = url.match(regExp);
+      return (match && match[2].length === 11) ? match[2] : null;
+    }
+
+    // Generate YouTube thumbnail URL
+    function getYouTubeThumbnail(videoId, quality = 'hqdefault') {
+      return `https://img.youtube.com/vi/${videoId}/${quality}.jpg`;
+    }
+
+    // Create lazy loading video element
+    function createLazyVideo(videoUrl) {
+      const videoId = getYouTubeVideoId(videoUrl);
+      if (!videoId) return null;
+
+      const container = document.createElement('div');
+      container.className = 'video-container mt-auto';
+
+      const thumbnail = document.createElement('div');
+      thumbnail.className = 'video-thumbnail';
+      thumbnail.setAttribute('data-video-id', videoId);
+      thumbnail.setAttribute('data-video-url', videoUrl);
+
+      const img = document.createElement('img');
+      img.src = getYouTubeThumbnail(videoId);
+      img.alt = 'Video thumbnail';
+      img.loading = 'lazy';
+
+      const playButton = document.createElement('div');
+      playButton.className = 'play-button';
+
+      thumbnail.appendChild(img);
+      thumbnail.appendChild(playButton);
+      container.appendChild(thumbnail);
+
+      // Click handler to load actual video
+      thumbnail.addEventListener('click', function() {
+        const iframe = document.createElement('iframe');
+        iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+        iframe.allowFullscreen = true;
+        iframe.className = 'w-full aspect-video rounded';
+
+        container.innerHTML = '';
+        container.appendChild(iframe);
+        container.classList.add('video-loaded');
+      });
+
+      return container;
+    }
+
     async function loadMods() {
       try {
         const response = await fetch('mods.json?v=' + Date.now());
@@ -99,6 +201,20 @@
         renderMods(mods);
       } catch (err) {
         console.error('Error loading mods.json:', err);
+        // Fallback demo data for testing
+        mods = [
+          {
+            title: "Demo Mod",
+            rating: 4.5,
+            standalone: true,
+            platform: "Call of Pripyat",
+            description: "A demo mod for testing purposes",
+            links: [],
+            video: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+          }
+        ];
+        originalMods = [...mods];
+        renderMods(mods);
       }
     }
 
@@ -230,22 +346,23 @@
           links.appendChild(a);
         });
 
-        const videoWrapper = document.createElement('div');
-        videoWrapper.className = 'mt-auto';
-
-        const video = document.createElement('iframe');
-        video.src = mod.video;
-        video.className = 'w-full aspect-video rounded';
-        video.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-        video.allowFullscreen = true;
-        videoWrapper.appendChild(video);
-
-        card.appendChild(titleRow);
-        card.appendChild(standaloneDiv);
-        card.appendChild(platformDiv);
-        card.appendChild(desc);
-        card.appendChild(links);
-        card.appendChild(videoWrapper);
+        // Create lazy loading video
+        const videoElement = createLazyVideo(mod.video);
+        if (videoElement) {
+          card.appendChild(titleRow);
+          card.appendChild(standaloneDiv);
+          card.appendChild(platformDiv);
+          card.appendChild(desc);
+          card.appendChild(links);
+          card.appendChild(videoElement);
+        } else {
+          // Fallback for non-YouTube videos or invalid URLs
+          card.appendChild(titleRow);
+          card.appendChild(standaloneDiv);
+          card.appendChild(platformDiv);
+          card.appendChild(desc);
+          card.appendChild(links);
+        }
 
         container.appendChild(card);
       });
