@@ -93,41 +93,13 @@
 
     async function loadMods() {
       try {
-        showLoadingState();
         const response = await fetch('mods.json?v=' + Date.now());
         mods = await response.json();
         originalMods = [...mods];
         renderMods(mods);
       } catch (err) {
         console.error('Error loading mods.json:', err);
-        showErrorState();
       }
-    }
-
-    function showLoadingState() {
-      const container = document.getElementById('mod-list');
-      container.innerHTML = '';
-      for (let i = 0; i < 6; i++) {
-        const skeleton = document.createElement('div');
-        skeleton.className = 'bg-gray-800 p-3 rounded-md shadow-sm flex flex-col h-full animate-pulse';
-        skeleton.innerHTML = `
-          <div class="flex justify-between items-center mb-3 gap-2">
-            <div class="h-8 bg-gray-700 rounded w-3/4"></div>
-            <div class="h-6 bg-gray-700 rounded w-16"></div>
-          </div>
-          <div class="h-4 bg-gray-700 rounded w-1/2 mb-2"></div>
-          <div class="h-4 bg-gray-700 rounded w-2/3 mb-2"></div>
-          <div class="h-16 bg-gray-700 rounded mb-2 flex-grow"></div>
-          <div class="h-4 bg-gray-700 rounded w-1/3 mb-2"></div>
-          <div class="h-32 bg-gray-700 rounded aspect-video"></div>
-        `;
-        container.appendChild(skeleton);
-      }
-    }
-
-    function showErrorState() {
-      const container = document.getElementById('mod-list');
-      container.innerHTML = '<div class="col-span-full text-center text-gray-400 py-8">Failed to load mods. Please refresh the page.</div>';
     }
 
     function renderMods(modArray) {
@@ -261,20 +233,12 @@
         const videoWrapper = document.createElement('div');
         videoWrapper.className = 'mt-auto';
 
-        const videoPlaceholder = document.createElement('div');
-        videoPlaceholder.className = 'w-full aspect-video rounded bg-gray-700 flex items-center justify-center cursor-pointer hover:bg-gray-600 transition-colors';
-        videoPlaceholder.innerHTML = '<svg class="w-12 h-12 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/></svg>';
-        
-        videoPlaceholder.addEventListener('click', () => {
-          const video = document.createElement('iframe');
-          video.src = mod.video;
-          video.className = 'w-full aspect-video rounded';
-          video.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-          video.allowFullscreen = true;
-          videoWrapper.replaceChild(video, videoPlaceholder);
-        });
-
-        videoWrapper.appendChild(videoPlaceholder);
+        const video = document.createElement('iframe');
+        video.src = mod.video;
+        video.className = 'w-full aspect-video rounded';
+        video.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+        video.allowFullscreen = true;
+        videoWrapper.appendChild(video);
 
         card.appendChild(titleRow);
         card.appendChild(standaloneDiv);
