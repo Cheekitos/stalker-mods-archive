@@ -27,6 +27,15 @@
       text-overflow: ellipsis;
       white-space: nowrap;
     }
+    /* Hover effects for mod cards */
+    .mod-card {
+      transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out;
+    }
+    .mod-card:hover {
+      transform: scale(1.02);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+      background-color: rgb(55, 65, 81); /* Slightly lighter gray-700 */
+    }
   </style>
 </head>
 <!-- Main page background: dark gray (bg-gray-900), white text, font family, padding around edges -->
@@ -135,9 +144,9 @@
       
       // Loop through each mod and create a card for it
       modArray.forEach(mod => {
-        // Create main card container - dark background, padding, rounded corners, full height
+        // Create main card container - dark background, padding, rounded corners, full height, with hover effects
         const card = document.createElement('div');
-        card.className = 'bg-gray-800 p-3 rounded-md shadow-sm flex flex-col h-full';
+        card.className = 'bg-gray-800 p-3 rounded-md shadow-sm flex flex-col h-full mod-card';
 
         // Create title row containing mod name and rating
         const titleRow = document.createElement('div');
