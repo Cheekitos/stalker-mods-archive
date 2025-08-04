@@ -3,258 +3,199 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- Website title that appears in browser tab -->
   <title>Cheeki's Mods Archive</title>
-  <!-- Font Awesome icons library for any icons (not currently used but loaded) -->
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-  <!-- Tailwind CSS framework for styling - provides all the classes like bg-gray-900, text-white etc. -->
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    /* When "Hide Videos" button is clicked, this class hides all video iframes */
     .hide-videos iframe {
       display: none;
     }
-    /* Prevents text from wrapping to new lines and adds ... when text is too long */
     h3, .platform-block {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    /* Rating section styling - prevents shrinking and handles text overflow */
     .rating {
       flex-shrink: 0;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
-    /* Hover effects for mod cards */
     .mod-card {
-      transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out;
+      transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     }
     .mod-card:hover {
-      transform: scale(1.02);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-      background-color: rgb(55, 65, 81); /* Slightly lighter gray-700 */
+      transform: scale(1.01);
+      box-shadow: 0 0 0 2px rgba(250, 204, 21, 0.6), 0 8px 25px rgba(0, 0, 0, 0.3);
     }
   </style>
 </head>
-<!-- Main page background: dark gray (bg-gray-900), white text, font family, padding around edges -->
 <body class="bg-gray-900 text-white font-sans p-4">
-  <!-- Container that centers content and limits maximum width -->
   <div class="max-w-6xl mx-auto">
-    <!-- Header section with title and buttons -->
     <div class="flex justify-between items-center mb-1 gap-2">
-      <!-- Main website title - size, weight, spacing from bottom -->
       <h1 class="text-3xl font-bold">Cheeki's Mods Archive</h1>
-      <!-- Button container on the right side -->
       <div class="flex gap-2">
-        <!-- Hide/Show Videos button - colors, hover effects, text size, padding, rounded corners -->
         <button id="toggle-videos" aria-label="Toggle videos visibility" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
           Hide videos
         </button>
-        <!-- Contact me button - same styling as videos button -->
         <button id="contact-button" aria-label="Contact me" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
           Contact me
         </button>
       </div>
     </div>
 
-    <!-- Website subtitle/description - text size, color, spacing from bottom -->
     <h2 class="text-lg text-gray-400 mb-3">A collection of S.T.A.L.K.E.R. Story Mods</h2>
-    <!-- Detailed description paragraph - text color, size, spacing from bottom -->
     <p class="text-gray-300 text-sm mb-6">
       A non-exhaustive archive of game modifications for the S.T.A.L.K.E.R. game franchise, mainly story-focused mods I reviewed on the YouTube Channel.
       Everything listed here is for ease-of-access and posterity only. Consolidating files that tend to be scattered accross multiple websites, hosting services, with some unfortunately lost already. 
       All credits go to the Authors of these mods.
     </p>
 
-    <!-- Controls section: sort button and search box -->
     <div class="flex flex-wrap items-center gap-2 mb-4">
-      <!-- Sort button - yellow background, black text, fixed width, hover effects -->
       <button id="sort-button" aria-label="Sort mods by rating" class="bg-yellow-500 hover:bg-yellow-600 text-black text-sm font-medium py-1 px-3 rounded w-32">
         Sort by Rating
       </button>
-      <!-- Search input box - flexible width, dark background, yellow focus ring -->
       <input id="search-input" type="text" aria-label="Search mods" placeholder="Search mods..." class="flex-1 min-w-[150px] px-2 py-1 text-sm rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500" />
     </div>
 
-    <!-- Container where all mod cards will be displayed - grid layout, responsive columns -->
     <div id="mod-list" class="grid gap-4 grid-cols-[repeat(auto-fill,minmax(300px,1fr))]"></div>
 
-    <!-- Footer section - spacing from top, centered text, small gray text -->
     <footer class="mt-8 text-center text-sm text-gray-500">
       Cheeki's Mods Archive - <a href="https://linktr.ee/cheekibreekii" target="_blank" class="text-blue-400 hover:underline">Check me Out!</a>
     </footer>
   </div>
 
-  <!-- Install Guide Popup - hidden by default, covers full screen with dark overlay -->
   <div id="popup-overlay" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center hidden z-50">
-    <!-- Popup content box - dark background, rounded corners, maximum size limits -->
     <div class="bg-gray-900 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-auto relative p-4">
-      <!-- Close button (X) - positioned in top-right corner -->
       <button id="popup-close" aria-label="Close popup" class="absolute top-2 right-2 text-gray-400 hover:text-white text-xl">&times;</button>
-      <!-- Where the install guide content will be loaded -->
       <div id="popup-content" class="text-sm text-gray-200">Loading...</div>
     </div>
   </div>
 
-  <!-- Contact Me Popup - similar to install guide popup but smaller -->
   <div id="contact-overlay" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center hidden z-50">
-    <!-- Contact popup content box - smaller max width than install guide -->
     <div class="bg-gray-900 rounded-lg max-w-md w-full p-4 relative text-sm text-gray-200">
-      <!-- Close button for contact popup -->
       <button id="contact-close" aria-label="Close contact popup" class="absolute top-2 right-2 text-gray-400 hover:text-white text-xl">&times;</button>
-      <!-- Contact instructions text -->
       <p class="mb-4">Only use this to report a broken link or incorrect information that needs fixing.</p>
-      <!-- Email reveal section -->
       <div class="flex items-center gap-2">
-        <!-- Button to reveal email address - yellow styling like sort button -->
         <button id="reveal-email" class="bg-yellow-500 hover:bg-yellow-600 text-black text-xs font-medium py-1 px-2 rounded">
           Reveal Email
         </button>
-        <!-- Email address text - hidden until button is clicked -->
         <p id="email-text" class="text-blue-400 hidden">cheekitos@proton.me</p>
       </div>
     </div>
   </div>
 
   <script>
-    // Variables to store all the mod data
-    let mods = []; // Current filtered/sorted mods being displayed
-    let sortState = 0; // 0: default order, 1: highest rating first, 2: lowest rating first
-    let originalMods = []; // Original unfiltered mod data for resetting
+    let mods = [];
+    let sortState = 0;
+    let originalMods = [];
 
-    // Function to load mod data from JSON file
     async function loadMods() {
       try {
-        // Fetch mods.json file with cache-busting parameter
         const response = await fetch('mods.json?v=' + Date.now());
-        mods = await response.json(); // Convert response to JavaScript array
-        originalMods = [...mods]; // Keep a copy of original data
-        renderMods(mods); // Display the mods on page
+        mods = await response.json();
+        originalMods = [...mods];
+        renderMods(mods);
       } catch (err) {
         console.error('Error loading mods.json:', err);
       }
     }
 
-    // Function to create and display mod cards on the page
     function renderMods(modArray) {
-      const container = document.getElementById('mod-list'); // Get the container element
-      container.innerHTML = ''; // Clear any existing content
+      const container = document.getElementById('mod-list');
+      container.innerHTML = '';
       
-      // Loop through each mod and create a card for it
       modArray.forEach(mod => {
-        // Create main card container - dark background, padding, rounded corners, full height, with hover effects
         const card = document.createElement('div');
         card.className = 'bg-gray-800 p-3 rounded-md shadow-sm flex flex-col h-full mod-card';
 
-        // Create title row containing mod name and rating
         const titleRow = document.createElement('div');
         titleRow.className = 'flex justify-between items-center mb-3 gap-2';
 
-        // Mod title - large text, bold, light gray color, prevents text overflow
         const title = document.createElement('h3');
         title.className = 'text-2xl font-semibold text-gray-100 drop-shadow';
         title.textContent = mod.title;
-        title.style.whiteSpace = 'nowrap'; // Don't wrap to new line
-        title.style.overflow = 'hidden'; // Hide overflow
-        title.style.textOverflow = 'ellipsis'; // Show ... when text is cut off
+        title.style.whiteSpace = 'nowrap';
+        title.style.overflow = 'hidden';
+        title.style.textOverflow = 'ellipsis';
 
-        // Rating container - yellow color, flex layout
-        // SPACING CONTROL: Change 'space-x-1' to increase/decrease gap between rating number and stars
-        // space-x-1 = 4px gap, space-x-2 = 8px gap, space-x-3 = 12px gap, space-x-4 = 16px gap, etc.
         const rating = document.createElement('div');
         rating.className = 'flex items-center space-x-1.5 text-yellow-400 rating';
         
-        // Rating number (like "4.2") - medium text size, bold
         const ratingNumber = document.createElement('span');
         ratingNumber.className = 'text-base font-medium';
-        ratingNumber.textContent = mod.rating.toFixed(1); // Show one decimal place
+        ratingNumber.textContent = mod.rating.toFixed(1);
         rating.appendChild(ratingNumber);
         
-        // STAR CONTROL
         const starsContainer = document.createElement('div');
         starsContainer.className = 'flex items-center space-x-0.5 opacity-95';
-        starsContainer.innerHTML = renderStars(mod.rating); // Generate star HTML
+        starsContainer.innerHTML = renderStars(mod.rating);
         rating.appendChild(starsContainer);
 
-        // Add title and rating to the title row
         titleRow.appendChild(title);
         titleRow.appendChild(rating);
 
-        // Standalone section - shows if mod requires base game or not
         const standaloneDiv = document.createElement('div');
         standaloneDiv.className = 'text-xs text-white mb-2 flex items-baseline gap-2';
 
-        // "Standalone:" label
         const labelStandalone = document.createElement('span');
         labelStandalone.textContent = 'Standalone:';
         labelStandalone.className = 'leading-tight';
         standaloneDiv.appendChild(labelStandalone);
 
-        // Container for Yes/No options
         const standaloneWrapper = document.createElement('div');
         standaloneWrapper.className = 'flex items-center gap-1';
 
-        // "Yes" option - highlighted if mod is standalone
         const yesSpan = document.createElement('span');
         yesSpan.textContent = 'Yes';
         yesSpan.className = mod.standalone
-          ? 'border border-white px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight' // Active styling
-          : 'text-gray-400 text-[10px] leading-tight'; // Inactive styling
+          ? 'border border-white px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight'
+          : 'text-gray-400 text-[10px] leading-tight';
         if (mod.standalone) {
-          yesSpan.style.backgroundColor = 'rgba(250, 204, 21, 0.45)'; // Yellow background when active
+          yesSpan.style.backgroundColor = 'rgba(250, 204, 21, 0.45)';
         }
 
         standaloneWrapper.appendChild(yesSpan);
 
-        // Separator between Yes and No
         const sep = document.createElement('span');
         sep.textContent = '|';
         sep.className = 'text-gray-400 text-[10px] leading-tight';
         standaloneWrapper.appendChild(sep);
 
-        // "No" option - highlighted if mod is NOT standalone
         const noSpan = document.createElement('span');
         noSpan.textContent = 'No';
         noSpan.className = !mod.standalone
-          ? 'border border-white px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight' // Active styling
-          : 'text-gray-400 text-[10px] leading-tight'; // Inactive styling
+          ? 'border border-white px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight'
+          : 'text-gray-400 text-[10px] leading-tight';
         if (!mod.standalone) {
-          noSpan.style.backgroundColor = 'rgba(250, 204, 21, 0.45)'; // Yellow background when active
+          noSpan.style.backgroundColor = 'rgba(250, 204, 21, 0.45)';
         }
 
         standaloneWrapper.appendChild(noSpan);
         standaloneDiv.appendChild(standaloneWrapper);
 
-        // Platform section - shows which STALKER game the mod is for
         const platformDiv = document.createElement('div');
         platformDiv.className = 'text-xs text-white mb-2 flex items-baseline gap-2 platform-block';
-        platformDiv.style.whiteSpace = 'nowrap'; // Prevent wrapping
-        platformDiv.style.overflow = 'hidden'; // Hide overflow
-        platformDiv.style.textOverflow = 'ellipsis'; // Show ... when cut off
+        platformDiv.style.whiteSpace = 'nowrap';
+        platformDiv.style.overflow = 'hidden';
+        platformDiv.style.textOverflow = 'ellipsis';
 
-        // "Platform:" label
         const labelPlatform = document.createElement('span');
         labelPlatform.textContent = 'Platform:';
         labelPlatform.className = 'leading-tight';
         platformDiv.appendChild(labelPlatform);
 
-        // Container for the three platform options
         const platformWrapper = document.createElement('div');
         platformWrapper.className = 'flex items-center gap-1';
 
-        // Loop through the three STALKER games
         ['Shadow of Chernobyl', 'Clear Sky', 'Call of Pripyat'].forEach((plat, idx, arr) => {
           const span = document.createElement('span');
           span.textContent = plat;
-          // Highlight the platform that matches this mod
           span.className = (mod.platform === plat)
-            ? 'border border-white bg-yellow-400 bg-opacity-50 px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight' // Active
-            : 'text-gray-400 text-[10px] leading-tight'; // Inactive
+            ? 'border border-white bg-yellow-400 bg-opacity-50 px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight'
+            : 'text-gray-400 text-[10px] leading-tight';
           platformWrapper.appendChild(span);
 
-          // Add separator between platforms (but not after the last one)
           if (idx < arr.length - 1) {
             const sep = document.createElement('span');
             sep.textContent = '|';
@@ -265,12 +206,10 @@
 
         platformDiv.appendChild(platformWrapper);
 
-        // Mod description text - gray color, small text, takes up available space
         const desc = document.createElement('p');
         desc.className = 'text-gray-400 mb-2 text-sm flex-grow';
         desc.textContent = mod.description;
 
-        // Links section - download links, install guides, etc.
         const links = document.createElement('div');
         links.className = 'mb-2';
         (mod.links || []).forEach(link => {
@@ -279,23 +218,20 @@
           a.textContent = link.label;
           a.className = 'block text-blue-400 hover:underline text-sm cursor-pointer';
           
-          // Special handling for install guide links - open in popup instead of new tab
           if (link.label.toLowerCase().includes('install guide')) {
             a.addEventListener('click', e => {
-              e.preventDefault(); // Don't follow the link normally
-              openPopup(link.url); // Open in popup instead
+              e.preventDefault();
+              openPopup(link.url);
             });
           } else {
-            a.target = '_blank'; // Open other links in new tab
+            a.target = '_blank';
           }
           links.appendChild(a);
         });
 
-        // Video section - YouTube embed at bottom of card
         const videoWrapper = document.createElement('div');
-        videoWrapper.className = 'mt-auto'; // Push to bottom of card
+        videoWrapper.className = 'mt-auto';
 
-        // YouTube iframe - responsive aspect ratio, rounded corners
         const video = document.createElement('iframe');
         video.src = mod.video;
         video.className = 'w-full aspect-video rounded';
@@ -303,7 +239,6 @@
         video.allowFullscreen = true;
         videoWrapper.appendChild(video);
 
-        // Add all sections to the card
         card.appendChild(titleRow);
         card.appendChild(standaloneDiv);
         card.appendChild(platformDiv);
@@ -311,71 +246,57 @@
         card.appendChild(links);
         card.appendChild(videoWrapper);
 
-        // Add completed card to the page
         container.appendChild(card);
       });
     }
 
-    // Function to generate star rating HTML based on numerical rating
     function renderStars(rating) {
-      // Full yellow star SVG
       const fullStar = '<svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>';
-      // Half star (50% yellow, 50% gray) using gradient
       const halfStar = `<svg class="w-4 h-4" viewBox="0 0 20 20"><defs><linearGradient id="halfGrad" x1="0" x2="100%" y1="0" y2="0"><stop offset="50%" stop-color="#facc15"/><stop offset="50%" stop-color="#4b5563"/></linearGradient></defs><path fill="url(#halfGrad)" d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>`;
       
-      // Round rating to nearest 0.5 for star display (e.g., 4.3 becomes 4.5)
       const roundedRating = Math.round(rating * 2) / 2;
       
       let starsHTML = '';
-      // Generate 5 stars
       for (let i = 1; i <= 5; i++) {
         if (roundedRating >= i) {
-          starsHTML += fullStar; // Full star if rating is high enough
+          starsHTML += fullStar;
         } else if (roundedRating + 0.5 >= i) {
-          starsHTML += halfStar; // Half star for partial rating
+          starsHTML += halfStar;
         } else {
-          // Empty gray star for remaining spots
           starsHTML += `<svg class="w-4 h-4 fill-gray-600" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>`;
         }
       }
       return starsHTML;
     }
 
-    // Get popup elements for install guides
     const overlay = document.getElementById('popup-overlay');
     const popupContent = document.getElementById('popup-content');
     const popupClose = document.getElementById('popup-close');
 
-    // Function to open install guide popup
     function openPopup(url) {
-      popupContent.innerHTML = 'Loading...'; // Show loading message
-      overlay.classList.remove('hidden'); // Make popup visible
+      popupContent.innerHTML = 'Loading...';
+      overlay.classList.remove('hidden');
       
-      // Fetch the install guide content
-      fetch(url + '?v=' + Date.now()) // Cache-busting parameter
+      fetch(url + '?v=' + Date.now())
         .then(res => {
           if (!res.ok) throw new Error('Failed to load');
-          return res.text(); // Get content as text
+          return res.text();
         })
         .then(html => {
-          popupContent.innerHTML = html; // Display the content
-          popupContent.scrollTop = 0; // Scroll to top
+          popupContent.innerHTML = html;
+          popupContent.scrollTop = 0;
         })
         .catch(() => {
-          // Show error message if loading fails
           popupContent.innerHTML = '<p class="text-red-400">Failed to load guide.</p>';
         });
     }
 
-    // Close popup when X button is clicked
     popupClose.addEventListener('click', () => overlay.classList.add('hidden'));
     
-    // Close popup when clicking outside the content area
     overlay.addEventListener('click', e => {
       if (e.target === overlay) overlay.classList.add('hidden');
     });
 
-    // Close popups when Escape key is pressed
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape') {
         overlay.classList.add('hidden');
@@ -383,73 +304,61 @@
       }
     });
 
-    // Sort button functionality
     document.getElementById('sort-button').addEventListener('click', () => {
       const btn = document.getElementById('sort-button');
-      sortState = (sortState + 1) % 3; // Cycle through 3 states: 0, 1, 2
+      sortState = (sortState + 1) % 3;
       
       let toRender;
       switch(sortState) {
-        case 0: // Default order (as loaded from JSON)
+        case 0:
           btn.textContent = 'Sort by Rating';
           toRender = originalMods;
           break;
-        case 1: // Highest rating first
+        case 1:
           btn.textContent = 'Highest First';
           toRender = [...mods].sort((a, b) => parseFloat(b.rating) - parseFloat(a.rating));
           break;
-        case 2: // Lowest rating first
+        case 2:
           btn.textContent = 'Lowest First';
           toRender = [...mods].sort((a, b) => parseFloat(a.rating) - parseFloat(b.rating));
           break;
       }
-      renderMods(toRender); // Re-display mods with new sorting
+      renderMods(toRender);
     });
 
-    // Search functionality
     document.getElementById('search-input').addEventListener('input', e => {
-      const q = e.target.value.toLowerCase(); // Get search query in lowercase
+      const q = e.target.value.toLowerCase();
       
-      // Filter mods based on search query (checks title, description, and platform)
       const filtered = mods.filter(mod =>
         mod.title.toLowerCase().includes(q) ||
         mod.description.toLowerCase().includes(q) ||
         (mod.platform && mod.platform.toLowerCase().includes(q))
       );
-      renderMods(filtered); // Display filtered results
+      renderMods(filtered);
     });
 
-    // Toggle videos visibility
     document.getElementById('toggle-videos').addEventListener('click', () => {
       const btn = document.getElementById('toggle-videos');
-      // Toggle the hide-videos class on body (affects all iframes)
       const isHiding = document.body.classList.toggle('hide-videos');
-      // Update button text based on current state
       btn.textContent = isHiding ? 'Show Videos' : 'Hide Videos';
     });
 
-    // Contact popup functionality
     const contactOverlay = document.getElementById('contact-overlay');
     const contactBtn = document.getElementById('contact-button');
     const contactClose = document.getElementById('contact-close');
     const revealEmail = document.getElementById('reveal-email');
     const emailText = document.getElementById('email-text');
 
-    // Show contact popup when button clicked
     contactBtn.addEventListener('click', () => contactOverlay.classList.remove('hidden'));
     
-    // Hide contact popup when X clicked
     contactClose.addEventListener('click', () => contactOverlay.classList.add('hidden'));
     
-    // Hide contact popup when clicking outside
     contactOverlay.addEventListener('click', e => {
       if (e.target === contactOverlay) contactOverlay.classList.add('hidden');
     });
     
-    // Show email when reveal button clicked
     revealEmail.addEventListener('click', () => emailText.classList.remove('hidden'));
 
-    // Start the application by loading mod data
     loadMods();
   </script>
 </body>
