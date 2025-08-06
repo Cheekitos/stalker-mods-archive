@@ -1,5 +1,25 @@
 [
 	{
+		"title": "Dollchan 8: Infinity",
+		"rating": 3.6,
+		"standalone": true,
+		"platform": "Call of Pripyat",
+		"description": "Strange cases of memory loss spread among stalkers as the Zone fiercely resists any attempt to uncover its secrets. An intriguing plot with some wackiness, heavily expanded maps, richly detailed environments, and brutal difficulty.",
+		"links": [
+			{
+				"label": "Download Files",
+				"url": "https://drive.google.com/file/d/1OtgBNO59Wt_GfqK1jMEgGPscZ5lHZ2T9/view?usp=sharing"
+			},
+			{
+				"label": "Install Guide",
+				"url": "guides/mod05-dollchan.html"
+			}
+		],
+		"video": "https://www.youtube.com/embed/KTLrMFbksTE?si=ed7GkwTRuECRhhhC",
+		"pros": [],
+		"cons": []
+	},
+	{
 		"title": "Incubator",
 		"rating": 4.4,
 		"standalone": true,
