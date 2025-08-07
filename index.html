@@ -39,6 +39,9 @@
     .hide-videos .video-container {
       display: none;
     }
+    .hide-grades .rating {
+      display: none;
+    }
     h3, .platform-block {
       white-space: nowrap;
       overflow: hidden;
@@ -128,6 +131,9 @@
     <div class="flex justify-between items-center mb-1 gap-2">
       <h1 class="text-3xl font-bold">Cheeki's Mods Archive</h1>
       <div class="flex gap-2">
+        <button id="toggle-grades" aria-label="Toggle grades visibility" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
+          Hide Grades
+        </button>
         <button id="toggle-videos" aria-label="Toggle videos visibility" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
           Hide videos
         </button>
@@ -515,6 +521,13 @@
       const btn = document.getElementById('toggle-videos');
       const isHiding = document.body.classList.toggle('hide-videos');
       btn.textContent = isHiding ? 'Show Videos' : 'Hide Videos';
+    });
+
+    // Toggle grades functionality
+    document.getElementById('toggle-grades').addEventListener('click', () => {
+      const btn = document.getElementById('toggle-grades');
+      const isHiding = document.body.classList.toggle('hide-grades');
+      btn.textContent = isHiding ? 'Show Grades' : 'Hide Grades';
     });
 
     const contactOverlay = document.getElementById('contact-overlay');
