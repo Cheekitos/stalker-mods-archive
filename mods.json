@@ -1,5 +1,25 @@
 [
 	{
+		"title": "Legend Returns",
+		"rating": 4.1,
+		"standalone": true,
+		"platform": "Call of Pripyat",
+		"description": "The largest story-driven overhaul for Call of Chernobyl, blending the open-world, freeplay gameplay with full plots and storylines to discover for multiple factions. Special attention was given to the Sin, making it a must-play faction (but not only).",
+		"links": [
+			{
+				"label": "Download Files",
+				"url": ""
+			},
+			{
+				"label": "Install Guide",
+				"url": "guides/mod06-legendreturns.html"
+			}
+		],
+		"video": "https://www.youtube.com/embed/u1X0ti3JuNk?si=VYQFJ1xVHfwQ0czK",
+		"pros": [],
+		"cons": []
+	},
+	{
 		"title": "Dollchan 8: Infinity",
 		"rating": 3.5,
 		"standalone": true,
