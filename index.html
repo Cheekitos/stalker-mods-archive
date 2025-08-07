@@ -5,17 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cheeki's Mods Archive - S.T.A.L.K.E.R. Story Mods Collection</title>
   
-  <!-- SEO Meta Tags -->
+  <!-- SEO -->
   <meta name="description" content="Archive of S.T.A.L.K.E.R. story mods reviewed by Cheeki. Download links, ratings, and install guides for Shadow of Chernobyl, Clear Sky, and Call of Pripyat modifications.">
   <meta name="keywords" content="STALKER mods, S.T.A.L.K.E.R. modifications, game mods, Shadow of Chernobyl, Clear Sky, Call of Pripyat, story mods">
   <meta name="author" content="Cheeki">
+  <!-- SEO -->
   
-  <!-- Open Graph -->
   <meta property="og:title" content="Cheeki's Mods Archive - S.T.A.L.K.E.R. Story Mods">
   <meta property="og:description" content="Archive of S.T.A.L.K.E.R. story mods with reviews, ratings, and download links">
   <meta property="og:type" content="website">
   
-  <!-- Structured Data -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -157,11 +156,7 @@
       <input id="search-input" type="text" aria-label="Search mods" placeholder="Search mods..." class="flex-1 min-w-[150px] px-2 py-1 text-sm rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500" />
     </div>
 
-    <!-- Grid layout: Currently set to 4 cards max per row (minmax(225px,1fr)) -->
-    <!-- To change to 3 cards max per row: change minmax(225px,1fr) to minmax(300px,1fr) -->
-    <!-- To change to 5 cards max per row: change minmax(225px,1fr) to minmax(180px,1fr) -->
-    <!-- To change to 2 cards max per row: change minmax(225px,1fr) to minmax(450px,1fr) -->
-    <div id="mod-list" class="grid gap-4 grid-cols-[repeat(auto-fill,minmax(225px,1fr))]"></div>
+    <div id="mod-list" class="grid gap-4 grid-cols-[repeat(auto-fill,minmax(300px,1fr))]"></div>
 
     <footer class="mt-8 text-center text-sm text-gray-500">
       Cheeki's Mods Archive - <a href="https://linktr.ee/cheekibreekii" target="_blank" class="text-blue-400 hover:underline">Check me Out!</a>
@@ -193,19 +188,16 @@
     let sortState = 0;
     let originalMods = [];
 
-    // Extract YouTube video ID from various YouTube URL formats
     function getYouTubeVideoId(url) {
       const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
       const match = url.match(regExp);
       return (match && match[2].length === 11) ? match[2] : null;
     }
 
-    // Generate YouTube thumbnail URL
     function getYouTubeThumbnail(videoId, quality = 'hqdefault') {
       return `https://img.youtube.com/vi/${videoId}/${quality}.jpg`;
     }
 
-    // Create lazy loading video element
     function createLazyVideo(videoUrl) {
       const videoId = getYouTubeVideoId(videoUrl);
       if (!videoId) return null;
@@ -223,7 +215,6 @@
       img.alt = 'Video thumbnail';
       img.loading = 'lazy';
 
-      // Add skeleton loading effect while image loads
       const skeletonDiv = document.createElement('div');
       skeletonDiv.className = 'skeleton-loading w-full h-full absolute inset-0 rounded';
       
@@ -243,7 +234,6 @@
       thumbnail.appendChild(playButton);
       container.appendChild(thumbnail);
 
-      // Click handler to load actual video
       thumbnail.addEventListener('click', function() {
         const iframe = document.createElement('iframe');
         iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
@@ -267,7 +257,6 @@
         renderMods(mods);
       } catch (err) {
         console.error('Error loading mods.json:', err);
-        // Fallback demo data for testing
         mods = [
           {
             title: "Demo Mod",
@@ -412,7 +401,6 @@
           links.appendChild(a);
         });
 
-        // Create lazy loading video
         const videoElement = createLazyVideo(mod.video);
         if (videoElement) {
           card.appendChild(titleRow);
@@ -422,7 +410,6 @@
           card.appendChild(links);
           card.appendChild(videoElement);
         } else {
-          // Fallback for non-YouTube videos or invalid URLs
           card.appendChild(titleRow);
           card.appendChild(standaloneDiv);
           card.appendChild(platformDiv);
@@ -488,7 +475,6 @@
       }
     });
 
-    // Fisher-Yates shuffle algorithm
     function shuffleArray(array) {
       const shuffled = [...array];
       for (let i = shuffled.length - 1; i > 0; i--) {
@@ -503,11 +489,9 @@
       const gradesHidden = document.body.classList.contains('hide-grades');
       
       if (gradesHidden) {
-        // Randomize mode
         const randomized = shuffleArray(mods);
         renderMods(randomized);
       } else {
-        // Normal sorting mode
         sortState = (sortState + 1) % 3;
         
         let toRender;
@@ -546,21 +530,19 @@
       btn.textContent = isHiding ? 'Show Videos' : 'Hide Videos';
     });
 
-    // Toggle grades functionality
     document.getElementById('toggle-grades').addEventListener('click', () => {
       const btn = document.getElementById('toggle-grades');
       const sortBtn = document.getElementById('sort-button');
       const isHiding = document.body.classList.toggle('hide-grades');
       btn.textContent = isHiding ? 'Show Grades' : 'Hide Grades';
       
-      // Update sort button text based on grades visibility
       if (isHiding) {
         sortBtn.textContent = 'Randomize';
-        sortState = 0; // Reset sort state when switching to randomize mode
+        sortState = 0; 
       } else {
         sortBtn.textContent = 'Sort by Rating';
-        sortState = 0; // Reset sort state when switching back to sort mode
-        renderMods(originalMods); // Show original order when grades are shown again
+        sortState = 0;
+        renderMods(originalMods);
       }
     });
 
