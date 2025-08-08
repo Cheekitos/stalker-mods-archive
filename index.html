@@ -5,24 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cheeki's Mods Archive - S.T.A.L.K.E.R. Story Mods Collection</title>
   
-  <!-- Favicons -->
-  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="shortcut icon" href="/favicon.ico" />
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-  <link rel="manifest" href="/site.webmanifest" />
-  
   <!-- SEO -->
   <meta name="description" content="Archive of S.T.A.L.K.E.R. story mods reviewed by Cheeki. Download links, ratings, and install guides for Shadow of Chernobyl, Clear Sky, and Call of Pripyat modifications.">
   <meta name="keywords" content="STALKER mods, S.T.A.L.K.E.R. modifications, game mods, Shadow of Chernobyl, Clear Sky, Call of Pripyat, story mods">
   <meta name="author" content="Cheeki">
+  <!-- SEO -->
   
-  <!-- Open Graph -->
   <meta property="og:title" content="Cheeki's Mods Archive - S.T.A.L.K.E.R. Story Mods">
   <meta property="og:description" content="Archive of S.T.A.L.K.E.R. story mods with reviews, ratings, and download links">
   <meta property="og:type" content="website">
   
-  <!-- JSON-LD Schema -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -32,32 +24,16 @@
     "author": {
       "@type": "Person",
       "name": "Cheeki"
+    },
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "{search_term_string}",
+      "query-input": "required name=search_term_string"
     }
   }
   </script>
-  
-  <!-- Load Tailwind -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
   <script src="https://cdn.tailwindcss.com"></script>
-  
-  <!-- SVG Symbol Definitions -->
-  <svg width="0" height="0" style="position: absolute;">
-    <defs>
-      <symbol id="star-full" viewBox="0 0 20 20">
-        <path d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/>
-      </symbol>
-      <symbol id="star-empty" viewBox="0 0 20 20">
-        <path d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/>
-      </symbol>
-      <linearGradient id="halfGrad" x1="0" x2="100%" y1="0" y2="0">
-        <stop offset="50%" stop-color="#facc15"/>
-        <stop offset="50%" stop-color="#4b5563"/>
-      </linearGradient>
-      <symbol id="star-half" viewBox="0 0 20 20">
-        <path fill="url(#halfGrad)" d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/>
-      </symbol>
-    </defs>
-  </svg>
-
   <style>
     .hide-videos .video-container {
       display: none;
@@ -80,6 +56,8 @@
       transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out;
     }
     .mod-card:hover {
+      /* HOVER ZOOM DISABLED: To re-enable the zoom effect, uncomment the line below */
+      /* transform: scale(1.01); */
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
       background-color: rgba(55, 65, 81, 0.5);
     }
@@ -154,18 +132,6 @@
       display: inline-block;
       margin-right: 6px;
     }
-    /* Error message styles */
-    .error-message {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: #dc2626;
-      color: white;
-      padding: 12px 16px;
-      border-radius: 6px;
-      z-index: 1000;
-      max-width: 400px;
-    }
   </style>
 </head>
 <body class="bg-gray-900 text-white font-sans p-4">
@@ -189,7 +155,7 @@
     
     <p class="text-gray-300 text-sm mb-2">
       A non-exhaustive archive of game modifications for the S.T.A.L.K.E.R. game franchise, mainly story-focused mods I reviewed on the <a href="https://linktr.ee/cheekibreekii" target="_blank" class="text-white underline">YouTube Channel</a>.
-      Everything listed here is for ease-of-access and posterity only. Consolidating files that tend to be scattered across multiple websites, hosting services, discord servers etc. All credits go to the Authors of these mods.
+      Everything listed here is for ease-of-access and posterity only. Consolidating files that tend to be scattered accross multiple websites, hosting services, discord servers etc. All credits go to the Authors of these mods.
     </p>
     <p class="text-gray-300 text-sm mb-6">
       <span class="arrow-pointer"></span><a href="#" id="install-files-link" class="text-white underline cursor-pointer">Important files to install before you get started.</a>
@@ -209,10 +175,6 @@
     </footer>
   </div>
 
-  <!-- Error container -->
-  <div id="error-container"></div>
-
-  <!-- Popup overlays -->
   <div id="popup-overlay" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center hidden z-50">
     <div class="bg-gray-900 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-auto relative p-4">
       <button id="popup-close" aria-label="Close popup" class="absolute top-2 right-2 text-gray-400 hover:text-white text-xl">&times;</button>
@@ -233,6 +195,7 @@
     </div>
   </div>
 
+  <!-- Install Files Popup -->
   <div id="install-files-overlay" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center hidden z-50">
     <div class="bg-gray-900 rounded-lg max-w-2xl w-full max-h-[80vh] overflow-auto relative p-4">
       <button id="install-files-close" aria-label="Close install files popup" class="absolute top-3 right-3 text-gray-400 hover:text-white text-xl font-bold">&times;</button>
@@ -288,27 +251,7 @@
     let sortState = 0;
     let originalMods = [];
 
-    // Utility functions
-    function showError(message) {
-      const container = document.getElementById('error-container');
-      const errorDiv = document.createElement('div');
-      errorDiv.className = 'error-message';
-      errorDiv.innerHTML = `
-        ${message}
-        <button onclick="this.parentElement.remove()" class="ml-2 hover:text-gray-300">&times;</button>
-      `;
-      container.appendChild(errorDiv);
-      
-      // Auto-remove after 5 seconds
-      setTimeout(() => {
-        if (errorDiv.parentNode) {
-          errorDiv.remove();
-        }
-      }, 5000);
-    }
-
     function getYouTubeVideoId(url) {
-      if (!url) return null;
       const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
       const match = url.match(regExp);
       return (match && match[2].length === 11) ? match[2] : null;
@@ -327,6 +270,8 @@
 
       const thumbnail = document.createElement('div');
       thumbnail.className = 'video-thumbnail';
+      thumbnail.setAttribute('data-video-id', videoId);
+      thumbnail.setAttribute('data-video-url', videoUrl);
 
       const img = document.createElement('img');
       img.src = getYouTubeThumbnail(videoId);
@@ -370,22 +315,18 @@
     async function loadMods() {
       try {
         const response = await fetch('mods.json?v=' + Date.now());
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-        }
         mods = await response.json();
         originalMods = [...mods];
         renderMods(mods);
       } catch (err) {
         console.error('Error loading mods.json:', err);
-        showError('Failed to load mods data. Using demo content.');
         mods = [
           {
-            title: "Demo Mod - Loading Failed",
+            title: "Demo Mod",
             rating: 4.5,
             standalone: true,
             platform: "Call of Pripyat",
-            description: "Failed to load mods.json. Please check your internet connection and try refreshing the page.",
+            description: "A demo mod for testing purposes",
             links: [],
             video: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
           }
@@ -399,11 +340,6 @@
       const container = document.getElementById('mod-list');
       container.innerHTML = '';
       
-      if (modArray.length === 0) {
-        container.innerHTML = '<div class="col-span-full text-center text-gray-400 py-8">No mods found matching your search.</div>';
-        return;
-      }
-      
       modArray.forEach(mod => {
         const card = document.createElement('div');
         card.className = 'bg-gray-800 p-3 rounded-md shadow-sm flex flex-col h-full mod-card';
@@ -414,21 +350,22 @@
         const title = document.createElement('h3');
         title.className = 'text-2xl font-semibold text-gray-100 drop-shadow';
         title.textContent = mod.title;
+        title.style.whiteSpace = 'nowrap';
+        title.style.overflow = 'hidden';
+        title.style.textOverflow = 'ellipsis';
 
         const rating = document.createElement('div');
         rating.className = 'flex items-center space-x-1.5 text-yellow-400 rating';
         
         const ratingNumber = document.createElement('span');
         ratingNumber.className = 'text-base font-medium';
-        ratingNumber.textContent = mod.rating ? mod.rating.toFixed(1) : 'N/A';
+        ratingNumber.textContent = mod.rating.toFixed(1);
         rating.appendChild(ratingNumber);
         
-        if (mod.rating) {
-          const starsContainer = document.createElement('div');
-          starsContainer.className = 'flex items-center space-x-0.5 opacity-95';
-          starsContainer.innerHTML = renderStars(mod.rating);
-          rating.appendChild(starsContainer);
-        }
+        const starsContainer = document.createElement('div');
+        starsContainer.className = 'flex items-center space-x-0.5 opacity-95';
+        starsContainer.innerHTML = renderStars(mod.rating);
+        rating.appendChild(starsContainer);
 
         titleRow.appendChild(title);
         titleRow.appendChild(rating);
@@ -474,6 +411,9 @@
 
         const platformDiv = document.createElement('div');
         platformDiv.className = 'text-xs text-white mb-2 flex items-baseline gap-2 platform-block';
+        platformDiv.style.whiteSpace = 'nowrap';
+        platformDiv.style.overflow = 'hidden';
+        platformDiv.style.textOverflow = 'ellipsis';
 
         const labelPlatform = document.createElement('span');
         labelPlatform.textContent = 'Platform:';
@@ -503,7 +443,7 @@
 
         const desc = document.createElement('p');
         desc.className = 'text-gray-400 mb-2 text-sm flex-grow';
-        desc.textContent = mod.description || 'No description available.';
+        desc.textContent = mod.description;
 
         const links = document.createElement('div');
         links.className = 'mb-3';
@@ -524,15 +464,20 @@
           links.appendChild(a);
         });
 
-        card.appendChild(titleRow);
-        card.appendChild(standaloneDiv);
-        card.appendChild(platformDiv);
-        card.appendChild(desc);
-        card.appendChild(links);
-
         const videoElement = createLazyVideo(mod.video);
         if (videoElement) {
+          card.appendChild(titleRow);
+          card.appendChild(standaloneDiv);
+          card.appendChild(platformDiv);
+          card.appendChild(desc);
+          card.appendChild(links);
           card.appendChild(videoElement);
+        } else {
+          card.appendChild(titleRow);
+          card.appendChild(standaloneDiv);
+          card.appendChild(platformDiv);
+          card.appendChild(desc);
+          card.appendChild(links);
         }
 
         container.appendChild(card);
@@ -558,7 +503,6 @@
       return starsHTML;
     }
 
-    // Popup functionality
     const overlay = document.getElementById('popup-overlay');
     const popupContent = document.getElementById('popup-content');
     const popupClose = document.getElementById('popup-close');
@@ -582,8 +526,17 @@
     }
 
     popupClose.addEventListener('click', () => overlay.classList.add('hidden'));
+    
     overlay.addEventListener('click', e => {
       if (e.target === overlay) overlay.classList.add('hidden');
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        overlay.classList.add('hidden');
+        contactOverlay.classList.add('hidden');
+        installFilesOverlay.classList.add('hidden');
+      }
     });
 
     function shuffleArray(array) {
@@ -595,7 +548,6 @@
       return shuffled;
     }
 
-    // Event listeners
     document.getElementById('sort-button').addEventListener('click', () => {
       const btn = document.getElementById('sort-button');
       const gradesHidden = document.body.classList.contains('hide-grades');
@@ -625,20 +577,15 @@
       }
     });
 
-    // Search functionality with debouncing
-    let searchTimeout;
     document.getElementById('search-input').addEventListener('input', e => {
-      clearTimeout(searchTimeout);
-      searchTimeout = setTimeout(() => {
-        const q = e.target.value.toLowerCase();
-        
-        const filtered = mods.filter(mod =>
-          mod.title.toLowerCase().includes(q) ||
-          (mod.description && mod.description.toLowerCase().includes(q)) ||
-          (mod.platform && mod.platform.toLowerCase().includes(q))
-        );
-        renderMods(filtered);
-      }, 300);
+      const q = e.target.value.toLowerCase();
+      
+      const filtered = mods.filter(mod =>
+        mod.title.toLowerCase().includes(q) ||
+        mod.description.toLowerCase().includes(q) ||
+        (mod.platform && mod.platform.toLowerCase().includes(q))
+      );
+      renderMods(filtered);
     });
 
     document.getElementById('toggle-videos').addEventListener('click', () => {
@@ -663,7 +610,6 @@
       }
     });
 
-    // Contact overlay
     const contactOverlay = document.getElementById('contact-overlay');
     const contactBtn = document.getElementById('contact-button');
     const contactClose = document.getElementById('contact-close');
@@ -671,13 +617,16 @@
     const emailText = document.getElementById('email-text');
 
     contactBtn.addEventListener('click', () => contactOverlay.classList.remove('hidden'));
+    
     contactClose.addEventListener('click', () => contactOverlay.classList.add('hidden'));
+    
     contactOverlay.addEventListener('click', e => {
       if (e.target === contactOverlay) contactOverlay.classList.add('hidden');
     });
+    
     revealEmail.addEventListener('click', () => emailText.classList.remove('hidden'));
 
-    // Install Files popup
+    // Install Files popup functionality
     const installFilesOverlay = document.getElementById('install-files-overlay');
     const installFilesLink = document.getElementById('install-files-link');
     const installFilesClose = document.getElementById('install-files-close');
@@ -697,16 +646,6 @@
       }
     });
 
-    // Keyboard navigation
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') {
-        overlay.classList.add('hidden');
-        contactOverlay.classList.add('hidden');
-        installFilesOverlay.classList.add('hidden');
-      }
-    });
-
-    // Initialize
     loadMods();
   </script>
 </body>
