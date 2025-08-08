@@ -32,7 +32,27 @@
     }
   }
   </script>
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous">
+  </script>
+  
+  <!-- SVG Symbol Definitions -->
+  <svg width="0" height="0" style="position: absolute;">
+    <defs>
+      <symbol id="star-full" viewBox="0 0 20 20">
+        <path d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/>
+      </symbol>
+      <symbol id="star-empty" viewBox="0 0 20 20">
+        <path d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/>
+      </symbol>
+      <linearGradient id="halfGrad" x1="0" x2="100%" y1="0" y2="0">
+        <stop offset="50%" stop-color="#facc15"/>
+        <stop offset="50%" stop-color="#4b5563"/>
+      </linearGradient>
+      <symbol id="star-half" viewBox="0 0 20 20">
+        <path fill="url(#halfGrad)" d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/>
+      </symbol>
+    </defs>
+  </svg></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     .hide-videos .video-container {
