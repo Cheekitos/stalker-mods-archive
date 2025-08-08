@@ -32,7 +32,27 @@
     }
   }
   </script>
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous">
+  </script>
+  
+  <!-- SVG Symbol Definitions -->
+  <svg width="0" height="0" style="position: absolute;">
+    <defs>
+      <symbol id="star-full" viewBox="0 0 20 20">
+        <path d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/>
+      </symbol>
+      <symbol id="star-empty" viewBox="0 0 20 20">
+        <path d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/>
+      </symbol>
+      <linearGradient id="halfGrad" x1="0" x2="100%" y1="0" y2="0">
+        <stop offset="50%" stop-color="#facc15"/>
+        <stop offset="50%" stop-color="#4b5563"/>
+      </linearGradient>
+      <symbol id="star-half" viewBox="0 0 20 20">
+        <path fill="url(#halfGrad)" d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/>
+      </symbol>
+    </defs>
+  </svg></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     .hide-videos .video-container {
@@ -48,9 +68,6 @@
     }
     .rating {
       flex-shrink: 0;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
     }
     .mod-card {
       transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out;
@@ -341,163 +358,95 @@
       container.innerHTML = '';
       
       modArray.forEach(mod => {
-        const card = document.createElement('div');
-        card.className = 'bg-gray-800 p-3 rounded-md shadow-sm flex flex-col h-full mod-card';
-
-        const titleRow = document.createElement('div');
-        titleRow.className = 'flex justify-between items-center mb-3 gap-2';
-
-        const title = document.createElement('h3');
-        title.className = 'text-2xl font-semibold text-gray-100 drop-shadow';
-        title.textContent = mod.title;
-        title.style.whiteSpace = 'nowrap';
-        title.style.overflow = 'hidden';
-        title.style.textOverflow = 'ellipsis';
-
-        const rating = document.createElement('div');
-        rating.className = 'flex items-center space-x-1.5 text-yellow-400 rating';
-        
-        const ratingNumber = document.createElement('span');
-        ratingNumber.className = 'text-base font-medium';
-        ratingNumber.textContent = mod.rating.toFixed(1);
-        rating.appendChild(ratingNumber);
-        
-        const starsContainer = document.createElement('div');
-        starsContainer.className = 'flex items-center space-x-0.5 opacity-95';
-        starsContainer.innerHTML = renderStars(mod.rating);
-        rating.appendChild(starsContainer);
-
-        titleRow.appendChild(title);
-        titleRow.appendChild(rating);
-
-        const standaloneDiv = document.createElement('div');
-        standaloneDiv.className = 'text-xs text-white mb-2 flex items-baseline gap-2';
-
-        const labelStandalone = document.createElement('span');
-        labelStandalone.textContent = 'Standalone:';
-        labelStandalone.className = 'leading-tight';
-        standaloneDiv.appendChild(labelStandalone);
-
-        const standaloneWrapper = document.createElement('div');
-        standaloneWrapper.className = 'flex items-center gap-1';
-
-        const yesSpan = document.createElement('span');
-        yesSpan.textContent = 'Yes';
-        yesSpan.className = mod.standalone
-          ? 'border border-white px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight'
-          : 'text-gray-400 text-[10px] leading-tight';
-        if (mod.standalone) {
-          yesSpan.style.backgroundColor = 'rgba(250, 204, 21, 0.45)';
-        }
-
-        standaloneWrapper.appendChild(yesSpan);
-
-        const sep = document.createElement('span');
-        sep.textContent = '|';
-        sep.className = 'text-gray-400 text-[10px] leading-tight';
-        standaloneWrapper.appendChild(sep);
-
-        const noSpan = document.createElement('span');
-        noSpan.textContent = 'No';
-        noSpan.className = !mod.standalone
-          ? 'border border-white px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight'
-          : 'text-gray-400 text-[10px] leading-tight';
-        if (!mod.standalone) {
-          noSpan.style.backgroundColor = 'rgba(250, 204, 21, 0.45)';
-        }
-
-        standaloneWrapper.appendChild(noSpan);
-        standaloneDiv.appendChild(standaloneWrapper);
-
-        const platformDiv = document.createElement('div');
-        platformDiv.className = 'text-xs text-white mb-2 flex items-baseline gap-2 platform-block';
-        platformDiv.style.whiteSpace = 'nowrap';
-        platformDiv.style.overflow = 'hidden';
-        platformDiv.style.textOverflow = 'ellipsis';
-
-        const labelPlatform = document.createElement('span');
-        labelPlatform.textContent = 'Platform:';
-        labelPlatform.className = 'leading-tight';
-        platformDiv.appendChild(labelPlatform);
-
-        const platformWrapper = document.createElement('div');
-        platformWrapper.className = 'flex items-center gap-1';
-
-        ['Shadow of Chernobyl', 'Clear Sky', 'Call of Pripyat'].forEach((plat, idx, arr) => {
-          const span = document.createElement('span');
-          span.textContent = plat;
-          span.className = (mod.platform === plat)
-            ? 'border border-white bg-yellow-400 bg-opacity-50 px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight'
-            : 'text-gray-400 text-[10px] leading-tight';
-          platformWrapper.appendChild(span);
-
-          if (idx < arr.length - 1) {
-            const sep = document.createElement('span');
-            sep.textContent = '|';
-            sep.className = 'text-gray-400 text-[10px] leading-tight';
-            platformWrapper.appendChild(sep);
-          }
-        });
-
-        platformDiv.appendChild(platformWrapper);
-
-        const desc = document.createElement('p');
-        desc.className = 'text-gray-400 mb-2 text-sm flex-grow';
-        desc.textContent = mod.description;
-
-        const links = document.createElement('div');
-        links.className = 'mb-3';
-        (mod.links || []).forEach(link => {
-          const a = document.createElement('a');
-          a.href = link.url;
-          a.textContent = link.label;
-          a.className = 'block text-blue-400 hover:underline text-sm cursor-pointer';
-          
-          if (link.label.toLowerCase().includes('install guide')) {
-            a.addEventListener('click', e => {
-              e.preventDefault();
-              openPopup(link.url);
-            });
-          } else {
-            a.target = '_blank';
-          }
-          links.appendChild(a);
-        });
-
         const videoElement = createLazyVideo(mod.video);
-        if (videoElement) {
-          card.appendChild(titleRow);
-          card.appendChild(standaloneDiv);
-          card.appendChild(platformDiv);
-          card.appendChild(desc);
-          card.appendChild(links);
-          card.appendChild(videoElement);
-        } else {
-          card.appendChild(titleRow);
-          card.appendChild(standaloneDiv);
-          card.appendChild(platformDiv);
-          card.appendChild(desc);
-          card.appendChild(links);
-        }
+        const videoHTML = videoElement ? videoElement.outerHTML : '';
+        
+        const linksHTML = (mod.links || []).map(link => {
+          const isInstallGuide = link.label.toLowerCase().includes('install guide');
+          const target = isInstallGuide ? '' : 'target="_blank"';
+          const onclick = isInstallGuide ? `onclick="openPopup('${link.url}'); return false;"` : '';
+          return `<a href="${link.url}" class="block text-blue-400 hover:underline text-sm cursor-pointer" ${target} ${onclick}>${link.label}</a>`;
+        }).join('');
 
-        container.appendChild(card);
+        const cardHTML = `
+          <div class="bg-gray-800 p-3 rounded-md shadow-sm flex flex-col h-full mod-card">
+            <div class="flex justify-between items-center mb-3 gap-2">
+              <h3 class="text-2xl font-semibold text-gray-100 drop-shadow truncate">${mod.title}</h3>
+              <div class="flex items-center space-x-1.5 text-yellow-400 rating">
+                <span class="text-base font-medium">${mod.rating.toFixed(1)}</span>
+                <div class="flex items-center space-x-0.5 opacity-95">
+                  ${renderStars(mod.rating)}
+                </div>
+              </div>
+            </div>
+            
+            <div class="text-xs text-white mb-2 flex items-baseline gap-2">
+              <span class="leading-tight">Standalone:</span>
+              <div class="flex items-center gap-1">
+                <span class="${mod.standalone ? 'border border-white px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight' : 'text-gray-400 text-[10px] leading-tight'}" ${mod.standalone ? 'style="background-color: rgba(250, 204, 21, 0.45);"' : ''}>Yes</span>
+                <span class="text-gray-400 text-[10px] leading-tight">|</span>
+                <span class="${!mod.standalone ? 'border border-white px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight' : 'text-gray-400 text-[10px] leading-tight'}" ${!mod.standalone ? 'style="background-color: rgba(250, 204, 21, 0.45);"' : ''}>No</span>
+              </div>
+            </div>
+
+            <div class="text-xs text-white mb-2 flex items-baseline gap-2 platform-block truncate">
+              <span class="leading-tight">Platform:</span>
+              <div class="flex items-center gap-1">
+                ${['Shadow of Chernobyl', 'Clear Sky', 'Call of Pripyat'].map((plat, idx, arr) => {
+                  const isActive = mod.platform === plat;
+                  const spanClass = isActive 
+                    ? 'border border-white bg-yellow-400 bg-opacity-50 px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight'
+                    : 'text-gray-400 text-[10px] leading-tight';
+                  const separator = idx < arr.length - 1 ? '<span class="text-gray-400 text-[10px] leading-tight">|</span>' : '';
+                  return `<span class="${spanClass}">${plat}</span>${separator}`;
+                }).join('')}
+              </div>
+            </div>
+
+            <p class="text-gray-400 mb-2 text-sm flex-grow">${mod.description}</p>
+            
+            <div class="mb-3">
+              ${linksHTML}
+            </div>
+            
+            ${videoHTML}
+          </div>
+        `;
+        
+        container.innerHTML += cardHTML;
+      });
+
+      // Re-attach video click handlers after DOM is updated
+      document.querySelectorAll('.video-thumbnail').forEach(thumbnail => {
+        const videoId = thumbnail.getAttribute('data-video-id');
+        if (videoId) {
+          thumbnail.addEventListener('click', function() {
+            const container = this.closest('.video-container');
+            const iframe = document.createElement('iframe');
+            iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+            iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+            iframe.allowFullscreen = true;
+            iframe.className = 'w-full aspect-video rounded';
+
+            container.innerHTML = '';
+            container.appendChild(iframe);
+            container.classList.add('video-loaded');
+          });
+        }
       });
     }
 
     function renderStars(rating) {
-      const fullStar = '<svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>';
-      const halfStar = `<svg class="w-4 h-4" viewBox="0 0 20 20"><defs><linearGradient id="halfGrad" x1="0" x2="100%" y1="0" y2="0"><stop offset="50%" stop-color="#facc15"/><stop offset="50%" stop-color="#4b5563"/></linearGradient></defs><path fill="url(#halfGrad)" d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>`;
-      
       const roundedRating = Math.round(rating * 2) / 2;
       
       let starsHTML = '';
       for (let i = 1; i <= 5; i++) {
         if (roundedRating >= i) {
-          starsHTML += fullStar;
+          starsHTML += '<svg class="w-4 h-4 fill-current"><use href="#star-full"/></svg>';
         } else if (roundedRating + 0.5 >= i) {
-          starsHTML += halfStar;
+          starsHTML += '<svg class="w-4 h-4"><use href="#star-half"/></svg>';
         } else {
-          starsHTML += `<svg class="w-4 h-4 fill-gray-600" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>`;
+          starsHTML += '<svg class="w-4 h-4 fill-gray-600"><use href="#star-empty"/></svg>';
         }
       }
       return starsHTML;
