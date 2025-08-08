@@ -134,17 +134,22 @@
 </head>
 <body class="bg-gray-900 text-white font-sans p-4">
   <div class="max-w-6xl mx-auto">
-    <div class="flex justify-between items-center mb-1 gap-2">
+    <div class="flex justify-between items-start mb-1 gap-2">
       <h1 class="text-3xl font-bold">Cheeki's Mods Archive</h1>
-      <div class="flex gap-2">
-        <button id="toggle-grades" aria-label="Toggle grades visibility" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
-          Hide Grades
-        </button>
-        <button id="toggle-videos" aria-label="Toggle videos visibility" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
-          Hide videos
-        </button>
-        <button id="contact-button" aria-label="Contact me" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
-          Contact me
+      <div class="flex flex-col gap-1">
+        <div class="flex gap-2">
+          <button id="toggle-grades" aria-label="Toggle grades visibility" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
+            Hide Grades
+          </button>
+          <button id="toggle-videos" aria-label="Toggle videos visibility" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
+            Hide videos
+          </button>
+          <button id="contact-button" aria-label="Contact me" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
+            Contact me
+          </button>
+        </div>
+        <button id="important-files-link" aria-label="Important files you should install" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium py-0.5 px-2 rounded w-full text-center">
+          Important files you should install
         </button>
       </div>
     </div>
@@ -157,9 +162,6 @@
     </p>
 
     <div class="mb-6">
-      <p id="important-files-link" class="text-blue-400 underline important-files-link text-sm font-medium">
-        Important files you should install
-      </p>
     </div>
 
     <div class="flex flex-wrap items-center gap-2 mb-4">
