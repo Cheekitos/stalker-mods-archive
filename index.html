@@ -132,24 +132,49 @@
       display: inline-block;
       margin-right: 6px;
     }
+
+    /* Fixed-width button styling */
+    .header-button {
+      width: 100px;
+      min-width: 100px;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Responsive button layout */
+    @media (max-width: 640px) {
+      .button-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+        width: 100%;
+      }
+      
+      .header-button {
+        width: 100%;
+        min-width: 0;
+      }
+    }
   </style>
 </head>
 <body class="bg-gray-900 text-white font-sans p-4">
   <div class="max-w-6xl mx-auto">
-    <div class="flex justify-between items-center mb-1 gap-2">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-1 gap-2">
       <h1 class="text-3xl font-bold">Cheeki's Mods Archive</h1>
-      <div class="flex gap-2">
-        <button id="essentials-button" aria-label="View essential files" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
+      <div class="flex flex-wrap sm:flex-nowrap gap-2 button-grid">
+        <button id="essentials-button" aria-label="View essential files" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded header-button">
           Essentials
         </button>
-        <button id="toggle-grades" aria-label="Toggle grades visibility" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
+        <button id="contact-button" aria-label="Contact me" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded header-button">
+          Contact me
+        </button>
+        <button id="toggle-grades" aria-label="Toggle grades visibility" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded header-button">
           Hide Grades
         </button>
-        <button id="toggle-videos" aria-label="Toggle videos visibility" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
-          Hide videos
-        </button>
-        <button id="contact-button" aria-label="Contact me" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
-          Contact me
+        <button id="toggle-videos" aria-label="Toggle videos visibility" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded header-button">
+          Hide Videos
         </button>
       </div>
     </div>
