@@ -123,46 +123,31 @@
       0% { background-position: 200% 0; }
       100% { background-position: -200% 0; }
     }
-    .important-files-link {
-      cursor: pointer;
-      transition: color 0.2s ease;
-    }
-    .important-files-link:hover {
-      color: #facc15;
-    }
   </style>
 </head>
 <body class="bg-gray-900 text-white font-sans p-4">
   <div class="max-w-6xl mx-auto">
-    <div class="flex justify-between items-start mb-1 gap-2">
+    <div class="flex justify-between items-center mb-1 gap-2">
       <h1 class="text-3xl font-bold">Cheeki's Mods Archive</h1>
-      <div class="flex flex-col gap-1">
-        <div class="flex gap-2">
-          <button id="toggle-grades" aria-label="Toggle grades visibility" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
-            Hide Grades
-          </button>
-          <button id="toggle-videos" aria-label="Toggle videos visibility" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
-            Hide videos
-          </button>
-          <button id="contact-button" aria-label="Contact me" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
-            Contact me
-          </button>
-        </div>
-        <button id="important-files-link" aria-label="Important files you should install" class="bg-yellow-500 hover:bg-yellow-600 text-black text-xs font-medium py-0.5 px-2 rounded w-full text-center">
-          Important files you should install
+      <div class="flex gap-2">
+        <button id="toggle-grades" aria-label="Toggle grades visibility" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
+          Hide Grades
+        </button>
+        <button id="toggle-videos" aria-label="Toggle videos visibility" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
+          Hide videos
+        </button>
+        <button id="contact-button" aria-label="Contact me" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
+          Contact me
         </button>
       </div>
     </div>
 
     <h2 class="text-lg text-gray-400 mb-3">A collection of S.T.A.L.K.E.R. Story Mods</h2>
-    <p class="text-gray-300 text-sm mb-4">
+    <p class="text-gray-300 text-sm mb-6">
       A non-exhaustive archive of game modifications for the S.T.A.L.K.E.R. game franchise, mainly story-focused mods I reviewed on the <a href="https://linktr.ee/cheekibreekii" target="_blank" class="text-white underline">YouTube Channel</a>.
       Everything listed here is for ease-of-access and posterity only. Consolidating files that tend to be scattered accross multiple websites, hosting services, with some unfortunately lost already. 
-      All credits go to the Authors of these mods.
+      All credits go to the Authors of these mods. <a href="#" id="install-files-link" class="text-white underline cursor-pointer">Important files to Install</a>.
     </p>
-
-    <div class="mb-6">
-    </div>
 
     <div class="flex flex-wrap items-center gap-2 mb-4">
       <button id="sort-button" aria-label="Sort mods by rating" class="bg-yellow-500 hover:bg-yellow-600 text-black text-sm font-medium py-1 px-3 rounded w-32">
@@ -198,19 +183,46 @@
     </div>
   </div>
 
-  <div id="important-files-overlay" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center hidden z-50">
-    <div class="bg-gray-900 rounded-lg max-w-lg w-full p-4 relative text-sm text-gray-200">
-      <button id="important-files-close" aria-label="Close important files popup" class="absolute top-2 right-2 text-gray-400 hover:text-white text-xl">&times;</button>
-      <h3 class="text-lg font-semibold text-white mb-4">Important files you should install</h3>
-      <div id="important-files-content">
-        <p class="mb-3">Before installing any S.T.A.L.K.E.R. mods, make sure you have these essential files:</p>
-        <ul class="space-y-2 mb-4">
-          <li>• <a href="#" class="text-blue-400 hover:underline">DirectX 9.0c Redistributable</a></li>
-          <li>• <a href="#" class="text-blue-400 hover:underline">Visual C++ 2019 Redistributable</a></li>
-          <li>• <a href="#" class="text-blue-400 hover:underline">Microsoft .NET Framework 4.8</a></li>
-          <li>• <a href="#" class="text-blue-400 hover:underline">Windows Media Feature Pack</a></li>
-        </ul>
-        <p class="text-gray-400 text-xs">These links will be updated with proper download sources.</p>
+  <!-- Install Files Popup -->
+  <div id="install-files-overlay" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center hidden z-50">
+    <div class="bg-gray-900 rounded-lg max-w-3xl w-full max-h-[90vh] overflow-auto relative p-6">
+      <button id="install-files-close" aria-label="Close install files popup" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl font-bold">&times;</button>
+      <div id="install-files-content" class="text-gray-200">
+        <h3 class="text-2xl font-bold text-white mb-4">Important Files to Install</h3>
+        <div class="space-y-4">
+          <p class="text-sm text-gray-300 mb-6">
+            Essential files and tools needed for S.T.A.L.K.E.R. modding. These are commonly required dependencies and utilities.
+          </p>
+          
+          <!-- Placeholder content - you can edit this section -->
+          <div class="bg-gray-800 rounded-lg p-4 mb-4">
+            <h4 class="text-lg font-semibold text-yellow-400 mb-2">DirectX Runtime</h4>
+            <p class="text-sm text-gray-300 mb-2">Required for most S.T.A.L.K.E.R. mods to run properly.</p>
+            <a href="#" class="text-blue-400 hover:underline text-sm">Download DirectX Runtime</a>
+          </div>
+
+          <div class="bg-gray-800 rounded-lg p-4 mb-4">
+            <h4 class="text-lg font-semibold text-yellow-400 mb-2">Visual C++ Redistributables</h4>
+            <p class="text-sm text-gray-300 mb-2">Essential runtime libraries for many mod executables.</p>
+            <a href="#" class="text-blue-400 hover:underline text-sm">Download VC++ Redistributables</a>
+          </div>
+
+          <div class="bg-gray-800 rounded-lg p-4 mb-4">
+            <h4 class="text-lg font-semibold text-yellow-400 mb-2">7-Zip</h4>
+            <p class="text-sm text-gray-300 mb-2">Archive extraction tool for mod files.</p>
+            <a href="#" class="text-blue-400 hover:underline text-sm">Download 7-Zip</a>
+          </div>
+
+          <div class="bg-gray-800 rounded-lg p-4">
+            <h4 class="text-lg font-semibold text-yellow-400 mb-2">Installation Tips</h4>
+            <ul class="text-sm text-gray-300 space-y-1 list-disc list-inside">
+              <li>Always backup your save files before installing mods</li>
+              <li>Read installation instructions carefully</li>
+              <li>Install mods on a clean game installation when possible</li>
+              <li>Check mod compatibility before installation</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -504,7 +516,7 @@
       if (e.key === 'Escape') {
         overlay.classList.add('hidden');
         contactOverlay.classList.add('hidden');
-        importantFilesOverlay.classList.add('hidden');
+        installFilesOverlay.classList.add('hidden');
       }
     });
 
@@ -595,17 +607,24 @@
     
     revealEmail.addEventListener('click', () => emailText.classList.remove('hidden'));
 
-    // Important Files popup functionality
-    const importantFilesOverlay = document.getElementById('important-files-overlay');
-    const importantFilesLink = document.getElementById('important-files-link');
-    const importantFilesClose = document.getElementById('important-files-close');
+    // Install Files popup functionality
+    const installFilesOverlay = document.getElementById('install-files-overlay');
+    const installFilesLink = document.getElementById('install-files-link');
+    const installFilesClose = document.getElementById('install-files-close');
 
-    importantFilesLink.addEventListener('click', () => importantFilesOverlay.classList.remove('hidden'));
-    
-    importantFilesClose.addEventListener('click', () => importantFilesOverlay.classList.add('hidden'));
-    
-    importantFilesOverlay.addEventListener('click', e => {
-      if (e.target === importantFilesOverlay) importantFilesOverlay.classList.add('hidden');
+    installFilesLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      installFilesOverlay.classList.remove('hidden');
+    });
+
+    installFilesClose.addEventListener('click', () => {
+      installFilesOverlay.classList.add('hidden');
+    });
+
+    installFilesOverlay.addEventListener('click', (e) => {
+      if (e.target === installFilesOverlay) {
+        installFilesOverlay.classList.add('hidden');
+      }
     });
 
     loadMods();
