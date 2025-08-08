@@ -132,6 +132,16 @@
       display: inline-block;
       margin-right: 6px;
     }
+    
+    /* Button highlight styles */
+    .button-active {
+      background-color: white !important;
+      color: black !important;
+      border: 2px solid white;
+    }
+    .button-active:hover {
+      background-color: #f3f4f6 !important;
+    }
   </style>
 </head>
 <body class="bg-gray-900 text-white font-sans p-4">
@@ -142,11 +152,11 @@
         <button id="essentials-button" aria-label="View essential files" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
           Essentials
         </button>
-        <button id="toggle-grades" aria-label="Toggle grades visibility" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
+        <button id="toggle-grades" aria-label="Toggle grades visibility" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded transition-all duration-200">
           Hide Grades
         </button>
-        <button id="toggle-videos" aria-label="Toggle videos visibility" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
-          Hide videos
+        <button id="toggle-videos" aria-label="Toggle videos visibility" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded transition-all duration-200">
+          Hide Videos
         </button>
         <button id="contact-button" aria-label="Contact me" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
           Contact me
@@ -591,14 +601,14 @@
     document.getElementById('toggle-videos').addEventListener('click', () => {
       const btn = document.getElementById('toggle-videos');
       const isHiding = document.body.classList.toggle('hide-videos');
-      btn.textContent = isHiding ? 'Show Videos' : 'Hide Videos';
+      btn.classList.toggle('button-active', isHiding);
     });
 
     document.getElementById('toggle-grades').addEventListener('click', () => {
       const btn = document.getElementById('toggle-grades');
       const sortBtn = document.getElementById('sort-button');
       const isHiding = document.body.classList.toggle('hide-grades');
-      btn.textContent = isHiding ? 'Show Grades' : 'Hide Grades';
+      btn.classList.toggle('button-active', isHiding);
       
       if (isHiding) {
         sortBtn.textContent = 'Randomize';
