@@ -185,49 +185,49 @@
 
   <!-- Install Files Popup -->
   <div id="install-files-overlay" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center hidden z-50">
-    <div class="bg-gray-900 rounded-lg max-w-3xl w-full max-h-[90vh] overflow-auto relative p-6">
-      <button id="install-files-close" aria-label="Close install files popup" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl font-bold">&times;</button>
+    <div class="bg-gray-900 rounded-lg max-w-2xl w-full max-h-[80vh] overflow-auto relative p-4">
+      <button id="install-files-close" aria-label="Close install files popup" class="absolute top-3 right-3 text-gray-400 hover:text-white text-xl font-bold">&times;</button>
       <div id="install-files-content" class="text-gray-200">
-        <h3 class="text-2xl font-bold text-white mb-4">Essential Files</h3>
-        <div class="space-y-4">
-          <p class="text-sm text-gray-300 mb-6">
+        <h3 class="text-xl font-bold text-white mb-3">Essential Files</h3>
+        <div class="space-y-3">
+          <p class="text-sm text-gray-300 mb-4">
             A lot of old-school mods need some of these files to function. I recommend installing everything once and not thinking about it anymore.
           </p>
           
-          <div class="bg-gray-800 rounded-lg p-3 mb-3">
-            <h4 class="text-base font-semibold text-white mb-2">7-Zip</h4>
-            <p class="text-sm text-gray-300 mb-2">Essential file archive tool to extract mod files and archives.</p>
-            <a href="https://www.7-zip.org/" target="_blank" class="text-blue-400 hover:underline text-sm">Download 7-Zip</a>
+          <div class="bg-gray-800 rounded-lg p-2.5 mb-2">
+            <h4 class="text-sm font-semibold text-white mb-1">7-Zip</h4>
+            <p class="text-xs text-gray-300 mb-1">Essential file archive tool to extract mod files and archives.</p>
+            <a href="https://www.7-zip.org/" target="_blank" class="text-blue-400 hover:underline text-xs">Download 7-Zip</a>
           </div>
 
-          <div class="bg-gray-800 rounded-lg p-3 mb-3">
-            <h4 class="text-base font-semibold text-white mb-2">OpenAL</h4>
-            <p class="text-sm text-gray-300 mb-2">Audio library required by many S.T.A.L.K.E.R. mods for proper sound functionality.</p>
-            <a href="https://www.openal.org/downloads/" target="_blank" class="text-blue-400 hover:underline text-sm">Download OpenAL</a>
+          <div class="bg-gray-800 rounded-lg p-2.5 mb-2">
+            <h4 class="text-sm font-semibold text-white mb-1">OpenAL</h4>
+            <p class="text-xs text-gray-300 mb-1">Audio library required by many S.T.A.L.K.E.R. mods for proper sound functionality.</p>
+            <a href="https://www.openal.org/downloads/" target="_blank" class="text-blue-400 hover:underline text-xs">Download OpenAL</a>
           </div>
 
-          <div class="bg-gray-800 rounded-lg p-3 mb-3">
-            <h4 class="text-base font-semibold text-white mb-2">DirectX End-User Runtimes 2010</h4>
-            <p class="text-sm text-gray-300 mb-2">Legacy DirectX runtime components needed for older S.T.A.L.K.E.R. mods and enhanced graphics.</p>
-            <a href="https://www.microsoft.com/en-us/download/details.aspx?id=8109" target="_blank" class="text-blue-400 hover:underline text-sm">Download DirectX Runtime 2010</a>
+          <div class="bg-gray-800 rounded-lg p-2.5 mb-2">
+            <h4 class="text-sm font-semibold text-white mb-1">DirectX End-User Runtimes 2010</h4>
+            <p class="text-xs text-gray-300 mb-1">Legacy DirectX runtime components needed for older S.T.A.L.K.E.R. mods and enhanced graphics.</p>
+            <a href="https://www.microsoft.com/en-us/download/details.aspx?id=8109" target="_blank" class="text-blue-400 hover:underline text-xs">Download DirectX Runtime 2010</a>
           </div>
 
-          <div class="bg-gray-800 rounded-lg p-3 mb-3">
-            <h4 class="text-base font-semibold text-white mb-2">Microsoft .NET Framework 4.8</h4>
-            <p class="text-sm text-gray-300 mb-2">Runtime environment required by many mod installers and configuration tools.</p>
-            <a href="https://support.microsoft.com/en-us/topic/microsoft-net-framework-4-8-offline-installer-for-windows-9d23f658-3b97-68ab-d013-aa3c3e7495e0" target="_blank" class="text-blue-400 hover:underline text-sm">Download .NET Framework 4.8</a>
+          <div class="bg-gray-800 rounded-lg p-2.5 mb-2">
+            <h4 class="text-sm font-semibold text-white mb-1">Microsoft .NET Framework 4.8</h4>
+            <p class="text-xs text-gray-300 mb-1">Runtime environment required by many mod installers and configuration tools.</p>
+            <a href="https://support.microsoft.com/en-us/topic/microsoft-net-framework-4-8-offline-installer-for-windows-9d23f658-3b97-68ab-d013-aa3c3e7495e0" target="_blank" class="text-blue-400 hover:underline text-xs">Download .NET Framework 4.8</a>
           </div>
 
-          <div class="bg-gray-800 rounded-lg p-3 mb-3">
-            <h4 class="text-base font-semibold text-white mb-2">Visual C++ Redistributable 2013 x86</h4>
-            <p class="text-sm text-gray-300 mb-2">Essential runtime libraries for older 32-bit mod executables and tools.</p>
-            <a href="https://www.microsoft.com/en-us/download/details.aspx?id=40784" target="_blank" class="text-blue-400 hover:underline text-sm">Download VC++ 2013 x86</a>
+          <div class="bg-gray-800 rounded-lg p-2.5 mb-2">
+            <h4 class="text-sm font-semibold text-white mb-1">Visual C++ Redistributable 2013 x86</h4>
+            <p class="text-xs text-gray-300 mb-1">Essential runtime libraries for older 32-bit mod executables and tools.</p>
+            <a href="https://www.microsoft.com/en-us/download/details.aspx?id=40784" target="_blank" class="text-blue-400 hover:underline text-xs">Download VC++ 2013 x86</a>
           </div>
 
-          <div class="bg-gray-800 rounded-lg p-3">
-            <h4 class="text-base font-semibold text-white mb-2">Visual C++ Redistributable 2015+</h4>
-            <p class="text-sm text-gray-300 mb-2">Latest Visual C++ runtime libraries for newer mods and enhanced features.</p>
-            <a href="https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170" target="_blank" class="text-blue-400 hover:underline text-sm">Download VC++ 2015+ Latest</a>
+          <div class="bg-gray-800 rounded-lg p-2.5">
+            <h4 class="text-sm font-semibold text-white mb-1">Visual C++ Redistributable 2015+</h4>
+            <p class="text-xs text-gray-300 mb-1">Latest Visual C++ runtime libraries for newer mods and enhanced features.</p>
+            <a href="https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170" target="_blank" class="text-blue-400 hover:underline text-xs">Download VC++ 2015+ Latest</a>
           </div>
         </div>
       </div>
