@@ -597,4 +597,54 @@
     document.getElementById('toggle-grades').addEventListener('click', () => {
       const btn = document.getElementById('toggle-grades');
       const sortBtn = document.getElementById('sort-button');
-      const isHiding = document.
+      const isHiding = document.body.classList.toggle('hide-grades');
+      btn.textContent = isHiding ? 'Show Grades' : 'Hide Grades';
+      
+      if (isHiding) {
+        sortBtn.textContent = 'Randomize';
+        sortState = 0; 
+      } else {
+        sortBtn.textContent = 'Sort by Rating';
+        sortState = 0;
+        renderMods(originalMods);
+      }
+    });
+
+    const contactOverlay = document.getElementById('contact-overlay');
+    const contactBtn = document.getElementById('contact-button');
+    const contactClose = document.getElementById('contact-close');
+    const revealEmail = document.getElementById('reveal-email');
+    const emailText = document.getElementById('email-text');
+
+    contactBtn.addEventListener('click', () => contactOverlay.classList.remove('hidden'));
+    
+    contactClose.addEventListener('click', () => contactOverlay.classList.add('hidden'));
+    
+    contactOverlay.addEventListener('click', e => {
+      if (e.target === contactOverlay) contactOverlay.classList.add('hidden');
+    });
+    
+    revealEmail.addEventListener('click', () => emailText.classList.remove('hidden'));
+
+    const installFilesOverlay = document.getElementById('install-files-overlay');
+    const essentialsBtn = document.getElementById('essentials-button');
+    const installFilesClose = document.getElementById('install-files-close');
+
+    essentialsBtn.addEventListener('click', () => {
+      installFilesOverlay.classList.remove('hidden');
+    });
+
+    installFilesClose.addEventListener('click', () => {
+      installFilesOverlay.classList.add('hidden');
+    });
+
+    installFilesOverlay.addEventListener('click', (e) => {
+      if (e.target === installFilesOverlay) {
+        installFilesOverlay.classList.add('hidden');
+      }
+    });
+
+    loadMods();
+  </script>
+</body>
+</html>
