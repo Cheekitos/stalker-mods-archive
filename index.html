@@ -32,8 +32,79 @@
     }
   }
   </script>
-
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
+    .hide-videos .video-container {
+      display: none;
+    }
+    .hide-grades .rating {
+      display: none;
+    }
+    h3, .platform-block {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .rating {
+      flex-shrink: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .mod-card {
+      transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out;
+    }
+    .mod-card:hover {
+      /* HOVER ZOOM DISABLED: To re-enable the zoom effect, uncomment the line below */
+      /* transform: scale(1.01); */
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      background-color: rgba(55, 65, 81, 0.5);
+    }
+    .video-thumbnail {
+      position: relative;
+      cursor: pointer;
+      background: #000;
+      border-radius: 0.375rem;
+      overflow: hidden;
+      aspect-ratio: 16/9;
+    }
+    .video-thumbnail img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: opacity 0.2s ease;
+    }
+    .video-thumbnail:hover img {
+      opacity: 0.8;
+    }
+    .play-button {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 68px;
+      height: 48px;
+      background: rgba(255, 0, 0, 0.8);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+    .play-button:hover {
+      background: rgba(255, 0, 0, 1);
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+    .play-button::after {
+      content: '';
+      width: 0;
+      height: 0;
+      border-left: 20px solid white;
+      border-top: 12px solid transparent;
+      border-bottom: 12px solid transparent;
+      margin-left: 4px;
+    }
     .video-loaded iframe {
       width: 100%;
       aspect-ratio: 16/9;
@@ -61,22 +132,6 @@
       display: inline-block;
       margin-right: 6px;
     }
-    .platform-block {
-      flex-wrap: wrap;
-      gap: 0.25rem;
-    }
-    .platform-span {
-      padding: 0.125rem 0.5rem;
-      border-radius: 0.25rem;
-      font-size: 0.75rem;
-      line-height: 1.2;
-    }
-    .full-star {
-      fill: #facc15;
-    }
-    .half-star {
-      fill: url(#halfGrad);
-    }
   </style>
 </head>
 <body class="bg-gray-900 text-white font-sans p-4">
@@ -87,40 +142,351 @@
         <button id="toggle-grades" aria-label="Toggle grades visibility" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
           Hide Grades
         </button>
+        <button id="toggle-videos" aria-label="Toggle videos visibility" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
+          Hide videos
+        </button>
+        <button id="contact-button" aria-label="Contact me" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
+          Contact me
+        </button>
       </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4" id="mods-container"></div>
+    <h2 class="text-lg text-gray-400 mb-3">A collection of S.T.A.L.K.E.R. Story Mods</h2>
+    
+    <p class="text-gray-300 text-sm mb-2">
+      A non-exhaustive archive of game modifications for the S.T.A.L.K.E.R. game franchise, mainly story-focused mods I reviewed on the <a href="https://linktr.ee/cheekibreekii" target="_blank" class="text-white underline">YouTube Channel</a>.
+      Everything listed here is for ease-of-access and posterity only. Consolidating files that tend to be scattered accross multiple websites, hosting services, discord servers etc. All credits go to the Authors of these mods.
+    </p>
+    <p class="text-gray-300 text-sm mb-6">
+      <span class="arrow-pointer"></span><a href="#" id="install-files-link" class="text-white underline cursor-pointer">Important files to install before you get started.</a>
+    </p>
+    
+    <div class="flex flex-wrap items-center gap-2 mb-4">
+      <button id="sort-button" aria-label="Sort mods by rating" class="bg-yellow-500 hover:bg-yellow-600 text-black text-sm font-medium py-1 px-3 rounded w-32">
+        Sort by Rating
+      </button>
+      <input id="search-input" type="text" aria-label="Search mods" placeholder="Search mods..." class="flex-1 min-w-[150px] px-2 py-1 text-sm rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500" />
+    </div>
 
-    <!-- Modal for video playback -->
-    <div id="video-modal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center hidden z-50">
-      <div class="relative w-full max-w-4xl">
-        <button id="close-modal" class="absolute -top-8 right-0 text-white text-2xl">×</button>
-        <div class="video-loaded">
-          <iframe src="" frameborder="0" allowfullscreen></iframe>
+    <div id="mod-list" class="grid gap-4 grid-cols-[repeat(auto-fill,minmax(300px,1fr))]"></div>
+
+    <footer class="mt-8 text-center text-sm text-gray-500">
+      Cheeki's Mods Archive - <a href="https://linktr.ee/cheekibreekii" target="_blank" class="text-blue-400 hover:underline">Check me Out!</a>
+    </footer>
+  </div>
+
+  <div id="popup-overlay" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center hidden z-50">
+    <div class="bg-gray-900 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-auto relative p-4">
+      <button id="popup-close" aria-label="Close popup" class="absolute top-2 right-2 text-gray-400 hover:text-white text-xl">&times;</button>
+      <div id="popup-content" class="text-sm text-gray-200">Loading...</div>
+    </div>
+  </div>
+
+  <div id="contact-overlay" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center hidden z-50">
+    <div class="bg-gray-900 rounded-lg max-w-md w-full p-4 relative text-sm text-gray-200">
+      <button id="contact-close" aria-label="Close contact popup" class="absolute top-2 right-2 text-gray-400 hover:text-white text-xl">&times;</button>
+      <p class="mb-4">Only use this to report a broken link or incorrect information that needs fixing.</p>
+      <div class="flex items-center gap-2">
+        <button id="reveal-email" class="bg-yellow-500 hover:bg-yellow-600 text-black text-xs font-medium py-1 px-2 rounded">
+          Reveal Email
+        </button>
+        <p id="email-text" class="text-blue-400 hidden">cheekitos@proton.me</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Install Files Popup -->
+  <div id="install-files-overlay" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center hidden z-50">
+    <div class="bg-gray-900 rounded-lg max-w-2xl w-full max-h-[80vh] overflow-auto relative p-4">
+      <button id="install-files-close" aria-label="Close install files popup" class="absolute top-3 right-3 text-gray-400 hover:text-white text-xl font-bold">&times;</button>
+      <div id="install-files-content" class="text-gray-200">
+        <h3 class="text-xl font-bold text-white mb-3">Essential Files</h3>
+        <div class="space-y-3">
+          <p class="text-sm text-gray-300 mb-4">
+            A lot of old-school mods need some (sometimes all) of these files to work. I recommend installing everything once and not having to think about it anymore.
+          </p>
+          
+          <div class="bg-gray-800 rounded-lg p-2.5 mb-2">
+            <h4 class="text-sm font-semibold text-white mb-1">7-Zip</h4>
+            <p class="text-xs text-gray-300 mb-1">Winrar has issues with some files extensions, always use 7zip to extract archives.</p>
+            <a href="https://www.7-zip.org/" target="_blank" class="text-blue-400 hover:underline text-xs">Download 7-Zip</a>
+          </div>
+
+          <div class="bg-gray-800 rounded-lg p-2.5 mb-2">
+            <h4 class="text-sm font-semibold text-white mb-1">OpenAL</h4>
+            <p class="text-xs text-gray-300 mb-1">Audio library required by A LOT of old S.T.A.L.K.E.R. mods.</p>
+            <a href="https://www.openal.org/downloads/" target="_blank" class="text-blue-400 hover:underline text-xs">Download OpenAL</a>
+          </div>
+
+          <div class="bg-gray-800 rounded-lg p-2.5 mb-2">
+            <h4 class="text-sm font-semibold text-white mb-1">DirectX End-User Runtimes 2010</h4>
+            <p class="text-xs text-gray-300 mb-1">Legacy DirectX runtime components needed for these beautiful OG graphics.</p>
+            <a href="https://www.microsoft.com/en-us/download/details.aspx?id=8109" target="_blank" class="text-blue-400 hover:underline text-xs">Download DirectX Runtime 2010</a>
+          </div>
+
+          <div class="bg-gray-800 rounded-lg p-2.5 mb-2">
+            <h4 class="text-sm font-semibold text-white mb-1">Microsoft .NET Framework 4.8</h4>
+            <p class="text-xs text-gray-300 mb-1">Runtime environment required by many mod installers and configuration tools.</p>
+            <a href="https://support.microsoft.com/en-us/topic/microsoft-net-framework-4-8-offline-installer-for-windows-9d23f658-3b97-68ab-d013-aa3c3e7495e0" target="_blank" class="text-blue-400 hover:underline text-xs">Download .NET Framework 4.8</a>
+          </div>
+
+          <div class="bg-gray-800 rounded-lg p-2.5 mb-2">
+            <h4 class="text-sm font-semibold text-white mb-1">Visual C++ Redistributable 2013 x86</h4>
+            <p class="text-xs text-gray-300 mb-1">More essential runtime libraries for older 32-bit mod executables.</p>
+            <a href="https://www.microsoft.com/en-us/download/details.aspx?id=40784" target="_blank" class="text-blue-400 hover:underline text-xs">Download VC++ 2013 x86</a>
+          </div>
+
+          <div class="bg-gray-800 rounded-lg p-2.5">
+            <h4 class="text-sm font-semibold text-white mb-1">Visual C++ Redistributable 2015+</h4>
+            <p class="text-xs text-gray-300 mb-1">Latest Visual C++ runtime libraries for newer mods and enhanced features.</p>
+            <a href="https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170" target="_blank" class="text-blue-400 hover:underline text-xs">Download VC++ 2015+ Latest</a>
+          </div>
         </div>
       </div>
-    </div>
-
-    <!-- Video thumbnail overlay -->
-    <div id="video-overlay" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center hidden z-40">
-      <button id="close-overlay" class="absolute -top-8 right-0 text-white text-2xl">×</button>
-      <img src="" alt="Video thumbnail" class="max-w-full max-h-full object-contain">
-    </div>
-
-    <!-- Skeleton loading -->
-    <div id="skeleton-loader" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-      <div class="bg-gray-800 rounded-lg p-4 skeleton-loading h-64"></div>
-      <div class="bg-gray-800 rounded-lg p-4 skeleton-loading h-64"></div>
-      <div class="bg-gray-800 rounded-lg p-4 skeleton-loading h-64"></div>
     </div>
   </div>
 
   <script>
-    // Star rendering function
+    let mods = [];
+    let sortState = 0;
+    let originalMods = [];
+
+    function getYouTubeVideoId(url) {
+      const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+      const match = url.match(regExp);
+      return (match && match[2].length === 11) ? match[2] : null;
+    }
+
+    function getYouTubeThumbnail(videoId, quality = 'hqdefault') {
+      return `https://img.youtube.com/vi/${videoId}/${quality}.jpg`;
+    }
+
+    function createLazyVideo(videoUrl) {
+      const videoId = getYouTubeVideoId(videoUrl);
+      if (!videoId) return null;
+
+      const container = document.createElement('div');
+      container.className = 'video-container mt-auto';
+
+      const thumbnail = document.createElement('div');
+      thumbnail.className = 'video-thumbnail';
+      thumbnail.setAttribute('data-video-id', videoId);
+      thumbnail.setAttribute('data-video-url', videoUrl);
+
+      const img = document.createElement('img');
+      img.src = getYouTubeThumbnail(videoId);
+      img.alt = 'Video thumbnail';
+      img.loading = 'lazy';
+
+      const skeletonDiv = document.createElement('div');
+      skeletonDiv.className = 'skeleton-loading w-full h-full absolute inset-0 rounded';
+      
+      img.addEventListener('load', () => {
+        skeletonDiv.remove();
+      });
+      
+      img.addEventListener('error', () => {
+        skeletonDiv.remove();
+      });
+
+      const playButton = document.createElement('div');
+      playButton.className = 'play-button';
+
+      thumbnail.appendChild(skeletonDiv);
+      thumbnail.appendChild(img);
+      thumbnail.appendChild(playButton);
+      container.appendChild(thumbnail);
+
+      thumbnail.addEventListener('click', function() {
+        const iframe = document.createElement('iframe');
+        iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+        iframe.allowFullscreen = true;
+        iframe.className = 'w-full aspect-video rounded';
+
+        container.innerHTML = '';
+        container.appendChild(iframe);
+        container.classList.add('video-loaded');
+      });
+
+      return container;
+    }
+
+    async function loadMods() {
+      try {
+        const response = await fetch('mods.json?v=' + Date.now());
+        mods = await response.json();
+        originalMods = [...mods];
+        renderMods(mods);
+      } catch (err) {
+        console.error('Error loading mods.json:', err);
+        mods = [
+          {
+            title: "Demo Mod",
+            rating: 4.5,
+            standalone: true,
+            platform: "Call of Pripyat",
+            description: "A demo mod for testing purposes",
+            links: [],
+            video: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+          }
+        ];
+        originalMods = [...mods];
+        renderMods(mods);
+      }
+    }
+
+    function renderMods(modArray) {
+      const container = document.getElementById('mod-list');
+      container.innerHTML = '';
+      
+      modArray.forEach(mod => {
+        const card = document.createElement('div');
+        card.className = 'bg-gray-800 p-3 rounded-md shadow-sm flex flex-col h-full mod-card';
+
+        const titleRow = document.createElement('div');
+        titleRow.className = 'flex justify-between items-center mb-3 gap-2';
+
+        const title = document.createElement('h3');
+        title.className = 'text-2xl font-semibold text-gray-100 drop-shadow';
+        title.textContent = mod.title;
+        title.style.whiteSpace = 'nowrap';
+        title.style.overflow = 'hidden';
+        title.style.textOverflow = 'ellipsis';
+
+        const rating = document.createElement('div');
+        rating.className = 'flex items-center space-x-1.5 text-yellow-400 rating';
+        
+        const ratingNumber = document.createElement('span');
+        ratingNumber.className = 'text-base font-medium';
+        ratingNumber.textContent = mod.rating.toFixed(1);
+        rating.appendChild(ratingNumber);
+        
+        const starsContainer = document.createElement('div');
+        starsContainer.className = 'flex items-center space-x-0.5 opacity-95';
+        starsContainer.innerHTML = renderStars(mod.rating);
+        rating.appendChild(starsContainer);
+
+        titleRow.appendChild(title);
+        titleRow.appendChild(rating);
+
+        const standaloneDiv = document.createElement('div');
+        standaloneDiv.className = 'text-xs text-white mb-2 flex items-baseline gap-2';
+
+        const labelStandalone = document.createElement('span');
+        labelStandalone.textContent = 'Standalone:';
+        labelStandalone.className = 'leading-tight';
+        standaloneDiv.appendChild(labelStandalone);
+
+        const standaloneWrapper = document.createElement('div');
+        standaloneWrapper.className = 'flex items-center gap-1';
+
+        const yesSpan = document.createElement('span');
+        yesSpan.textContent = 'Yes';
+        yesSpan.className = mod.standalone
+          ? 'border border-white px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight'
+          : 'text-gray-400 text-[10px] leading-tight';
+        if (mod.standalone) {
+          yesSpan.style.backgroundColor = 'rgba(250, 204, 21, 0.45)';
+        }
+
+        standaloneWrapper.appendChild(yesSpan);
+
+        const sep = document.createElement('span');
+        sep.textContent = '|';
+        sep.className = 'text-gray-400 text-[10px] leading-tight';
+        standaloneWrapper.appendChild(sep);
+
+        const noSpan = document.createElement('span');
+        noSpan.textContent = 'No';
+        noSpan.className = !mod.standalone
+          ? 'border border-white px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight'
+          : 'text-gray-400 text-[10px] leading-tight';
+        if (!mod.standalone) {
+          noSpan.style.backgroundColor = 'rgba(250, 204, 21, 0.45)';
+        }
+
+        standaloneWrapper.appendChild(noSpan);
+        standaloneDiv.appendChild(standaloneWrapper);
+
+        const platformDiv = document.createElement('div');
+        platformDiv.className = 'text-xs text-white mb-2 flex items-baseline gap-2 platform-block';
+        platformDiv.style.whiteSpace = 'nowrap';
+        platformDiv.style.overflow = 'hidden';
+        platformDiv.style.textOverflow = 'ellipsis';
+
+        const labelPlatform = document.createElement('span');
+        labelPlatform.textContent = 'Platform:';
+        labelPlatform.className = 'leading-tight';
+        platformDiv.appendChild(labelPlatform);
+
+        const platformWrapper = document.createElement('div');
+        platformWrapper.className = 'flex items-center gap-1';
+
+        ['Shadow of Chernobyl', 'Clear Sky', 'Call of Pripyat'].forEach((plat, idx, arr) => {
+          const span = document.createElement('span');
+          span.textContent = plat;
+          span.className = (mod.platform === plat)
+            ? 'border border-white bg-yellow-400 bg-opacity-50 px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight'
+            : 'text-gray-400 text-[10px] leading-tight';
+          platformWrapper.appendChild(span);
+
+          if (idx < arr.length - 1) {
+            const sep = document.createElement('span');
+            sep.textContent = '|';
+            sep.className = 'text-gray-400 text-[10px] leading-tight';
+            platformWrapper.appendChild(sep);
+          }
+        });
+
+        platformDiv.appendChild(platformWrapper);
+
+        const desc = document.createElement('p');
+        desc.className = 'text-gray-400 mb-2 text-sm flex-grow';
+        desc.textContent = mod.description;
+
+        const links = document.createElement('div');
+        links.className = 'mb-3';
+        (mod.links || []).forEach(link => {
+          const a = document.createElement('a');
+          a.href = link.url;
+          a.textContent = link.label;
+          a.className = 'block text-blue-400 hover:underline text-sm cursor-pointer';
+          
+          if (link.label.toLowerCase().includes('install guide')) {
+            a.addEventListener('click', e => {
+              e.preventDefault();
+              openPopup(link.url);
+            });
+          } else {
+            a.target = '_blank';
+          }
+          links.appendChild(a);
+        });
+
+        const videoElement = createLazyVideo(mod.video);
+        if (videoElement) {
+          card.appendChild(titleRow);
+          card.appendChild(standaloneDiv);
+          card.appendChild(platformDiv);
+          card.appendChild(desc);
+          card.appendChild(links);
+          card.appendChild(videoElement);
+        } else {
+          card.appendChild(titleRow);
+          card.appendChild(standaloneDiv);
+          card.appendChild(platformDiv);
+          card.appendChild(desc);
+          card.appendChild(links);
+        }
+
+        container.appendChild(card);
+      });
+    }
+
     function renderStars(rating) {
-      const fullStar = '<svg class="w-4 h-4 full-star" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>';
-      const halfStar = '<svg class="w-4 h-4" viewBox="0 0 20 20"><defs><linearGradient id="halfGrad" x1="0" x2="100%" y1="0" y2="0"><stop offset="50%" stop-color="#facc15"/><stop offset="50%" stop-color="#4b5563"/></linearGradient></defs><path fill="url(#halfGrad)" d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>';
+      const fullStar = '<svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>';
+      const halfStar = `<svg class="w-4 h-4" viewBox="0 0 20 20"><defs><linearGradient id="halfGrad" x1="0" x2="100%" y1="0" y2="0"><stop offset="50%" stop-color="#facc15"/><stop offset="50%" stop-color="#4b5563"/></linearGradient></defs><path fill="url(#halfGrad)" d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>`;
       
       const roundedRating = Math.round(rating * 2) / 2;
       
@@ -131,125 +497,156 @@
         } else if (roundedRating + 0.5 >= i) {
           starsHTML += halfStar;
         } else {
-          starsHTML += '<svg class="w-4 h-4" viewBox="0 0 20 20"><path fill="#4b5563" d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>';
+          starsHTML += `<svg class="w-4 h-4 fill-gray-600" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.561-.955L10 0l2.952 5.955 6.561.955-4.757 4.635 1.122 6.545z"/></svg>`;
         }
       }
       return starsHTML;
     }
 
-    // Video creation function with lazy loading
-    function createLazyVideo(videoUrl) {
-      if (!videoUrl) return null;
-      
-      const videoContainer = document.createElement('div');
-      videoContainer.className = 'relative w-full h-0 pb-[56.25%] rounded-lg overflow-hidden';
-      
-      const videoElement = document.createElement('div');
-      videoElement.className = 'video-loaded absolute inset-0 flex items-center justify-center';
-      videoElement.innerHTML = `
-        <iframe 
-          class="w-full h-full" 
-          src="${videoUrl}" 
-          frameborder="0" 
-          allowfullscreen
-          loading="lazy"
-        ></iframe>
-      `;
-      
-      const thumbnail = document.createElement('div');
-      thumbnail.className = 'video-thumbnail absolute inset-0 flex items-center justify-center';
-      thumbnail.innerHTML = `
-        <img src="${videoUrl.replace('watch?v=', 'vi/').replace('youtu.be/', 'vi/')}/maxresdefault.jpg" 
-             alt="Video thumbnail" 
-             class="w-full h-full object-cover"
-             loading="lazy"
-        />
-      `;
-      
-      const playButton = document.createElement('div');
-      playButton.className = 'absolute inset-0 flex items-center justify-center cursor-pointer';
-      playButton.innerHTML = `
-        <div class="bg-black bg-opacity-50 rounded-full p-4">
-          <svg class="w-12 h-12 text-white" viewBox="0 0 24 24">
-            <path fill="currentColor" d="M8 5v14l11-7z"/>
-          </svg>
-        </div>
-      `;
-      
-      videoContainer.appendChild(thumbnail);
-      videoContainer.appendChild(playButton);
-      videoContainer.appendChild(videoElement);
-      
-      playButton.addEventListener('click', () => {
-        thumbnail.classList.add('hidden');
-        playButton.classList.add('hidden');
-        videoElement.classList.remove('hidden');
-      });
-      
-      return videoContainer;
-    }
+    const overlay = document.getElementById('popup-overlay');
+    const popupContent = document.getElementById('popup-content');
+    const popupClose = document.getElementById('popup-close');
 
-    // Sample data for demonstration
-    const sampleMods = [
-      {
-        title: "Mod Title 1",
-        description: "This is a sample mod description.",
-        rating: 4.5,
-        downloadLink: "#",
-        installGuide: "#"
-      },
-      {
-        title: "Mod Title 2",
-        description: "Another sample mod description.",
-        rating: 3.8,
-        downloadLink: "#",
-        installGuide: "#"
-      }
-    ];
-
-    // Render mods function
-    function renderMods(mods) {
-      const container = document.getElementById('mods-container');
-      const loader = document.getElementById('skeleton-loader');
+    function openPopup(url) {
+      popupContent.innerHTML = 'Loading...';
+      overlay.classList.remove('hidden');
       
-      loader.classList.add('hidden');
-      container.innerHTML = '';
-      
-      mods.forEach(mod => {
-        const modElement = document.createElement('div');
-        modElement.className = 'bg-gray-800 rounded-lg p-4 shadow-lg hover:shadow-xl transition-shadow duration-300';
-        modElement.innerHTML = `
-          <h2 class="text-xl font-bold mb-2">${mod.title}</h2>
-          <p class="mb-3 text-gray-300">${mod.description}</p>
-          <div class="flex items-center mb-3">
-            ${renderStars(mod.rating)}
-            <span class="ml-2 text-sm">(${mod.rating})</span>
-          </div>
-          <div class="flex gap-2 mt-4">
-            <a href="${mod.downloadLink}" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded text-sm font-medium transition-colors duration-200">Download</a>
-            <a href="${mod.installGuide}" class="bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 rounded text-sm font-medium transition-colors duration-200">Install Guide</a>
-          </div>
-        `;
-        container.appendChild(modElement);
-      });
-    }
-
-    // Initialize the page
-    document.addEventListener('DOMContentLoaded', () => {
-      renderMods(sampleMods);
-      
-      // Toggle grades button functionality
-      const toggleGradesButton = document.getElementById('toggle-grades');
-      if (toggleGradesButton) {
-        toggleGradesButton.addEventListener('click', function() {
-          const isHidden = this.textContent.includes('Hide');
-          this.textContent = isHidden ? 'Show Grades' : 'Hide Grades';
-          document.querySelectorAll('.rating').forEach(el => {
-            el.classList.toggle('hidden', !isHidden);
-          });
+      fetch(url + '?v=' + Date.now())
+        .then(res => {
+          if (!res.ok) throw new Error('Failed to load');
+          return res.text();
+        })
+        .then(html => {
+          popupContent.innerHTML = html;
+          popupContent.scrollTop = 0;
+        })
+        .catch(() => {
+          popupContent.innerHTML = '<p class="text-red-400">Failed to load guide.</p>';
         });
+    }
+
+    popupClose.addEventListener('click', () => overlay.classList.add('hidden'));
+    
+    overlay.addEventListener('click', e => {
+      if (e.target === overlay) overlay.classList.add('hidden');
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        overlay.classList.add('hidden');
+        contactOverlay.classList.add('hidden');
+        installFilesOverlay.classList.add('hidden');
       }
     });
+
+    function shuffleArray(array) {
+      const shuffled = [...array];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      return shuffled;
+    }
+
+    document.getElementById('sort-button').addEventListener('click', () => {
+      const btn = document.getElementById('sort-button');
+      const gradesHidden = document.body.classList.contains('hide-grades');
+      
+      if (gradesHidden) {
+        const randomized = shuffleArray(mods);
+        renderMods(randomized);
+      } else {
+        sortState = (sortState + 1) % 3;
+        
+        let toRender;
+        switch(sortState) {
+          case 0:
+            btn.textContent = 'Sort by Rating';
+            toRender = originalMods;
+            break;
+          case 1:
+            btn.textContent = 'Highest First';
+            toRender = [...mods].sort((a, b) => parseFloat(b.rating) - parseFloat(a.rating));
+            break;
+          case 2:
+            btn.textContent = 'Lowest First';
+            toRender = [...mods].sort((a, b) => parseFloat(a.rating) - parseFloat(b.rating));
+            break;
+        }
+        renderMods(toRender);
+      }
+    });
+
+    document.getElementById('search-input').addEventListener('input', e => {
+      const q = e.target.value.toLowerCase();
+      
+      const filtered = mods.filter(mod =>
+        mod.title.toLowerCase().includes(q) ||
+        mod.description.toLowerCase().includes(q) ||
+        (mod.platform && mod.platform.toLowerCase().includes(q))
+      );
+      renderMods(filtered);
+    });
+
+    document.getElementById('toggle-videos').addEventListener('click', () => {
+      const btn = document.getElementById('toggle-videos');
+      const isHiding = document.body.classList.toggle('hide-videos');
+      btn.textContent = isHiding ? 'Show Videos' : 'Hide Videos';
+    });
+
+    document.getElementById('toggle-grades').addEventListener('click', () => {
+      const btn = document.getElementById('toggle-grades');
+      const sortBtn = document.getElementById('sort-button');
+      const isHiding = document.body.classList.toggle('hide-grades');
+      btn.textContent = isHiding ? 'Show Grades' : 'Hide Grades';
+      
+      if (isHiding) {
+        sortBtn.textContent = 'Randomize';
+        sortState = 0; 
+      } else {
+        sortBtn.textContent = 'Sort by Rating';
+        sortState = 0;
+        renderMods(originalMods);
+      }
+    });
+
+    const contactOverlay = document.getElementById('contact-overlay');
+    const contactBtn = document.getElementById('contact-button');
+    const contactClose = document.getElementById('contact-close');
+    const revealEmail = document.getElementById('reveal-email');
+    const emailText = document.getElementById('email-text');
+
+    contactBtn.addEventListener('click', () => contactOverlay.classList.remove('hidden'));
+    
+    contactClose.addEventListener('click', () => contactOverlay.classList.add('hidden'));
+    
+    contactOverlay.addEventListener('click', e => {
+      if (e.target === contactOverlay) contactOverlay.classList.add('hidden');
+    });
+    
+    revealEmail.addEventListener('click', () => emailText.classList.remove('hidden'));
+
+    // Install Files popup functionality
+    const installFilesOverlay = document.getElementById('install-files-overlay');
+    const installFilesLink = document.getElementById('install-files-link');
+    const installFilesClose = document.getElementById('install-files-close');
+
+    installFilesLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      installFilesOverlay.classList.remove('hidden');
+    });
+
+    installFilesClose.addEventListener('click', () => {
+      installFilesOverlay.classList.add('hidden');
+    });
+
+    installFilesOverlay.addEventListener('click', (e) => {
+      if (e.target === installFilesOverlay) {
+        installFilesOverlay.classList.add('hidden');
+      }
+    });
+
+    loadMods();
   </script>
 </body>
 </html>
