@@ -132,71 +132,25 @@
       display: inline-block;
       margin-right: 6px;
     }
-
-    /* Fixed-width button styling */
-    .header-button {
-      width: 100px;
-      min-width: 100px;
-      text-align: center;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    /* Responsive button layout */
-    .button-grid {
-      display: grid !important;
-      grid-template-columns: 1fr 1fr !important;
-      grid-template-rows: auto auto !important;
-      gap: 0.5rem !important;
-      width: 100% !important;
-    }
-    
-    @media (max-width: 640px) {
-      .button-container {
-        width: 100%;
-      }
-      
-      .header-button {
-        width: 100% !important;
-        min-width: 0 !important;
-      }
-    }
   </style>
 </head>
 <body class="bg-gray-900 text-white font-sans p-4">
   <div class="max-w-6xl mx-auto">
-    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-1 gap-2">
+    <div class="flex justify-between items-center mb-1 gap-2">
       <h1 class="text-3xl font-bold">Cheeki's Mods Archive</h1>
-      <div class="button-container">
-        <div class="hidden sm:flex gap-2">
-          <button id="essentials-button" aria-label="View essential files" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded header-button">
-            Essentials
-          </button>
-          <button id="contact-button" aria-label="Contact me" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded header-button">
-            Contact me
-          </button>
-          <button id="toggle-grades" aria-label="Toggle grades visibility" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded header-button">
-            Hide Grades
-          </button>
-          <button id="toggle-videos" aria-label="Toggle videos visibility" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded header-button">
-            Hide Videos
-          </button>
-        </div>
-        <div class="sm:hidden button-grid">
-          <button id="essentials-button-mobile" aria-label="View essential files" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded header-button">
-            Essentials
-          </button>
-          <button id="contact-button-mobile" aria-label="Contact me" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded header-button">
-            Contact me
-          </button>
-          <button id="toggle-grades-mobile" aria-label="Toggle grades visibility" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded header-button">
-            Hide Grades
-          </button>
-          <button id="toggle-videos-mobile" aria-label="Toggle videos visibility" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded header-button">
-            Hide Videos
-          </button>
-        </div>
+      <div class="flex gap-2">
+        <button id="essentials-button" aria-label="View essential files" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
+          Essentials
+        </button>
+        <button id="toggle-grades" aria-label="Toggle grades visibility" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
+          Hide Grades
+        </button>
+        <button id="toggle-videos" aria-label="Toggle videos visibility" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
+          Hide videos
+        </button>
+        <button id="contact-button" aria-label="Contact me" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
+          Contact me
+        </button>
       </div>
     </div>
 
@@ -636,49 +590,15 @@
 
     document.getElementById('toggle-videos').addEventListener('click', () => {
       const btn = document.getElementById('toggle-videos');
-      const btnMobile = document.getElementById('toggle-videos-mobile');
       const isHiding = document.body.classList.toggle('hide-videos');
-      const newText = isHiding ? 'Show Videos' : 'Hide Videos';
-      btn.textContent = newText;
-      btnMobile.textContent = newText;
-    });
-
-    document.getElementById('toggle-videos-mobile').addEventListener('click', () => {
-      const btn = document.getElementById('toggle-videos');
-      const btnMobile = document.getElementById('toggle-videos-mobile');
-      const isHiding = document.body.classList.toggle('hide-videos');
-      const newText = isHiding ? 'Show Videos' : 'Hide Videos';
-      btn.textContent = newText;
-      btnMobile.textContent = newText;
+      btn.textContent = isHiding ? 'Show Videos' : 'Hide Videos';
     });
 
     document.getElementById('toggle-grades').addEventListener('click', () => {
       const btn = document.getElementById('toggle-grades');
-      const btnMobile = document.getElementById('toggle-grades-mobile');
       const sortBtn = document.getElementById('sort-button');
       const isHiding = document.body.classList.toggle('hide-grades');
-      const newText = isHiding ? 'Show Grades' : 'Hide Grades';
-      btn.textContent = newText;
-      btnMobile.textContent = newText;
-      
-      if (isHiding) {
-        sortBtn.textContent = 'Randomize';
-        sortState = 0; 
-      } else {
-        sortBtn.textContent = 'Sort by Rating';
-        sortState = 0;
-        renderMods(originalMods);
-      }
-    });
-
-    document.getElementById('toggle-grades-mobile').addEventListener('click', () => {
-      const btn = document.getElementById('toggle-grades');
-      const btnMobile = document.getElementById('toggle-grades-mobile');
-      const sortBtn = document.getElementById('sort-button');
-      const isHiding = document.body.classList.toggle('hide-grades');
-      const newText = isHiding ? 'Show Grades' : 'Hide Grades';
-      btn.textContent = newText;
-      btnMobile.textContent = newText;
+      btn.textContent = isHiding ? 'Show Grades' : 'Hide Grades';
       
       if (isHiding) {
         sortBtn.textContent = 'Randomize';
@@ -692,13 +612,11 @@
 
     const contactOverlay = document.getElementById('contact-overlay');
     const contactBtn = document.getElementById('contact-button');
-    const contactBtnMobile = document.getElementById('contact-button-mobile');
     const contactClose = document.getElementById('contact-close');
     const revealEmail = document.getElementById('reveal-email');
     const emailText = document.getElementById('email-text');
 
     contactBtn.addEventListener('click', () => contactOverlay.classList.remove('hidden'));
-    contactBtnMobile.addEventListener('click', () => contactOverlay.classList.remove('hidden'));
     
     contactClose.addEventListener('click', () => contactOverlay.classList.add('hidden'));
     
@@ -710,14 +628,9 @@
 
     const installFilesOverlay = document.getElementById('install-files-overlay');
     const essentialsBtn = document.getElementById('essentials-button');
-    const essentialsBtnMobile = document.getElementById('essentials-button-mobile');
     const installFilesClose = document.getElementById('install-files-close');
 
     essentialsBtn.addEventListener('click', () => {
-      installFilesOverlay.classList.remove('hidden');
-    });
-    
-    essentialsBtnMobile.addEventListener('click', () => {
       installFilesOverlay.classList.remove('hidden');
     });
 
