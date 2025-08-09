@@ -158,7 +158,7 @@
   <div class="max-w-6xl mx-auto">
     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-1 gap-2">
       <h1 class="text-3xl font-bold">Cheeki's Mods Archive</h1>
-      <div class="grid grid-cols-2 sm:flex gap-2">
+      <div class="hidden sm:grid grid-cols-2 sm:flex gap-2">
         <button id="essentials-button" aria-label="View essential files" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
           Essentials
         </button>
@@ -175,6 +175,22 @@
     </div>
 
     <h2 class="text-lg text-gray-400 mb-3">A collection of S.T.A.L.K.E.R. Story Mods</h2>
+    
+    <!-- Mobile buttons -->
+    <div class="grid grid-cols-2 gap-2 mb-4 sm:hidden">
+      <button id="essentials-button-mobile" aria-label="View essential files" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
+        Essentials
+      </button>
+      <button id="contact-button-mobile" aria-label="About" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-3 rounded">
+        About
+      </button>
+      <button id="toggle-grades-mobile" aria-label="Toggle grades visibility" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded transition-all duration-200 border-2 border-transparent">
+        Hide Grades
+      </button>
+      <button id="toggle-videos-mobile" aria-label="Toggle videos visibility" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded transition-all duration-200 border-2 border-transparent">
+        Hide Videos
+      </button>
+    </div>
     
     <p class="text-gray-300 text-sm mb-6">
       A non-exhaustive archive of game modifications for the S.T.A.L.K.E.R. game franchise, mainly story-focused mods I reviewed on the <a href="https://linktr.ee/cheekibreekii" target="_blank" class="text-white underline">YouTube Channel</a>.
@@ -605,35 +621,15 @@
       renderMods(filtered);
     });
 
-    document.getElementById('toggle-videos').addEventListener('click', () => {
-      const btn = document.getElementById('toggle-videos');
-      const isHiding = document.body.classList.toggle('hide-videos');
-      btn.classList.toggle('button-active', isHiding);
-    });
-
-    document.getElementById('toggle-grades').addEventListener('click', () => {
-      const btn = document.getElementById('toggle-grades');
-      const sortBtn = document.getElementById('sort-button');
-      const isHiding = document.body.classList.toggle('hide-grades');
-      btn.classList.toggle('button-active', isHiding);
-      
-      if (isHiding) {
-        sortBtn.textContent = 'Randomize';
-        sortState = 0; 
-      } else {
-        sortBtn.textContent = 'Sort by Rating';
-        sortState = 0;
-        renderMods(originalMods);
-      }
-    });
-
     const contactOverlay = document.getElementById('contact-overlay');
     const contactBtn = document.getElementById('contact-button');
+    const contactBtnMobile = document.getElementById('contact-button-mobile');
     const contactClose = document.getElementById('contact-close');
     const revealEmail = document.getElementById('reveal-email');
     const emailText = document.getElementById('email-text');
 
     contactBtn.addEventListener('click', () => contactOverlay.classList.remove('hidden'));
+    contactBtnMobile.addEventListener('click', () => contactOverlay.classList.remove('hidden'));
     
     contactClose.addEventListener('click', () => contactOverlay.classList.add('hidden'));
     
@@ -645,9 +641,14 @@
 
     const installFilesOverlay = document.getElementById('install-files-overlay');
     const essentialsBtn = document.getElementById('essentials-button');
+    const essentialsBtnMobile = document.getElementById('essentials-button-mobile');
     const installFilesClose = document.getElementById('install-files-close');
 
     essentialsBtn.addEventListener('click', () => {
+      installFilesOverlay.classList.remove('hidden');
+    });
+
+    essentialsBtnMobile.addEventListener('click', () => {
       installFilesOverlay.classList.remove('hidden');
     });
 
@@ -659,6 +660,63 @@
       if (e.target === installFilesOverlay) {
         installFilesOverlay.classList.add('hidden');
       }
+    });
+
+    // Sync mobile toggle states with desktop buttons
+    const toggleGrades = document.getElementById('toggle-grades');
+    const toggleGradesMobile = document.getElementById('toggle-grades-mobile');
+    const toggleVideos = document.getElementById('toggle-videos');
+    const toggleVideosMobile = document.getElementById('toggle-videos-mobile');
+
+    function syncToggleStates() {
+      const gradesHidden = document.body.classList.contains('hide-grades');
+      const videosHidden = document.body.classList.contains('hide-videos');
+      
+      toggleGrades.classList.toggle('button-active', gradesHidden);
+      toggleGradesMobile.classList.toggle('button-active', gradesHidden);
+      toggleVideos.classList.toggle('button-active', videosHidden);
+      toggleVideosMobile.classList.toggle('button-active', videosHidden);
+    }
+
+    toggleGrades.addEventListener('click', () => {
+      const btn = document.getElementById('toggle-grades');
+      const sortBtn = document.getElementById('sort-button');
+      const isHiding = document.body.classList.toggle('hide-grades');
+      
+      if (isHiding) {
+        sortBtn.textContent = 'Randomize';
+        sortState = 0; 
+      } else {
+        sortBtn.textContent = 'Sort by Rating';
+        sortState = 0;
+        renderMods(originalMods);
+      }
+      syncToggleStates();
+    });
+
+    toggleGradesMobile.addEventListener('click', () => {
+      const sortBtn = document.getElementById('sort-button');
+      const isHiding = document.body.classList.toggle('hide-grades');
+      
+      if (isHiding) {
+        sortBtn.textContent = 'Randomize';
+        sortState = 0; 
+      } else {
+        sortBtn.textContent = 'Sort by Rating';
+        sortState = 0;
+        renderMods(originalMods);
+      }
+      syncToggleStates();
+    });
+
+    toggleVideos.addEventListener('click', () => {
+      document.body.classList.toggle('hide-videos');
+      syncToggleStates();
+    });
+
+    toggleVideosMobile.addEventListener('click', () => {
+      document.body.classList.toggle('hide-videos');
+      syncToggleStates();
     });
 
     loadMods();
