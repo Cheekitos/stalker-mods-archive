@@ -587,6 +587,10 @@
             break;
           case 1:
             btn.textContent = 'Highest First';
+            toRender = [...mods].sort((a, b) => parseFloat(b.rating) - parseFloat(a.rating));
+            break;
+          case 2:
+            btn.textContent = 'Lowest First';
             toRender = [...mods].sort((a, b) => parseFloat(a.rating) - parseFloat(b.rating));
             break;
         }
@@ -664,8 +668,4 @@
     loadMods();
   </script>
 </body>
-</html>Float(b.rating) - parseFloat(a.rating));
-            break;
-          case 2:
-            btn.textContent = 'Lowest First';
-            toRender = [...mods].sort((a, b) => parse
+</html>
