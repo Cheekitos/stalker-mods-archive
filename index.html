@@ -10,16 +10,23 @@
   <meta name="keywords" content="STALKER mods, S.T.A.L.K.E.R. modifications, game mods, Shadow of Chernobyl, Clear Sky, Call of Pripyat, story mods">
   <meta name="author" content="Cheeki">
   
+  <!-- Favicons -->
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/favicon-96x96.png" type="image/png" sizes="96x96">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   
   <meta property="og:title" content="Cheeki's Mods Archive - S.T.A.L.K.E.R. Story Mods">
   <meta property="og:description" content="Archive of S.T.A.L.K.E.R. story mods with reviews, ratings, and download links">
   <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.cheeki.zone">
+  <meta property="og:image" content="https://www.cheeki.zone/og-image.jpg">
   
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "Cheeki's Mods Archive",
+    "url": "https://www.cheeki.zone",
     "description": "Archive of S.T.A.L.K.E.R. story mods reviewed by Cheeki",
     "author": {
       "@type": "Person",
@@ -27,7 +34,7 @@
     },
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "{search_term_string}",
+      "target": "https://www.cheeki.zone/?search={search_term_string}",
       "query-input": "required name=search_term_string"
     }
   }
@@ -580,10 +587,6 @@
             break;
           case 1:
             btn.textContent = 'Highest First';
-            toRender = [...mods].sort((a, b) => parseFloat(b.rating) - parseFloat(a.rating));
-            break;
-          case 2:
-            btn.textContent = 'Lowest First';
             toRender = [...mods].sort((a, b) => parseFloat(a.rating) - parseFloat(b.rating));
             break;
         }
@@ -661,4 +664,8 @@
     loadMods();
   </script>
 </body>
-</html>
+</html>Float(b.rating) - parseFloat(a.rating));
+            break;
+          case 2:
+            btn.textContent = 'Lowest First';
+            toRender = [...mods].sort((a, b) => parse
