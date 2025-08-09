@@ -39,7 +39,7 @@
     }
   }
   </script>
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     .hide-videos .video-container {
@@ -75,6 +75,7 @@
       border-radius: 0.375rem;
       overflow: hidden;
       aspect-ratio: 16/9;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
     }
     .video-thumbnail img {
       width: 100%;
@@ -118,9 +119,7 @@
       border-radius: 0.375rem;
       box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
     }
-    .video-thumbnail {
-      box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
-    }
+
     .skeleton-loading {
       background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
       background-size: 200% 100%;
@@ -369,11 +368,8 @@
         titleRow.className = 'flex justify-between items-center mb-3 gap-2';
 
         const title = document.createElement('h3');
-        title.className = 'text-2xl font-semibold text-gray-100 drop-shadow';
+        title.className = 'text-2xl font-semibold text-gray-100 drop-shadow whitespace-nowrap overflow-hidden text-ellipsis';
         title.textContent = mod.title;
-        title.style.whiteSpace = 'nowrap';
-        title.style.overflow = 'hidden';
-        title.style.textOverflow = 'ellipsis';
 
         const rating = document.createElement('div');
         rating.className = 'flex items-center space-x-1.5 text-yellow-400 rating';
