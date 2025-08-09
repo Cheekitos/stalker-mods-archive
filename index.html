@@ -141,6 +141,14 @@
   </style>
 </head>
 <body class="bg-gray-900 text-white font-sans p-4">
+<script>
+  (function(){
+    var fullres = document.createElement('script');
+    fullres.async = true;
+    fullres.src = 'https://t.fullres.net/cheeki.js?'+(new Date()-new Date()%43200000);
+    document.head.appendChild(fullres);
+  })();
+</script>
   <div class="max-w-6xl mx-auto">
     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-1 gap-2">
       <h1 class="text-3xl font-bold">Cheeki's Mods Archive</h1>
@@ -148,14 +156,14 @@
         <button id="essentials-button" aria-label="View essential files" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
           Essentials
         </button>
+        <button id="contact-button" aria-label="About" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
+          About
+        </button>
         <button id="toggle-grades" aria-label="Toggle grades visibility" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded transition-all duration-200 border-2 border-transparent">
           Hide Grades
         </button>
         <button id="toggle-videos" aria-label="Toggle videos visibility" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded transition-all duration-200 border-2 border-transparent">
           Hide Videos
-        </button>
-        <button id="contact-button" aria-label="Contact me" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded">
-          Contact me
         </button>
       </div>
     </div>
