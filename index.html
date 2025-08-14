@@ -226,12 +226,24 @@
   </div>
   
 
-  <!-- About Section -->
-<div id="contact-overlay" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center hidden z-50">
+  <div id="contact-overlay" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center hidden z-50">
     <div class="bg-gray-900 rounded-lg max-w-md w-full max-h-[90vh] overflow-auto p-4 relative text-sm text-gray-200">
       <button id="contact-close" aria-label="Close contact popup" class="absolute top-2 right-2 text-gray-400 hover:text-white text-xl">&times;</button>
       <h3 class="text-lg font-bold text-white mb-3">About</h3>
-      <p class="mb-4">You can contact me here. Please only use this to report a broken link or incorrect information that needs fixing.</p>
+      
+      <div class="bg-gray-800 rounded-lg p-3 mb-4">
+        <h4 class="text-white text-sm font-medium mb-2">Why this website?</h4>
+        <div class="aspect-video">
+          <iframe 
+            src="https://www.youtube.com/embed/yYO__9uy0uo" 
+            class="w-full h-full rounded"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen>
+          </iframe>
+        </div>
+      </div>
+      
+      <p class="mb-4">Only use this to report a broken link or incorrect information that needs fixing.</p>
       <div class="flex items-center gap-2 mb-4">
         <button id="reveal-email" class="bg-yellow-500 hover:bg-yellow-600 text-black text-xs font-medium py-1 px-2 rounded">
           Reveal Email
