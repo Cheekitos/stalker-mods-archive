@@ -151,6 +151,16 @@
       border-color: white !important;
       box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
     }
+
+    .cards-2 {
+      grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+    }
+    .cards-3 {
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+    .cards-4 {
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
   </style>
 </head>
 <body class="bg-gray-900 text-white font-sans p-4">
@@ -200,18 +210,26 @@
     </div>
     
     <p class="text-gray-300 text-sm mb-6">
-      A non-exhaustive archive of game modifications for the S.T.A.L.K.E.R. game franchise, mainly story-focused mods I reviewed on the <a href="https://linktr.ee/cheekibreekii" target="_blank" class="text-white underline">YouTube Channel</a>.
-      Everything listed here is for ease-of-access and posterity only. Consolidating files that tend to be scattered accross multiple websites, hosting services, discord servers etc. All credits go to the Authors of these mods.
+      This is a curated (but non-exhaustive) archive of S.T.A.L.K.E.R. game modifications, focusing mainly on story-driven projects I’ve reviewed on the <a href="https://linktr.ee/cheekibreekii" target="_blank" class="text-white underline">YouTube Channel</a>.
+      The goal is simply to consolidate, preserve, and make easily accessible these mods and their English translations, which are too often scattered across various websites, hosting services, and Discord servers. All credit goes to the original mod authors.
     </p>
     
     <div class="flex flex-wrap items-center gap-2 mb-4">
       <button id="sort-button" aria-label="Sort mods by rating" class="bg-yellow-500 hover:bg-yellow-600 text-black text-sm font-medium py-1 px-3 rounded w-32">
         Sort by Rating
       </button>
+      <div class="flex items-center gap-1">
+        <button id="cards-less" aria-label="Show fewer cards per row" class="bg-gray-700 hover:bg-gray-600 text-white text-sm font-medium py-1 px-2 rounded w-8 h-8 flex items-center justify-center">
+          -
+        </button>
+        <button id="cards-more" aria-label="Show more cards per row" class="bg-gray-700 hover:bg-gray-600 text-white text-sm font-medium py-1 px-2 rounded w-8 h-8 flex items-center justify-center">
+          +
+        </button>
+      </div>
       <input id="search-input" type="text" aria-label="Search mods" placeholder="Search mods..." class="flex-1 min-w-[150px] px-2 py-1 text-sm rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500" />
     </div>
 
-    <div id="mod-list" class="grid gap-4 grid-cols-[repeat(auto-fill,minmax(300px,1fr))]"></div>
+    <div id="mod-list" class="grid gap-4 cards-3"></div>
 
     <footer class="mt-8 text-center text-sm text-gray-500">
       Cheeki's Mods Archive - <a href="https://linktr.ee/cheekibreekii" target="_blank" class="text-blue-400 hover:underline">Check me Out!</a>
@@ -232,7 +250,7 @@
       <button id="contact-close" aria-label="Close contact popup" class="absolute top-2 right-2 text-gray-400 hover:text-white text-xl">&times;</button>
       <h3 class="text-lg font-bold text-white mb-3">About</h3>
       
-      <p class="mb-4">Only use this to report a broken link or incorrect information that needs fixing.</p>
+      <p class="mb-4">You can contact me here to report a broken link or incorrect information that needs fixing.</p>
       <div class="flex items-center gap-2 mb-4">
         <button id="reveal-email" class="bg-yellow-500 hover:bg-yellow-600 text-black text-xs font-medium py-1 px-2 rounded">
           Reveal Email
@@ -256,12 +274,12 @@
         
         <div class="space-y-2">
           <div>
-            <span class="text-white text-xs font-medium">• Steam:</span><br>
+            <span class="text-white text-xs font-medium">â€¢ Steam:</span><br>
             <a href="https://store.steampowered.com/franchise/stalker" target="_blank" class="text-blue-400 hover:underline text-xs ml-2">S.T.A.L.K.E.R. Franchise</a>
           </div>
           
           <div>
-            <span class="text-white text-xs font-medium">• GOG:</span><br>
+            <span class="text-white text-xs font-medium">â€¢ GOG:</span><br>
             <div class="ml-2 space-y-1">
               <a href="https://www.gog.com/en/game/stalker_shadow_of_chernobyl" target="_blank" class="block text-blue-400 hover:underline text-xs">Shadow of Chernobyl</a>
               <a href="https://www.gog.com/en/game/stalker_clear_sky" target="_blank" class="block text-blue-400 hover:underline text-xs">Clear Sky</a>
@@ -270,12 +288,12 @@
           </div>
           
           <div>
-            <span class="text-white text-xs font-medium">• PlayStation Store:</span><br>
+            <span class="text-white text-xs font-medium">â€¢ PlayStation Store:</span><br>
             <a href="https://store.playstation.com/en-cz/product/EB0236-CUSA43978_00-0550328121149114" target="_blank" class="text-blue-400 hover:underline text-xs ml-2">S.T.A.L.K.E.R. Legends of the Zone Trilogy</a>
           </div>
           
           <div>
-            <span class="text-white text-xs font-medium">• Xbox Store:</span><br>
+            <span class="text-white text-xs font-medium">â€¢ Xbox Store:</span><br>
             <a href="https://www.xbox.com/en-US/games/store/stalker-legends-of-the-zone-trilogy/9N4GFFDG41JR" target="_blank" class="text-blue-400 hover:underline text-xs ml-2">S.T.A.L.K.E.R. Legends of the Zone Trilogy</a>
           </div>
         </div>
@@ -338,6 +356,8 @@
     let mods = [];
     let sortState = 0;
     let originalMods = [];
+    let cardsPerRow = 3; // Default to 3 cards per row
+    let currentDisplayedMods = []; // Track what's currently being displayed
 
     function getYouTubeVideoId(url) {
       const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
@@ -400,6 +420,13 @@
       return container;
     }
 
+    function updateGridLayout() {
+      const modList = document.getElementById('mod-list');
+      modList.className = `grid gap-4 cards-${cardsPerRow}`;
+      // Re-render the currently displayed mods to apply the new layout
+      renderMods(currentDisplayedMods);
+    }
+
     async function loadMods() {
       try {
         const response = await fetch('mods.json?v=' + Date.now());
@@ -425,6 +452,7 @@
     }
 
     function renderMods(modArray) {
+      currentDisplayedMods = modArray; // Track what we're currently displaying
       const container = document.getElementById('mod-list');
       container.innerHTML = '';
       
@@ -508,21 +536,31 @@
         const platformWrapper = document.createElement('div');
         platformWrapper.className = 'flex items-center gap-1';
 
-        ['Shadow of Chernobyl', 'Clear Sky', 'Call of Pripyat'].forEach((plat, idx, arr) => {
+        // For smaller cards (4 per row), only show the selected platform
+        if (cardsPerRow === 4) {
+          const selectedPlatform = mod.platform;
           const span = document.createElement('span');
-          span.textContent = plat;
-          span.className = (mod.platform === plat)
-            ? 'border border-white bg-yellow-400 bg-opacity-50 px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight'
-            : 'text-gray-400 text-[10px] leading-tight';
+          span.textContent = selectedPlatform;
+          span.className = 'border border-white bg-yellow-400 bg-opacity-50 px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight';
           platformWrapper.appendChild(span);
+        } else {
+          // For larger cards, show all three options as before
+          ['Shadow of Chernobyl', 'Clear Sky', 'Call of Pripyat'].forEach((plat, idx, arr) => {
+            const span = document.createElement('span');
+            span.textContent = plat;
+            span.className = (mod.platform === plat)
+              ? 'border border-white bg-yellow-400 bg-opacity-50 px-2 py-0.5 rounded-sm text-[10px] text-white leading-tight'
+              : 'text-gray-400 text-[10px] leading-tight';
+            platformWrapper.appendChild(span);
 
-          if (idx < arr.length - 1) {
-            const sep = document.createElement('span');
-            sep.textContent = '|';
-            sep.className = 'text-gray-400 text-[10px] leading-tight';
-            platformWrapper.appendChild(sep);
-          }
-        });
+            if (idx < arr.length - 1) {
+              const sep = document.createElement('span');
+              sep.textContent = '|';
+              sep.className = 'text-gray-400 text-[10px] leading-tight';
+              platformWrapper.appendChild(sep);
+            }
+          });
+        }
 
         platformDiv.appendChild(platformWrapper);
 
@@ -659,6 +697,21 @@
             break;
         }
         renderMods(toRender);
+      }
+    });
+
+    // Cards per row controls
+    document.getElementById('cards-less').addEventListener('click', () => {
+      if (cardsPerRow > 2) {
+        cardsPerRow--;
+        updateGridLayout();
+      }
+    });
+
+    document.getElementById('cards-more').addEventListener('click', () => {
+      if (cardsPerRow < 4) {
+        cardsPerRow++;
+        updateGridLayout();
       }
     });
 
