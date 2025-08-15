@@ -1,5 +1,45 @@
 [
 	{
+		"title": "Spatial Anomaly",
+		"rating": 4.6,
+		"standalone": false,
+		"platform": "Call of Pripyat",
+		"description": "Trapped in a strange anomaly, you're slowly running out of resources. A short, well-paced adventure with outstanding writing, memorable characters, captivating voice acting, and a world that pulls you in until the very end.",
+		"links": [
+			{
+				"label": "Download Files",
+				"url": "https://www.mediafire.com/file/8akbmexodxzf2ni/Spatial_Anomaly.7z/file"
+			},
+			{
+				"label": "Install Guide",
+				"url": "guides/mod08-spatial.html"
+			}
+		],
+		"video": "https://www.youtube.com/embed/WFuN6h3bCYk?si=XWY8J7xyhMIqGiyp",
+		"pros": [],
+		"cons": []
+	},
+	{
+		"title": "True Stalker",
+		"rating": 4.2,
+		"standalone": true,
+		"platform": "Call of Pripyat",
+		"description": "A brand new story in a vibrant and dangerous Zone, with a level of polish and quality so high it could pass for an official sequel. Great world design, custom UI, new audio, balanced and challenging gameplay, and the OG games spirit.",
+		"links": [
+			{
+				"label": "Download Files",
+				"url": "https://drive.google.com/drive/folders/1sp-R4N2I1cDc8e4_oEDOrcZUp7X-gSrx"
+			},
+			{
+				"label": "Install Guide",
+				"url": "guides/mod07-true.html"
+			}
+		],
+		"video": "https://www.youtube.com/embed/dquLKT-qFmE?si=Jl6L-PnvrFpC4Kpk",
+		"pros": [],
+		"cons": []
+	},
+	{
 		"title": "Legend Returns",
 		"rating": 4.1,
 		"standalone": true,
