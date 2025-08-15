@@ -1,10 +1,110 @@
 [
 	{
+		"title": "Dollchan 8: Infinity",
+		"rating": 3.5,
+		"standalone": true,
+		"platform": "Call of Pripyat",
+		"description": "The Brainscorcher has been shut down, but strange cases of memory loss spread among Stalkers. Seems like the zone found another way to prevent the uncovering of its secrets. An intriguing plot, heavily expanded maps, and brutal difficulty.",
+		"links": [
+			{
+				"label": "Download Files",
+				"url": "https://www.mediafire.com/file/6qyuipwx4qm5yaz/Dollchan_8_Infinity.7z/file"
+			},
+			{
+				"label": "Install Guide",
+				"url": "guides/mod05-dollchan.html"
+			}
+		],
+		"video": "https://www.youtube.com/embed/KTLrMFbksTE?si=ed7GkwTRuECRhhhC",
+		"pros": [],
+		"cons": []
+	},
+	{
+		"title": "Dreamcatcher",
+		"rating": 4.2,
+		"standalone": true,
+		"platform": "Call of Pripyat",
+		"description": "Sequel to Incubator (that I recommend playing first), we follow a rookie scientist's first steps into the Zone, on a mission full of danger and mysticism. Highly atmospheric, ambitious graphics, with a rich story and must-play side quests.",
+		"links": [
+			{
+				"label": "Download Files",
+				"url": "https://www.mediafire.com/file/inhf219q8tpzo5t/Dreamcatcher.7z/file"
+			},
+			{
+				"label": "Install Guide",
+				"url": "guides/mod09-dream.html"
+			}
+		],
+		"video": "https://www.youtube.com/embed/U6kmQjZGmKg?si=ODjVURMjlIa9qzaT",
+		"pros": [],
+		"cons": []
+	},
+	{
+		"title": "GoldSphere",
+		"rating": 3.8,
+		"standalone": true,
+		"platform": "Shadow of Chernobyl",
+		"description": "A wild and unhinged adventure set four years before Shadow of Chernobyl, mixing lots of open quests, puzzles, and bizarre occult mysteries. Full of Roadside Picnic references, it turns the Zone into a chaotic, unpredictable experience.",
+		"links": [
+			{
+				"label": "Download Files",
+				"url": "https://www.mediafire.com/file/r4vd52kw7f5ed5d/Goldsphere_%255BOGSR%255D.7z/file"
+			},
+			{
+				"label": "Install Guide",
+				"url": "guides/mod03-goldsphere.html"
+			}
+		],
+		"video": "https://www.youtube.com/embed/41uJQyhhItQ?si=iR27croZKrkzzif0",
+		"pros": [],
+		"cons": []
+	},
+	{
+		"title": "Incubator",
+		"rating": 4.4,
+		"standalone": true,
+		"platform": "Call of Pripyat",
+		"description": "An ominous antagonist coming after you, a great intrigue to slowly uncover, elevated by fully voiced characters, amazing cinematic cutscenes and an overall impressive production value, this is a must-play classic by the Vivient team.",
+		"links": [
+			{
+				"label": "Download Files",
+				"url": "https://www.mediafire.com/file/6896kn2czzxdq0d/Incubator.7z/file"
+			},
+			{
+				"label": "Install Guide",
+				"url": "guides/mod04-incubator.html"
+			}
+		],
+		"video": "https://www.youtube.com/embed/xixdI00LpNw?si=6E_9ucVBBEP5A3-_",
+		"pros": [],
+		"cons": []
+	},
+	{
+		"title": "Legend Returns",
+		"rating": 4.1,
+		"standalone": true,
+		"platform": "Call of Pripyat",
+		"description": "The largest story-driven overhaul for Call of Chernobyl, blending open-world, freeplay gameplay with full plots and storylines to discover for multiple factions. Special attention was given to Sin and their quests, making it a must-play faction!",
+		"links": [
+			{
+				"label": "Download Files",
+				"url": "https://www.mediafire.com/file/jobma0vfld1vg4l/Legend_Returns.7z/file"
+			},
+			{
+				"label": "Install Guide",
+				"url": "guides/mod06-legendreturns.html"
+			}
+		],
+		"video": "https://www.youtube.com/embed/u1X0ti3JuNk?si=VYQFJ1xVHfwQ0czK",
+		"pros": [],
+		"cons": []
+	},
+	{
 		"title": "Spatial Anomaly",
 		"rating": 4.6,
 		"standalone": false,
 		"platform": "Call of Pripyat",
-		"description": "Trapped in a strange anomaly, you're slowly running out of resources. A short, well-paced adventure with outstanding writing, memorable characters, captivating voice acting, and a world that pulls you in until the very end.",
+		"description": "Trapped in a strange anomaly, you're slowly running out of resources. A short, well-paced adventure with outstanding writing, memorable characters, captivating voice acting, in a world that won't let you go until the very end.",
 		"links": [
 			{
 				"label": "Download Files",
@@ -40,82 +140,22 @@
 		"cons": []
 	},
 	{
-		"title": "Legend Returns",
-		"rating": 4.1,
-		"standalone": true,
-		"platform": "Call of Pripyat",
-		"description": "The largest story-driven overhaul for Call of Chernobyl, blending open-world, freeplay gameplay with full plots and storylines to discover for multiple factions. Special attention was given to Sin and their quests, making it a must-play faction!",
-		"links": [
-			{
-				"label": "Download Files",
-				"url": "https://www.mediafire.com/file/jobma0vfld1vg4l/Legend_Returns.7z/file"
-			},
-			{
-				"label": "Install Guide",
-				"url": "guides/mod06-legendreturns.html"
-			}
-		],
-		"video": "https://www.youtube.com/embed/u1X0ti3JuNk?si=VYQFJ1xVHfwQ0czK",
-		"pros": [],
-		"cons": []
-	},
-	{
-		"title": "Dollchan 8: Infinity",
-		"rating": 3.5,
-		"standalone": true,
-		"platform": "Call of Pripyat",
-		"description": "The Brainscorcher has been shut down, but strange cases of memory loss spread among Stalkers. Seems like the zone found another way to prevent the uncovering of its secrets. An intriguing plot, heavily expanded maps, and brutal difficulty.",
-		"links": [
-			{
-				"label": "Download Files",
-				"url": "https://www.mediafire.com/file/6qyuipwx4qm5yaz/Dollchan_8_Infinity.7z/file"
-			},
-			{
-				"label": "Install Guide",
-				"url": "guides/mod05-dollchan.html"
-			}
-		],
-		"video": "https://www.youtube.com/embed/KTLrMFbksTE?si=ed7GkwTRuECRhhhC",
-		"pros": [],
-		"cons": []
-	},
-	{
-		"title": "Incubator",
-		"rating": 4.4,
-		"standalone": true,
-		"platform": "Call of Pripyat",
-		"description": "An ominous antagonist coming after you, a great intrigue to slowly uncover, elevated by fully voiced characters, amazing cinematic cutscenes and an overall impressive production value, this is a must-play classic by the Vivient team.",
-		"links": [
-			{
-				"label": "Download Files",
-				"url": "https://www.mediafire.com/file/6896kn2czzxdq0d/Incubator.7z/file"
-			},
-			{
-				"label": "Install Guide",
-				"url": "guides/mod04-incubator.html"
-			}
-		],
-		"video": "https://www.youtube.com/embed/xixdI00LpNw?si=6E_9ucVBBEP5A3-_",
-		"pros": [],
-		"cons": []
-	},
-	{
-		"title": "GoldSphere",
-		"rating": 3.8,
+		"title": "Vector of Alienation",
+		"rating": 4.3,
 		"standalone": true,
 		"platform": "Shadow of Chernobyl",
-		"description": "A wild and unhinged adventure set four years before Shadow of Chernobyl, mixing lots of open quests, puzzles, and bizarre occult mysteries. Full of Roadside Picnic references, it turns the Zone into a chaotic, unpredictable experience.",
+		"description": "A deep sci-fi thriller that reimagines S.T.A.L.K.E.R.'s 2004 original storyline. Fully overhauled environments, well crafted plotlines and alternate endings, with a tense, atmospheric journey through a lonelier, more mysterious Zone.",
 		"links": [
 			{
 				"label": "Download Files",
-				"url": "https://www.mediafire.com/file/r4vd52kw7f5ed5d/Goldsphere_%255BOGSR%255D.7z/file"
+				"url": "https://www.mediafire.com/file/idt3zzfg5qr3t1r/Vector_of_Alienation.7z/file"
 			},
 			{
 				"label": "Install Guide",
-				"url": "guides/mod03-goldsphere.html"
+				"url": "guides/mod01-voa.html"
 			}
 		],
-		"video": "https://www.youtube.com/embed/41uJQyhhItQ?si=iR27croZKrkzzif0",
+		"video": "https://www.youtube.com/embed/icdKtvzjtJk?si=9fxIOs4jIy86vqI4",
 		"pros": [],
 		"cons": []
 	},
@@ -136,26 +176,6 @@
 			}
 		],
 		"video": "https://www.youtube.com/embed/UN8ZlXrJZOs?si=s6rnju96FXxSwxm6",
-		"pros": [],
-		"cons": []
-	},
-	{
-		"title": "Vector of Alienation",
-		"rating": 4.3,
-		"standalone": true,
-		"platform": "Shadow of Chernobyl",
-		"description": "A deep sci-fi thriller that reimagines S.T.A.L.K.E.R.'s 2004 original storyline. Fully overhauled environments, well crafted plotlines and alternate endings, with a tense, atmospheric journey through a lonelier, more mysterious Zone.",
-		"links": [
-			{
-				"label": "Download Files",
-				"url": "https://www.mediafire.com/file/idt3zzfg5qr3t1r/Vector_of_Alienation.7z/file"
-			},
-			{
-				"label": "Install Guide",
-				"url": "guides/mod01-voa.html"
-			}
-		],
-		"video": "https://www.youtube.com/embed/icdKtvzjtJk?si=9fxIOs4jIy86vqI4",
 		"pros": [],
 		"cons": []
 	}
